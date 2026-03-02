@@ -38,7 +38,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](http://github.com/deltaMinor)] [[portfolio](team/johndoe.md)]
 
 * Role: Developer
-* Responsibilities: Code Quality
+* Responsibilities: Code Quality, In charge of UI Mockup
 
 ### Allison Law
 
