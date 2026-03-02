@@ -31,14 +31,14 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Team Lead
 * Responsibilities: UI
 
-### deltaMinor
+### Davin Khor
 
 <img src="images/deltaminor.png" width="200px">
 
 [[github](http://github.com/deltaMinor)] [[portfolio](team/johndoe.md)]
 
 * Role: Developer
-* Responsibilities: Data
+* Responsibilities: Code Quality
 
 ### Allison Law
 
