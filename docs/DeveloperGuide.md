@@ -278,7 +278,7 @@ _{Explain here how the data archiving feature will be implemented}_
 * prefer desktop apps over other types
 * can type fast
 * prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
+* is reasonably comfortable using CLI (Command Line Interface) apps
 
 **Value proposition**: manage contacts faster than a typical mouse/GUI driven app
 
@@ -319,7 +319,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
   Use case ends.
 
-* 3a. The given index is invalid.
+* 3a. The given request is invalid (e.g. referenced person does not exist).
 
     * 3a1. AddressBook shows an error message.
 
@@ -339,6 +339,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Command**: A structured line of text entered by the user to instruct the application to perform a specific action.
+* **Person**: A single contact entry stored in the address book, containing one or more pieces of contact information such as name, phone number, email, or address.
 
 --------------------------------------------------------------------------------------------------------------------
 
