@@ -316,7 +316,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS**
 
 1. User requests to create a new contact with certain parameters
-2. AddressBook saves the new contact to persistent storage
+2. AddressBook saves the new contact
 3. AddressBook displays confirmation that the new contact is saved
 
     Use case ends
@@ -361,7 +361,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **Use case: UC5 - Filter contacts by criterion**
 
 **MSS**
-1. User requests to list contacts sorted by criteria
+1. User requests to list contacts which fulfill given criteria
 2. AddressBook shows a list of all contacts which fulfill given criteria
 
     Use case ends.
