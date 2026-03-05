@@ -329,9 +329,18 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Non-Functional Requirements
 
-1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
-2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
+2. Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+3. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+4. Should only be accessible to a single user.
+5. Data should be stored locally and in a human editable text file.
+6. Should work without requiring an installer.
+7. Should work without reliance on a remote server.
+8. Should only contain third-party libraries/libraries/services which are free, open-source, and have permissive license terms (if any).
+9. GUI should work well for standard screen resolutions 1920x1080 and higher, and for screen scales 100% and 125%.
+10. GUI should be usable for resolutions 1280x720 and higher, and for screen scales 150%.
+11. Should be packaged in a single JAR file.
+12. Should be within 100MB in size.
 
 *{More to be added}*
 
