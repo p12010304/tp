@@ -330,6 +330,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 ### Non-Functional Requirements
 
 1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
+<<<<<<< HEAD
 2. Should be able to hold up to 1000 persons in storage.
 3. Should always respond to user input within 250 milliseconds.
 4. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
@@ -341,6 +342,19 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 10. GUI should work well for standard screen resolutions 1920x1080 and higher, and for screen scales 100% and 125%.
 11. GUI should be usable for resolutions 1280x720 and higher, and for screen scales 150%.
 12. Should be packaged in a single JAR file of 100MB or less in size.
+=======
+2. Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+3. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+4. Should only be accessible to a single user.
+5. Data should be stored locally and in a human editable text file.
+6. Should work without requiring an installer.
+7. Should work without reliance on a remote server.
+8. Should only contain third-party frameworks/libraries/services which are free, open-source, and have permissive license terms (if any).
+9. GUI should work well for standard screen resolutions 1920x1080 and higher, and for screen scales 100% and 125%.
+10. GUI should be usable for resolutions 1280x720 and higher, and for screen scales 150%.
+11. Should be packaged in a single JAR file.
+12. Should be within 100MB in size.
+>>>>>>> 1121a70c84ccf0d226e59a4d6d9b0e9cdcc88e64
 
 *{More to be added}*
 
