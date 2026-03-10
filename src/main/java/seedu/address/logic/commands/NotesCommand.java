@@ -62,7 +62,7 @@ public class NotesCommand extends Command {
     }
 
     /**
-     * Generates a command execution success message based on whether the notes is added to or removed from
+     * Generates a command execution success message based on whether the notes are added to or removed from
      * {@code contactToEdit}.
      */
     private String generateSuccessMessage(Contact contactToEdit) {
