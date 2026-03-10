@@ -29,6 +29,8 @@ public class NotesCommandParser implements Parser<NotesCommand> {
             notes = notesArgs[1];
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, NotesCommand.MESSAGE_USAGE), ive);
+        } catch (ArrayIndexOutOfBoundsException ae) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, NotesCommand.MESSAGE_USAGE), ae);
         }
 
         return new NotesCommand(index, new Notes(notes));

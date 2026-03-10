@@ -3,6 +3,7 @@ package seedu.address.ui;
 import java.util.Comparator;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -51,12 +52,22 @@ public class ContactCard extends UiPart<Region> {
         this.contact = contact;
         id.setText(displayedIndex + ". ");
         name.setText(contact.getName().fullName);
+        name.getParent().getParent().setStyle("-fx-background-color: #3c3e3f");
         phone.setText(contact.getPhone().value);
         address.setText(contact.getAddress().value);
         email.setText(contact.getEmail().value);
-        notes.setText(contact.getNotes().value);
-        contact.getTags().stream()
-                .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        if (!contact.getNotes().value.isEmpty()) {
+            notes.setText(contact.getNotes().value);
+            notes.getParent().setStyle("-fx-background-color: #000000");
+        } else {
+            notes.getParent().setManaged(false);
+        }
+        if (!contact.getTags().isEmpty()) {
+            contact.getTags().stream()
+                    .sorted(Comparator.comparing(tag -> tag.tagName))
+                    .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        } else {
+            tags.setManaged(false);
+        }
     }
 }

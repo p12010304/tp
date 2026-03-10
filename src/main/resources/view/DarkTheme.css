@@ -94,21 +94,20 @@
 }
 
 .list-cell {
+    -fx-padding: 0 0 10 0;
+    -fx-background-color: transparent, -fx-background ;
+    -fx-background-insets: 0px, 0 0 10 0 ;
     -fx-label-padding: 0 0 0 0;
     -fx-graphic-text-gap : 0;
-    -fx-padding: 0 0 0 0;
 }
 
-.list-cell:filled:even {
-    -fx-background-color: #3c3e3f;
+.list-cell:filled {
+    -fx-background-color: transparent, #515658;
 }
 
-.list-cell:filled:odd {
-    -fx-background-color: #515658;
-}
 
 .list-cell:filled:selected {
-    -fx-background-color: #424d5f;
+    -fx-background-color: transparent, #424d5f;
 }
 
 .list-cell:filled:selected #cardPane {
