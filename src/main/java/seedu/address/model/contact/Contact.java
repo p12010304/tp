@@ -71,7 +71,8 @@ public class Contact {
     }
 
     /**
-     * Returns true if both contacts have the same name.
+     * Returns true if both contacts have the same name, phone number, and email,
+     * given that they are non-empty.
      * This defines a weaker notion of equality between two contacts.
      */
     public boolean isSameContact(Contact otherContact) {
@@ -79,8 +80,31 @@ public class Contact {
             return true;
         }
 
-        return otherContact != null
-                && otherContact.getName().equals(getName());
+        if (otherContact == null) {
+            return false;
+        }
+
+        return otherContact.getName().equals(getName()) && otherContact.getPhone().equals(getPhone())
+                && otherContact.getEmail().equals(getEmail());
+    }
+
+    /**
+     * Returns true if both contacts have the same name, phone number, or email.
+     * This defines a weaker notion of equality between two contacts.
+     */
+    public boolean isSimilarContact(Contact otherContact) {
+        if (otherContact == this) {
+            return true;
+        }
+
+        if (otherContact == null) {
+            return false;
+        }
+
+        boolean isEqualPhone = getPhone().flatMap(phone -> otherContact.getPhone().map(phone::equals)).orElse(false);
+        boolean isEqualEmail = getEmail().flatMap(email -> otherContact.getEmail().map(email::equals)).orElse(false);
+
+        return otherContact.getName().equals(getName()) || isEqualPhone || isEqualEmail;
     }
 
     /**

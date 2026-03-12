@@ -53,6 +53,11 @@ public interface Model {
     ReadOnlyAddressBook getAddressBook();
 
     /**
+     * Returns true if a contact with a similar identity as {@code contact} exists in the address book.
+     */
+    boolean hasSimilarContact(Contact contact);
+
+    /**
      * Returns true if a contact with the same identity as {@code contact} exists in the address book.
      */
     boolean hasContact(Contact contact);

@@ -31,6 +31,7 @@ public class AddCommandIntegrationTest {
         Contact validContact = new ContactBuilder().build();
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.updateFilteredContactList(validContact::isSimilarContact);
         expectedModel.addContact(validContact);
 
         assertCommandSuccess(new AddCommand(validContact), model,

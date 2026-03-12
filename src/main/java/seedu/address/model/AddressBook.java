@@ -62,6 +62,14 @@ public class AddressBook implements ReadOnlyAddressBook {
     /**
      * Returns true if a contact with the same identity as {@code contact} exists in the address book.
      */
+    public boolean hasSimilarContact(Contact contact) {
+        requireNonNull(contact);
+        return contacts.containsSimilar(contact);
+    }
+
+    /**
+     * Returns true if a contact with the same identity as {@code contact} exists in the address book.
+     */
     public boolean hasContact(Contact contact) {
         requireNonNull(contact);
         return contacts.contains(contact);

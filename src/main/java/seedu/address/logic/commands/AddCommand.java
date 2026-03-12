@@ -37,6 +37,7 @@ public class AddCommand extends Command {
             + "Note that at least one of PHONE or EMAIL must be provided";
 
     public static final String MESSAGE_SUCCESS = "New contact added: %1$s";
+    public static final String MESSAGE_SUCCESS_SIMILAR = "New contact added: %1$s\nSimilar contacts found";
     public static final String MESSAGE_DUPLICATE_CONTACT = "This contact already exists in the address book";
 
     private final Contact toAdd;
@@ -53,12 +54,19 @@ public class AddCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
+        String message = MESSAGE_SUCCESS;
+
         if (model.hasContact(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_CONTACT);
         }
 
+        if (model.hasSimilarContact(toAdd)) {
+            message = MESSAGE_SUCCESS_SIMILAR;
+        }
+
+        model.updateFilteredContactList(toAdd::isSimilarContact);
         model.addContact(toAdd);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
+        return new CommandResult(String.format(message, Messages.format(toAdd)));
     }
 
     @Override

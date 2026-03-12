@@ -33,8 +33,8 @@ public class ContactTest {
         assertFalse(ALICE.isSameContact(null));
 
         // same name, all other attributes different -> returns true
-        Contact editedAlice = new ContactBuilder(ALICE).withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB)
-                .withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND).build();
+        Contact editedAlice = new ContactBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND)
+                .build();
         assertTrue(ALICE.isSameContact(editedAlice));
 
         // different name, all other attributes same -> returns false
