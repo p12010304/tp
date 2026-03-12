@@ -23,9 +23,9 @@ public class AddCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a contact to the address book. "
             + "Parameters: "
             + PREFIX_NAME + "NAME "
-            + PREFIX_PHONE + "PHONE "
-            + PREFIX_EMAIL + "EMAIL "
-            + PREFIX_ADDRESS + "ADDRESS "
+            + "[" + PREFIX_PHONE + "PHONE | "
+            + PREFIX_EMAIL + "EMAIL] "
+            + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
@@ -33,9 +33,12 @@ public class AddCommand extends Command {
             + PREFIX_EMAIL + "johnd@example.com "
             + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
             + PREFIX_TAG + "friends "
-            + PREFIX_TAG + "owesMoney";
+            + PREFIX_TAG + "owesMoney\n"
+            + "Note that at least one of PHONE or EMAIL must be provided";
 
     public static final String MESSAGE_SUCCESS = "New contact added: %1$s";
+    public static final String MESSAGE_SUCCESS_SIMILAR = "New contact added: %1$s\n"
+            + "Similar contacts found in the address book";
     public static final String MESSAGE_DUPLICATE_CONTACT = "This contact already exists in the address book";
 
     private final Contact toAdd;
@@ -52,12 +55,18 @@ public class AddCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
+        String message = MESSAGE_SUCCESS;
+
         if (model.hasContact(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_CONTACT);
         }
 
+        if (model.hasSimilarContact(toAdd)) {
+            message = MESSAGE_SUCCESS_SIMILAR;
+        }
+
         model.addContact(toAdd);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
+        return new CommandResult(String.format(message, Messages.format(toAdd)));
     }
 
     @Override

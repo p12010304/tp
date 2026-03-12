@@ -33,6 +33,15 @@ public class UniqueContactList implements Iterable<Contact> {
             .unmodifiableObservableList(internalList);
 
     /**
+     * Returns true if the list contains a similar contact as the given
+     * argument.
+     */
+    public boolean containsSimilar(Contact toCheck) {
+        requireNonNull(toCheck);
+        return internalList.stream().anyMatch(toCheck::isSimilarContact);
+    }
+
+    /**
      * Returns true if the list contains an equivalent contact as the given
      * argument.
      */

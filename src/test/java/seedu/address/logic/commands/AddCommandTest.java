@@ -134,6 +134,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public boolean hasSimilarContact(Contact contact) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public boolean hasContact(Contact contact) {
             throw new AssertionError("This method should not be called.");
         }
@@ -198,6 +203,15 @@ public class AddCommandTest {
         @Override
         public ReadOnlyAddressBook getAddressBook() {
             return new AddressBook();
+        }
+
+        @Override
+        public boolean hasSimilarContact(Contact contact) {
+            return false;
+        }
+
+        @Override
+        public void updateFilteredContactList(Predicate<Contact> predicate) {
         }
     }
 
