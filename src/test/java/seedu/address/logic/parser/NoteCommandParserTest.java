@@ -2,6 +2,8 @@ package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static seedu.address.logic.parser.NoteCommandParser.PREFIX_CLEAR;
+import static seedu.address.logic.parser.NoteCommandParser.PREFIX_REMOVE;
 
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +26,18 @@ public class NoteCommandParserTest {
 
         // no index and no field specified
         assertParseFailure(parser, "", MESSAGE_INVALID_FORMAT);
+
+        // remove command with no index specified
+        assertParseFailure(parser, PREFIX_REMOVE + "1", MESSAGE_INVALID_FORMAT);
+
+        // remove command with no number of lines specified
+        assertParseFailure(parser, "1 " + PREFIX_REMOVE, MESSAGE_INVALID_FORMAT);
+
+        // remove command with no index and no number of lines specified
+        assertParseFailure(parser, PREFIX_REMOVE.toString(), MESSAGE_INVALID_FORMAT);
+
+        // clear command with no index specified
+        assertParseFailure(parser, PREFIX_CLEAR.toString(), MESSAGE_INVALID_FORMAT);
     }
 
     @Test
@@ -33,5 +47,32 @@ public class NoteCommandParserTest {
 
         // zero index
         assertParseFailure(parser, "0" + NOTES_STRING, MESSAGE_INVALID_FORMAT);
+    }
+
+    @Test
+    public void parse_tooManyArguments_failure() {
+        // add + remove
+        assertParseFailure(
+            parser,
+            "1 " + NOTES_STRING + " " + PREFIX_REMOVE + "1",
+            MESSAGE_INVALID_FORMAT);
+
+        // add + clear
+        assertParseFailure(
+            parser,
+            "1 " + NOTES_STRING + " " + PREFIX_CLEAR,
+            MESSAGE_INVALID_FORMAT);
+
+        // remove + clear
+        assertParseFailure(
+            parser,
+            "1 " + PREFIX_REMOVE + "1 " + PREFIX_CLEAR,
+            MESSAGE_INVALID_FORMAT);
+
+        // add + remove + clear
+        assertParseFailure(
+            parser,
+            "1 " + NOTES_STRING + " " + PREFIX_REMOVE + "1 " + PREFIX_CLEAR,
+            MESSAGE_INVALID_FORMAT);
     }
 }

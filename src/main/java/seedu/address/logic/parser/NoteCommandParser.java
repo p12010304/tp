@@ -17,8 +17,8 @@ import seedu.address.model.contact.Note;
  */
 public class NoteCommandParser implements Parser<NoteCommand> {
 
-    private static final Prefix PREFIX_REMOVE = new Prefix("c/");
-    private static final Prefix PREFIX_CLEAR = new Prefix("ca/");
+    public static final Prefix PREFIX_REMOVE = new Prefix("c/");
+    public static final Prefix PREFIX_CLEAR = new Prefix("ca/");
 
     /**
      * Parses the given {@code String} of arguments in the context of the {@code NotesCommand}
