@@ -97,6 +97,16 @@ Shows a list of all contacts in the address book.
 
 Format: `list`
 
+### Viewing a specific contact : `view`
+
+Displays a specific contact in a separate panel.
+
+Format: `view INDEX`
+
+* Displays the contact at the specified `INDEX` in a separate panel.
+* The index refers to the index number shown in the displayed contact list.
+* The index **must be a positive integer** 1, 2, 3, …​
+
 ### Editing a contact : `edit`
 
 Edits an existing contact in the address book.
@@ -114,18 +124,28 @@ Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st contact to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd contact to be `Betsy Crower` and clears all existing tags.
 
+### Adding notes to a contact : `note`
+
+Adds notes to an existing contact in the address book.
+
+Format: `note INDEX APPENDED_LINE`
+
+* Adds `APPENDED_LINE` to the contact at the specified `INDEX`.
+* The index refers to the index number shown in the displayed contact list.
+* The index **must be a positive integer** 1, 2, 3, …​
+
 ### Locating contacts by name: `find`
 
 Finds contacts whose names contain any of the given keywords.
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Format: `find [KEYWORD] [F/FIELD_SEARCH_PHRASE]`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Contacts matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* Contacts that contain all keywords (as a part of a word or in full) in any of its fields (including note field) will be included in the search results.
+* `F` can be any valid parameter prefix (`n`, `p`, `e`, `a`, `t`) and be repeated.
+* Contacts that contain `FIELD_SEARCH_PHRASE` (as a part or in full) in the field specified by `F\` will be included in the search results.
+* Contacts that contain all of `KEYWORD` and matches all `F/FIELD_SEARCH_PHRASE` filters will be returned (i.e. `OR` search).
 
 Examples:
 * `find John` returns `john` and `John Doe`
@@ -201,6 +221,8 @@ Action     | Format, Examples
 **Clear**  | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Note**   | `note INDEX APPENDED_LINE` <br> e.g., `note 1 To meet in February`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List**   | `list`
+**List**   | `list` <br> e.g., `view 5`
+**View**   | `view INDEX`
 **Help**   | `help`
