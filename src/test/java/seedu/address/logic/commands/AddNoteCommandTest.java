@@ -23,7 +23,7 @@ import seedu.address.model.contact.Note;
 
 
 
-public class NoteCommandTest {
+public class AddNoteCommandTest {
     private static final Note NOTE = new Note("Lorem ipsum");
     private static final List<Note> NOTES = List.of(NOTE);
 
@@ -34,8 +34,8 @@ public class NoteCommandTest {
         Contact contactToEdit = model.getFilteredContactList().get(0);
         Contact editedContact = new Contact(contactToEdit.getName(), contactToEdit.getPhone(), contactToEdit.getEmail(),
                 contactToEdit.getAddress(), NOTES, contactToEdit.getTags());
-        NoteCommand notesCommand = new NoteCommand(INDEX_FIRST_CONTACT, NOTE);
-        String expectedMessage = String.format(NoteCommand.MESSAGE_ADD_NOTES_SUCCESS,
+        AddNoteCommand notesCommand = new AddNoteCommand(INDEX_FIRST_CONTACT, NOTE);
+        String expectedMessage = String.format(AddNoteCommand.MESSAGE_ADD_NOTES_SUCCESS,
                 Messages.format(editedContact));
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setContact(model.getFilteredContactList().get(0), editedContact);
@@ -46,14 +46,14 @@ public class NoteCommandTest {
     @Test
     public void execute_invalidContactIndexUnfilteredList_failure() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredContactList().size() + 1);
-        NoteCommand notesCommand = new NoteCommand(outOfBoundIndex, NOTE);
+        AddNoteCommand notesCommand = new AddNoteCommand(outOfBoundIndex, NOTE);
 
         assertCommandFailure(notesCommand, model, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
     }
 
     @Test
     public void equals() {
-        final NoteCommand standardCommand = new NoteCommand(INDEX_FIRST_CONTACT, NOTE);
+        final AddNoteCommand standardCommand = new AddNoteCommand(INDEX_FIRST_CONTACT, NOTE);
 
         // same object -> returns true
         assertTrue(standardCommand.equals(standardCommand));
@@ -65,9 +65,9 @@ public class NoteCommandTest {
         assertFalse(standardCommand.equals(new ClearCommand()));
 
         // different index -> returns false
-        assertFalse(standardCommand.equals(new NoteCommand(INDEX_SECOND_CONTACT, NOTE)));
+        assertFalse(standardCommand.equals(new AddNoteCommand(INDEX_SECOND_CONTACT, NOTE)));
 
         // different descriptor -> returns false
-        assertFalse(standardCommand.equals(new NoteCommand(INDEX_FIRST_CONTACT, new Note("Likes ice cream"))));
+        assertFalse(standardCommand.equals(new AddNoteCommand(INDEX_FIRST_CONTACT, new Note("Likes ice cream"))));
     }
 }

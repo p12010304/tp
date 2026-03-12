@@ -5,12 +5,12 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailur
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.logic.commands.NoteCommand;
+import seedu.address.logic.commands.AddNoteCommand;
 
-public class NoteCommandParserTest {
+public class AddNoteCommandParserTest {
     private static final String NOTES_STRING = "To follow up on Wednesday";
     private static final String MESSAGE_INVALID_FORMAT =
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, NoteCommand.MESSAGE_USAGE);
+            String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddNoteCommand.MESSAGE_USAGE);
 
     private NoteCommandParser parser = new NoteCommandParser();
 

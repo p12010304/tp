@@ -22,7 +22,7 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
-import seedu.address.logic.commands.NoteCommand;
+import seedu.address.logic.commands.AddNoteCommand;
 import seedu.address.logic.commands.ViewCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.contact.Contact;
@@ -94,9 +94,9 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_note() throws Exception {
-        NoteCommand command = (NoteCommand) parser.parseCommand(NoteCommand.COMMAND_WORD + " 1 information");
-        assertTrue(command instanceof NoteCommand);
-        assertEquals(new NoteCommand(INDEX_FIRST_CONTACT, new Note("information")), command);
+        AddNoteCommand command = (AddNoteCommand) parser.parseCommand(AddNoteCommand.COMMAND_WORD + " 1 information");
+        assertTrue(command instanceof AddNoteCommand);
+        assertEquals(new AddNoteCommand(INDEX_FIRST_CONTACT, new Note("information")), command);
     }
 
     @Test
