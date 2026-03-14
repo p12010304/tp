@@ -1,4 +1,4 @@
-package seedu.address.model;
+package seedu.address.model.contact;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
