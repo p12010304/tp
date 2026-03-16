@@ -17,6 +17,10 @@ import org.junit.jupiter.api.Test;
 import seedu.address.testutil.ContactBuilder;
 
 public class ContactTest {
+    private static final Contact JOHN = new ContactBuilder()
+            .withName("John Smith").withPhone("94455028").withEmail("john@email.com")
+            .withAddress("Block 470, J Street 92").withTags("friends", "contractor")
+            .withNotes("Met in 2024 February.").build();
 
     @Test
     public void asObservableList_modifyList_throwsUnsupportedOperationException() {
@@ -49,6 +53,78 @@ public class ContactTest {
         String nameWithTrailingSpaces = VALID_NAME_BOB + " ";
         editedBob = new ContactBuilder(BOB).withName(nameWithTrailingSpaces).build();
         assertFalse(BOB.isSameContact(editedBob));
+    }
+
+    @Test
+    public void containsTest() {
+        assertTrue(JOHN.contains("John"));
+        assertTrue(JOHN.contains("9445"));
+        assertTrue(JOHN.contains("com"));
+        assertTrue(JOHN.contains("block"));
+        assertTrue(JOHN.contains("FRIEND"));
+        assertTrue(JOHN.contains("February"));
+        assertFalse(JOHN.contains("Singapore"));
+    }
+
+    @Test
+    public void containsInNameTest() {
+        assertTrue(JOHN.containsInName(""));
+        assertTrue(JOHN.containsInName("John"));
+        assertTrue(JOHN.containsInName("JO"));
+        assertTrue(JOHN.containsInName("smit"));
+        assertFalse(JOHN.containsInName("Kenny"));
+    }
+
+    @Test
+    public void containsInPhoneTest() {
+        assertTrue(JOHN.containsInPhone(""));
+        assertTrue(JOHN.containsInPhone("9445"));
+        assertTrue(JOHN.containsInPhone("45"));
+        assertTrue(JOHN.containsInPhone("028"));
+        assertFalse(JOHN.containsInPhone("John"));
+    }
+
+    @Test
+    public void containsInAddressTest() {
+        assertTrue(JOHN.containsInAddress(""));
+        assertTrue(JOHN.containsInAddress("Block"));
+        assertTrue(JOHN.containsInAddress("street"));
+        assertTrue(JOHN.containsInAddress("92"));
+        assertFalse(JOHN.containsInAddress("55"));
+    }
+
+    @Test
+    public void containsInEmailTest() {
+        assertTrue(JOHN.containsInEmail(""));
+        assertTrue(JOHN.containsInEmail("john"));
+        assertTrue(JOHN.containsInEmail("email"));
+        assertTrue(JOHN.containsInEmail("com"));
+        assertFalse(JOHN.containsInEmail("47"));
+    }
+
+    @Test
+    public void containsInTagsTest() {
+        assertTrue(JOHN.containsInTags(""));
+        assertTrue(JOHN.containsInTags("FRIENd"));
+        assertTrue(JOHN.containsInTags("friends"));
+        assertTrue(JOHN.containsInTags("contractor"));
+        assertFalse(JOHN.containsInTags("doctor"));
+    }
+
+    @Test
+    public void hasTagTest() {
+        assertFalse(JOHN.hasTag(""));
+        assertFalse(JOHN.hasTag("FRIENd"));
+        assertTrue(JOHN.hasTag("FRIENDS"));
+        assertTrue(JOHN.hasTag("contractor"));
+        assertFalse(JOHN.hasTag("doctor"));
+    }
+    @Test
+    public void containsInNotesTest() {
+        assertTrue(JOHN.containsInNotes("2024"));
+        assertTrue(JOHN.containsInNotes("feb"));
+        assertTrue(JOHN.containsInNotes("In"));
+        assertFalse(JOHN.containsInNotes("John"));
     }
 
     @Test

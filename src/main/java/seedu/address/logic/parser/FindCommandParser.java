@@ -14,7 +14,8 @@ import java.util.stream.Collectors;
 
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.contact.ContactMatchesKeywordsPredicate;
+import seedu.address.model.contact.ConjunctiveContactPredicateSet;
+import seedu.address.model.contact.Contact;
 
 /**
  * Parses input arguments and creates a new FindCommand object
@@ -28,41 +29,74 @@ public class FindCommandParser implements Parser<FindCommand> {
      */
     public FindCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
 
-        String trimmedArgs = args.trim();
-        if (trimmedArgs.isEmpty()) {
+        // Checks that argument(s) are provided.
+        if (args.isBlank()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
-        if (!argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        ArgumentMultimap argMultimap =
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
+
+        // Checks that all search phrases are non-empty.
+        validateNonEmptyPhrases(argMultimap);
+        validateNonEmptyPhrases(argMultimap);
+
+        ConjunctiveContactPredicateSet cumulativePredicate = makeCumulativePredicate(argMultimap);
+
+        return new FindCommand(cumulativePredicate);
+    }
+
+    /**
+     * Constructs a cumulative predicate that tests if a contact matches any of the
+     * search phrases provided by the user.
+     * <br>
+     * Notably, tag search phrases are treated as exact matches, while prefixed
+     * search phrases are treated as partial matches.
+     *
+     * @param argMultimap
+     * @return the cumulative predicate
+     */
+    private ConjunctiveContactPredicateSet makeCumulativePredicate(ArgumentMultimap argMultimap) {
+        ConjunctiveContactPredicateSet cumulativePredicate = new ConjunctiveContactPredicateSet();
+        splitKeywords(argMultimap.getPreamble()).forEach(
+                        keyword -> cumulativePredicate.addPredicate(contact -> contact.contains(keyword)));
+        argMultimap.getAllValues(PREFIX_NAME).forEach(
+                keyword -> cumulativePredicate.addPredicate(contact -> contact.containsInName(keyword)));
+        argMultimap.getAllValues(PREFIX_PHONE).forEach(
+                keyword -> cumulativePredicate.addPredicate(contact -> contact.containsInPhone(keyword)));
+        argMultimap.getAllValues(PREFIX_EMAIL).forEach(
+                keyword -> cumulativePredicate.addPredicate(contact -> contact.containsInEmail(keyword)));
+        argMultimap.getAllValues(PREFIX_ADDRESS).forEach(
+                keyword -> cumulativePredicate.addPredicate(contact -> contact.containsInAddress(keyword)));
+        argMultimap.getAllValues(PREFIX_TAG).forEach(
+                keyword -> cumulativePredicate.addPredicate((Contact contact) -> contact.hasTag(keyword)));
+        return cumulativePredicate;
+    }
+
+    /**
+     * Checks that all search phrases are non-empty. Throws a ParseException if any
+     * of the search phrases is empty or blank.
+     *
+     * @param argMultimap
+     * @throws ParseException
+     */
+    private void validateNonEmptyPhrases(ArgumentMultimap argMultimap) throws ParseException {
+        boolean isNameValid = argMultimap.getAllValues(PREFIX_NAME).stream()
+                .allMatch(keyword -> !keyword.isBlank());
+        boolean isPhoneValid = argMultimap.getAllValues(PREFIX_PHONE).stream()
+                .allMatch(keyword -> !keyword.isBlank());
+        boolean isEmailValid = argMultimap.getAllValues(PREFIX_EMAIL).stream()
+                .allMatch(keyword -> !keyword.isBlank());
+        boolean isAddressValid = argMultimap.getAllValues(PREFIX_ADDRESS).stream()
+                .allMatch(keyword -> !keyword.isBlank());
+        boolean isTagValid = argMultimap.getAllValues(PREFIX_TAG).stream().allMatch(keyword -> !keyword.isBlank());
+
+        if (!isNameValid || !isPhoneValid || !isEmailValid || !isAddressValid || !isTagValid) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
-
-        List<String> nameKeywords = argMultimap.getValue(PREFIX_NAME)
-                .map(this::splitKeywords)
-                .orElse(List.of());
-        List<String> phoneKeywords = argMultimap.getValue(PREFIX_PHONE)
-                .map(this::splitKeywords)
-                .orElse(List.of());
-        List<String> emailKeywords = argMultimap.getValue(PREFIX_EMAIL)
-                .map(this::splitKeywords)
-                .orElse(List.of());
-        List<String> addressKeywords = argMultimap.getValue(PREFIX_ADDRESS)
-                .map(this::splitKeywords)
-                .orElse(List.of());
-        List<String> tagKeywords = splitKeywords(String.join(" ", argMultimap.getAllValues(PREFIX_TAG)));
-
-        if (nameKeywords.isEmpty() && phoneKeywords.isEmpty() && emailKeywords.isEmpty()
-                && addressKeywords.isEmpty() && tagKeywords.isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
-        }
-
-        return new FindCommand(new ContactMatchesKeywordsPredicate(
-                nameKeywords, phoneKeywords, emailKeywords, addressKeywords, tagKeywords));
     }
 
     /**

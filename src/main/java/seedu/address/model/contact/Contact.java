@@ -5,6 +5,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -81,6 +82,99 @@ public class Contact {
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
+    }
+
+    /**
+     * Returns true if this contact contains the given string in any of its fields.
+     */
+    public boolean contains(String string) {
+        return containsInName(string)
+                || containsInPhone(string)
+                || containsInEmail(string)
+                || containsInAddress(string)
+                || containsInNotes(string)
+                || containsInTags(string);
+    }
+
+    /**
+     * Returns true if the {@code Name} of this contact contains the given string.
+     * @param string {@code String} to check against this contact.
+     */
+    public boolean containsInName(String string) {
+        if (string.isEmpty()) {
+            return true;
+        }
+        return name.fullName.toLowerCase(Locale.ROOT).contains(string.toLowerCase(Locale.ROOT));
+    }
+
+    /**
+     * Returns true if the {@code Phone} of this contact contains the given string.
+     * @param string {@code String} to check against this contact.
+     */
+    public boolean containsInPhone(String string) {
+        if (string.isEmpty()) {
+            return true;
+        }
+        return phone.map(
+                phone -> phone.value.toLowerCase(Locale.ROOT).contains(string.toLowerCase(Locale.ROOT))).orElse(false);
+    }
+
+    /**
+     * Returns true if the {@code Email} of this contact contains the given string.
+     * @param string {@code String} to check against this contact.
+     */
+    public boolean containsInEmail(String string) {
+        if (string.isEmpty()) {
+            return true;
+        }
+        return email.map(
+                email -> email.value.toLowerCase(Locale.ROOT).contains(string.toLowerCase(Locale.ROOT))).orElse(false);
+    }
+
+    /**
+     * Returns true if the {@code Notes} of this contact contains the given string.
+     * @param string {@code String} to check against this contact.
+     */
+    public boolean containsInNotes(String string) {
+        if (string.isEmpty()) {
+            return true;
+        }
+        return getNotesString().toLowerCase(Locale.ROOT).contains(string.toLowerCase(Locale.ROOT));
+    }
+
+    /**
+     * Returns true if at least one {@code Tag} of this contact contains the given string.
+     * @param string {@code String} to check against this contact.
+     */
+    public boolean containsInTags(String string) {
+        if (string.isEmpty()) {
+            return true;
+        }
+        return tags.stream().anyMatch(
+                tag -> tag.tagName.toLowerCase(Locale.ROOT).contains(string.toLowerCase(Locale.ROOT)));
+    }
+
+    /**
+     * Returns true if the {@code Tags} of this contact contains the given string.
+     * This contact must contain a {@code Tag} that matches the given {@code String} exactly.
+     * @param string {@code String} to check against this contact.
+     */
+    public boolean hasTag(String string) {
+        return tags.stream().anyMatch(
+                tag -> tag.tagName.toLowerCase(Locale.ROOT).equals(string.toLowerCase(Locale.ROOT)));
+    }
+
+    /**
+     * Returns true if the {@code Address} of this contact contains the given string.
+     * @param string {@code String} to check against this contact.
+     */
+    public boolean containsInAddress(String string) {
+        if (string.isEmpty()) {
+            return true;
+        }
+        return address
+                .map(address -> address.value.toLowerCase(Locale.ROOT).contains(string.toLowerCase(Locale.ROOT)))
+                .orElse(false);
     }
 
     /**

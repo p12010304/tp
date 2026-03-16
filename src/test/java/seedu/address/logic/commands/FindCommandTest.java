@@ -5,21 +5,21 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_CONTACTS_LISTED_OVERVIEW;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.address.testutil.TypicalContacts.CARL;
+import static seedu.address.testutil.TypicalContacts.ALICE;
+import static seedu.address.testutil.TypicalContacts.BENSON;
+import static seedu.address.testutil.TypicalContacts.DANIEL;
 import static seedu.address.testutil.TypicalContacts.ELLE;
-import static seedu.address.testutil.TypicalContacts.FIONA;
 import static seedu.address.testutil.TypicalContacts.getTypicalAddressBook;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.contact.ContactMatchesKeywordsPredicate;
+import seedu.address.model.contact.Contact;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
@@ -30,12 +30,8 @@ public class FindCommandTest {
 
     @Test
     public void equals() {
-        ContactMatchesKeywordsPredicate firstPredicate =
-                new ContactMatchesKeywordsPredicate(
-                        Collections.singletonList("first"), List.of(), List.of(), List.of(), List.of());
-        ContactMatchesKeywordsPredicate secondPredicate =
-                new ContactMatchesKeywordsPredicate(
-                        Collections.singletonList("second"), List.of(), List.of(), List.of(), List.of());
+        Predicate<Contact> firstPredicate = (Contact contact) -> contact.contains("first");
+        Predicate<Contact> secondPredicate = (Contact contact) -> contact.contains("second");
 
         FindCommand findFirstCommand = new FindCommand(firstPredicate);
         FindCommand findSecondCommand = new FindCommand(secondPredicate);
@@ -58,39 +54,22 @@ public class FindCommandTest {
     }
 
     @Test
-    public void execute_zeroKeywords_noContactFound() {
-        String expectedMessage = String.format(MESSAGE_CONTACTS_LISTED_OVERVIEW, 0);
-        ContactMatchesKeywordsPredicate predicate = prepareNamePredicate(" ");
+    public void execute_singleContactFound() {
+        String expectedMessage = String.format(MESSAGE_CONTACTS_LISTED_OVERVIEW, 1);
+        Predicate<Contact> predicate = (Contact contact) -> contact.containsInName("Elle");
         FindCommand command = new FindCommand(predicate);
         expectedModel.updateFilteredContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Collections.emptyList(), model.getFilteredContactList());
+        assertEquals(Arrays.asList(ELLE), model.getFilteredContactList());
     }
 
     @Test
-    public void execute_multipleKeywords_multipleContactsFound() {
-        String expectedMessage = String.format(MESSAGE_CONTACTS_LISTED_OVERVIEW, 3);
-        ContactMatchesKeywordsPredicate predicate = prepareNamePredicate("Kurz Elle Kunz");
+    public void execute_multipleContactsFound() {
+        String expectedMessage = String.format(MESSAGE_CONTACTS_LISTED_OVERVIEW, 4);
+        Predicate<Contact> predicate = (Contact contact) -> contact.contains("ne");
         FindCommand command = new FindCommand(predicate);
         expectedModel.updateFilteredContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(CARL, ELLE, FIONA), model.getFilteredContactList());
-    }
-
-    @Test
-    public void toStringMethod() {
-        ContactMatchesKeywordsPredicate predicate = new ContactMatchesKeywordsPredicate(
-                Arrays.asList("keyword"), List.of(), List.of(), List.of(), List.of());
-        FindCommand findCommand = new FindCommand(predicate);
-        String expected = FindCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
-        assertEquals(expected, findCommand.toString());
-    }
-
-    /**
-     * Parses {@code userInput} into a name-only find predicate.
-     */
-    private ContactMatchesKeywordsPredicate prepareNamePredicate(String userInput) {
-        return new ContactMatchesKeywordsPredicate(
-                Arrays.asList(userInput.split("\\s+")), List.of(), List.of(), List.of(), List.of());
+        assertEquals(Arrays.asList(ALICE, BENSON, DANIEL, ELLE), model.getFilteredContactList());
     }
 }
