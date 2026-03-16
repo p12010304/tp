@@ -3,11 +3,16 @@ package seedu.address.model.contact;
 import java.util.Comparator;
 import java.util.Map;
 
+/**
+ * Comparator for sorting contacts based on specified field and order.
+ */
 public final class ContactComparator implements Comparator<Contact> {
+    /** The fields that can be used for sorting contacts. */
     public static enum Field {
         NAME, PHONE, EMAIL, ADDRESS
     }
 
+    /** The orders that can be used for sorting contacts. */
     public static enum Order {
         ASCENDING, DESCENDING
     }

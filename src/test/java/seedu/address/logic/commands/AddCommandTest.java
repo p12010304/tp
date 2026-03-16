@@ -158,12 +158,12 @@ public class AddCommandTest {
         public ObservableList<Contact> getDisplayedContactList() {
             throw new AssertionError("This method should not be called.");
         }
-        
+
         @Override
         public void resetDisplayedContactList() {
             throw new AssertionError("This method should not be called.");
         }
-        
+
         @Override
         public void sortDisplayedContactList(Comparator<Contact> comparator) {
             throw new AssertionError("This method should not be called.");
