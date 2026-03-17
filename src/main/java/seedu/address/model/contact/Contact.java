@@ -27,6 +27,7 @@ public class Contact {
 
     // Data fields
     private final Optional<Address> address;
+    private final Optional<LastContacted> lastContacted;
     private final List<Note> notes;
     private final Set<Tag> tags = new HashSet<>();
 
@@ -36,11 +37,22 @@ public class Contact {
     public Contact(
             Name name, Optional<Phone> phone, Optional<Email> email,
             Optional<Address> address, List<Note> notes, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, address, tags);
+        this(name, phone, email, address, Optional.empty(), notes, tags);
+    }
+
+    /**
+     * Every field must be present and not null.
+     */
+    public Contact(
+            Name name, Optional<Phone> phone, Optional<Email> email,
+            Optional<Address> address, Optional<LastContacted> lastContacted,
+            List<Note> notes, Set<Tag> tags) {
+        requireAllNonNull(name, phone, email, address, lastContacted, notes, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
+        this.lastContacted = lastContacted;
         this.notes = List.copyOf(notes);
         this.tags.addAll(tags);
     }
@@ -59,6 +71,10 @@ public class Contact {
 
     public Optional<Address> getAddress() {
         return address;
+    }
+
+    public Optional<LastContacted> getLastContacted() {
+        return lastContacted;
     }
 
     /**
@@ -255,13 +271,14 @@ public class Contact {
                 && phone.equals(otherContact.phone)
                 && email.equals(otherContact.email)
                 && address.equals(otherContact.address)
+                && lastContacted.equals(otherContact.lastContacted)
                 && tags.equals(otherContact.tags);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags);
+        return Objects.hash(name, phone, email, address, lastContacted, tags);
     }
 
     @Override
@@ -271,6 +288,7 @@ public class Contact {
                 .add("phone", phone)
                 .add("email", email)
                 .add("address", address)
+                .add("lastContacted", lastContacted)
                 .add("tags", tags)
                 .toString();
     }

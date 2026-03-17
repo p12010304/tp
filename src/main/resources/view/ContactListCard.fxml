@@ -38,6 +38,7 @@
             <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
             <Label fx:id="address" styleClass="cell_small_label" text="\$address" />
             <Label fx:id="email" styleClass="cell_small_label" text="\$email" />
+            <Label fx:id="lastContacted" styleClass="cell_small_label" text="\$lastContacted" />
             </children>
             <padding>
                <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />

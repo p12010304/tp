@@ -8,6 +8,7 @@ import seedu.address.logic.commands.EditCommand.EditContactDescriptor;
 import seedu.address.model.contact.Address;
 import seedu.address.model.contact.Contact;
 import seedu.address.model.contact.Email;
+import seedu.address.model.contact.LastContacted;
 import seedu.address.model.contact.Name;
 import seedu.address.model.contact.Phone;
 import seedu.address.model.tag.Tag;
@@ -36,6 +37,7 @@ public class EditContactDescriptorBuilder {
         contact.getPhone().ifPresent(descriptor::setPhone);
         contact.getEmail().ifPresent(descriptor::setEmail);
         contact.getAddress().ifPresent(descriptor::setAddress);
+        contact.getLastContacted().ifPresent(descriptor::setLastContacted);
         descriptor.setTags(contact.getTags());
     }
 
@@ -68,6 +70,14 @@ public class EditContactDescriptorBuilder {
      */
     public EditContactDescriptorBuilder withAddress(String address) {
         descriptor.setAddress(new Address(address));
+        return this;
+    }
+
+    /**
+     * Sets the {@code LastContacted} of the {@code EditContactDescriptor} that we are building.
+     */
+    public EditContactDescriptorBuilder withLastContacted(String lastContacted) {
+        descriptor.setLastContacted(new LastContacted(lastContacted));
         return this;
     }
 

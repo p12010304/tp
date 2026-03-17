@@ -14,6 +14,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.contact.Address;
 import seedu.address.model.contact.Contact;
 import seedu.address.model.contact.Email;
+import seedu.address.model.contact.LastContacted;
 import seedu.address.model.contact.Name;
 import seedu.address.model.contact.Note;
 import seedu.address.model.contact.Phone;
@@ -30,6 +31,7 @@ class JsonAdaptedContact {
     private final Optional<String> phone;
     private final Optional<String> email;
     private final Optional<String> address;
+    private final Optional<String> lastContacted;
     private final List<String> notes = new ArrayList<>();
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
@@ -39,13 +41,13 @@ class JsonAdaptedContact {
     @JsonCreator
     public JsonAdaptedContact(@JsonProperty("name") String name, @JsonProperty("phone") Optional<String> phone,
             @JsonProperty("email") Optional<String> email, @JsonProperty("address") Optional<String> address,
-            @JsonProperty("notes") List<String> notes, @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("lastContacted") Optional<String> lastContacted,
+            @JsonProperty("notes") Object notes, @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
-        if (notes != null) {
-            this.notes.addAll(notes);
-        }
+        this.lastContacted = lastContacted == null ? Optional.empty() : lastContacted;
+        this.notes.addAll(parseNotes(notes));
         this.address = address;
         if (tags != null) {
             this.tags.addAll(tags);
@@ -60,10 +62,37 @@ class JsonAdaptedContact {
         phone = source.getPhone().map(phone -> phone.value);
         email = source.getEmail().map(email -> email.value);
         address = source.getAddress().map(address -> address.value);
+        lastContacted = source.getLastContacted().map(LastContacted::toString);
         notes.addAll(source.getNotes().stream().map(Note::toJsonString).collect(Collectors.toList()));
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
+    }
+
+    /**
+     * Parses notes from legacy and current JSON shapes.
+     * Supports arrays (current), and empty/non-empty strings (legacy).
+     */
+    private static List<String> parseNotes(Object notesValue) {
+        List<String> parsedNotes = new ArrayList<>();
+        if (notesValue == null) {
+            return parsedNotes;
+        }
+        if (notesValue instanceof String) {
+            String note = ((String) notesValue).trim();
+            if (!note.isEmpty()) {
+                parsedNotes.add(note);
+            }
+            return parsedNotes;
+        }
+        if (notesValue instanceof List<?>) {
+            for (Object noteObject : (List<?>) notesValue) {
+                if (noteObject != null) {
+                    parsedNotes.add(noteObject.toString());
+                }
+            }
+        }
+        return parsedNotes;
     }
 
     /**
@@ -109,9 +138,14 @@ class JsonAdaptedContact {
         }
         final Optional<Address> modelAddress = address.map(address -> new Address(address));
 
+        if (lastContacted.isPresent() && !LastContacted.isValidLastContacted(lastContacted.get())) {
+            throw new IllegalValueException(LastContacted.MESSAGE_CONSTRAINTS);
+        }
+        final Optional<LastContacted> modelLastContacted = lastContacted.map(LastContacted::new);
+
         final List<Note> modelNotes = notes.stream().map(Note::fromJsonString).collect(Collectors.toList());
 
         final Set<Tag> modelTags = new HashSet<>(contactTags);
-        return new Contact(modelName, modelPhone, modelEmail, modelAddress, modelNotes, modelTags);
+        return new Contact(modelName, modelPhone, modelEmail, modelAddress, modelLastContacted, modelNotes, modelTags);
     }
 }

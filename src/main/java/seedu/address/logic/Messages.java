@@ -40,6 +40,10 @@ public class Messages {
         contact.getPhone().ifPresent((phone) -> builder.append("; Phone: ").append(phone));
         contact.getEmail().ifPresent((email) -> builder.append("; Email: ").append(email));
         contact.getAddress().ifPresent((address) -> builder.append("; Address: ").append(address));
+        contact.getLastContacted().ifPresent(lastContacted -> {
+            builder.append("; Last Contacted: ");
+            builder.append(lastContacted);
+        });
         builder.append("; Tags: ");
         contact.getTags().forEach(builder::append);
         return builder.toString();

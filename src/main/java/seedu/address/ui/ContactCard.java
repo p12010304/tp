@@ -40,6 +40,8 @@ public class ContactCard extends UiPart<Region> {
     @FXML
     private Label email;
     @FXML
+    private Label lastContacted;
+    @FXML
     private VBox notesContainer;
     @FXML
     private FlowPane tags;
@@ -53,9 +55,42 @@ public class ContactCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         name.setText(contact.getName().fullName);
         name.getParent().getParent().setStyle("-fx-background-color: #3c3e3f");
-        phone.setText(contact.getPhone().map(phone -> phone.value).orElse(""));
-        address.setText(contact.getAddress().map(address -> address.value).orElse(""));
-        email.setText(contact.getEmail().map(email -> email.value).orElse(""));
+        contact.getPhone().ifPresentOrElse(phone -> {
+            this.phone.setText(phone.value);
+            this.phone.setVisible(true);
+            this.phone.setManaged(true);
+        }, () -> {
+            this.phone.setText("");
+            this.phone.setVisible(false);
+            this.phone.setManaged(false);
+        });
+        contact.getAddress().ifPresentOrElse(address -> {
+            this.address.setText(address.value);
+            this.address.setVisible(true);
+            this.address.setManaged(true);
+        }, () -> {
+            this.address.setText("");
+            this.address.setVisible(false);
+            this.address.setManaged(false);
+        });
+        contact.getEmail().ifPresentOrElse(email -> {
+            this.email.setText(email.value);
+            this.email.setVisible(true);
+            this.email.setManaged(true);
+        }, () -> {
+            this.email.setText("");
+            this.email.setVisible(false);
+            this.email.setManaged(false);
+        });
+        contact.getLastContacted().ifPresentOrElse(lastContacted -> {
+            this.lastContacted.setText("Last Contacted: " + lastContacted);
+            this.lastContacted.setVisible(true);
+            this.lastContacted.setManaged(true);
+        }, () -> {
+            this.lastContacted.setText("");
+            this.lastContacted.setVisible(false);
+            this.lastContacted.setManaged(false);
+        });
         if (!(contact.getNotes().isEmpty())) {
             contact.getNotes().forEach(
                     note -> {
