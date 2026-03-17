@@ -15,7 +15,7 @@ import seedu.address.model.contact.Address;
 import seedu.address.model.contact.Contact;
 import seedu.address.model.contact.Email;
 import seedu.address.model.contact.Name;
-import seedu.address.model.contact.Notes;
+import seedu.address.model.contact.Note;
 import seedu.address.model.contact.Phone;
 import seedu.address.model.tag.Tag;
 
@@ -30,7 +30,7 @@ class JsonAdaptedContact {
     private final Optional<String> phone;
     private final Optional<String> email;
     private final Optional<String> address;
-    private final String notes;
+    private final List<String> notes = new ArrayList<>();
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
@@ -39,11 +39,13 @@ class JsonAdaptedContact {
     @JsonCreator
     public JsonAdaptedContact(@JsonProperty("name") String name, @JsonProperty("phone") Optional<String> phone,
             @JsonProperty("email") Optional<String> email, @JsonProperty("address") Optional<String> address,
-            @JsonProperty("notes") String notes, @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("notes") List<String> notes, @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.notes = notes;
+        if (notes != null) {
+            this.notes.addAll(notes);
+        }
         this.address = address;
         if (tags != null) {
             this.tags.addAll(tags);
@@ -58,7 +60,7 @@ class JsonAdaptedContact {
         phone = source.getPhone().map(phone -> phone.value);
         email = source.getEmail().map(email -> email.value);
         address = source.getAddress().map(address -> address.value);
-        notes = source.getNotes().value;
+        notes.addAll(source.getNotes().stream().map(Note::toJsonString).collect(Collectors.toList()));
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -107,13 +109,9 @@ class JsonAdaptedContact {
         }
         final Optional<Address> modelAddress = address.map(address -> new Address(address));
 
-        if (notes == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Notes.class.getSimpleName()));
-        }
-        final Notes modelNotes = new Notes(notes);
+        final List<Note> modelNotes = notes.stream().map(Note::fromJsonString).collect(Collectors.toList());
 
         final Set<Tag> modelTags = new HashSet<>(contactTags);
         return new Contact(modelName, modelPhone, modelEmail, modelAddress, modelNotes, modelTags);
     }
-
 }

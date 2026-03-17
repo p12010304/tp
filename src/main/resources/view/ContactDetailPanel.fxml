@@ -9,7 +9,7 @@
 
 <VBox fx:id="detailPane" styleClass="contact-detail-panel" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <padding>
-        <Insets top="15" right="15" bottom="15" left="15" />
+        <Insets bottom="15" left="15" right="15" top="15" />
     </padding>
 
     <!-- Header with Name -->
@@ -68,7 +68,7 @@
         <Label styleClass="detail-label" text="Notes:" />
         <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
             <VBox>
-                <Label fx:id="notes" styleClass="detail-value" text="\$notes" wrapText="true" />
+                <VBox fx:id="notes" styleClass="detail-value"/>
             </VBox>
         </ScrollPane>
     </VBox>

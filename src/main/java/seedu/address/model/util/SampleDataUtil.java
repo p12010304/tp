@@ -1,6 +1,8 @@
 package seedu.address.model.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,7 +13,7 @@ import seedu.address.model.contact.Address;
 import seedu.address.model.contact.Contact;
 import seedu.address.model.contact.Email;
 import seedu.address.model.contact.Name;
-import seedu.address.model.contact.Notes;
+import seedu.address.model.contact.Note;
 import seedu.address.model.contact.Phone;
 import seedu.address.model.tag.Tag;
 
@@ -19,7 +21,7 @@ import seedu.address.model.tag.Tag;
  * Contains utility methods for populating {@code AddressBook} with sample data.
  */
 public class SampleDataUtil {
-    public static final Notes EMPTY_NOTES = new Notes("");
+    public static final List<Note> EMPTY_NOTES = new ArrayList<>();
 
     public static Contact[] getSampleContacts() {
         return new Contact[] {
@@ -73,4 +75,12 @@ public class SampleDataUtil {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Returns a notes list containing the list of strings given.
+     */
+    public static List<Note> getNoteList(String... strings) {
+        return Arrays.stream(strings)
+                .map(Note::fromJsonString)
+                .collect(Collectors.toList());
+    }
 }

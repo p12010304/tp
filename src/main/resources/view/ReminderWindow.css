@@ -1,0 +1,16 @@
+#reminderMessage {
+    -fx-text-fill: white;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+.name {
+    -fx-font-weight: bold;
+    -fx-underline: true;
+}
+
+#reminderMessageContainer {
+    -fx-background-color: derive(#1d1d1d, 20%);
+}

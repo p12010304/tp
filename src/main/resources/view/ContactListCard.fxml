@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <GridPane HBox.hgrow="ALWAYS">
     <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
@@ -43,10 +43,7 @@
                <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
             </padding>
          </VBox>
-         <VBox alignment="CENTER_LEFT">
-            <children>
-            <Label fx:id="notes" styleClass="cell_small_label" text="\$notes" />
-            </children>
+         <VBox fx:id="notesContainer" styleClass="cell_small_label" alignment="CENTER_LEFT" maxHeight="62.4">
             <padding>
                <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
             </padding>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+
+
+<fx:root type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="reminderHeader" styleClass="bold" text="Reminder: " wrapText="true" />
+      <Label fx:id="reminderNote" text="\$reminder_note" wrapText="true" />
+      <Label fx:id="onText" styleClass="italic" text=" on " wrapText="true" />
+      <Label fx:id="reminderTime" text="\$reminder_time" wrapText="true" />
+   </children>
+</fx:root>

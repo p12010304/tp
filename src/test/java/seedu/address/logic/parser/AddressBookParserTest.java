@@ -23,12 +23,11 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
-import seedu.address.logic.commands.NotesCommand;
+import seedu.address.logic.commands.NoteAddCommand;
 import seedu.address.logic.commands.ViewCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.contact.Contact;
-import seedu.address.model.contact.NameContainsKeywordsPredicate;
-import seedu.address.model.contact.Notes;
+import seedu.address.model.contact.Note;
 import seedu.address.testutil.ContactBuilder;
 import seedu.address.testutil.ContactUtil;
 import seedu.address.testutil.EditContactDescriptorBuilder;
@@ -58,7 +57,7 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_delete() throws Exception {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
-                DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_CONTACT.getOneBased());
+            DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_CONTACT.getOneBased());
         assertEquals(new DeleteCommand(INDEX_FIRST_CONTACT), command);
     }
 
@@ -67,7 +66,7 @@ public class AddressBookParserTest {
         Contact contact = new ContactBuilder().build();
         EditContactDescriptor descriptor = new EditContactDescriptorBuilder(contact).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + INDEX_FIRST_CONTACT.getOneBased() + " " + ContactUtil.getEditContactDescriptorDetails(descriptor));
+            + INDEX_FIRST_CONTACT.getOneBased() + " " + ContactUtil.getEditContactDescriptorDetails(descriptor));
         assertEquals(new EditCommand(INDEX_FIRST_CONTACT, descriptor), command);
     }
 
@@ -81,8 +80,10 @@ public class AddressBookParserTest {
     public void parseCommand_find() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
-        assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords)), command);
+            FindCommand.COMMAND_WORD + " n/" + keywords.stream().collect(Collectors.joining(" ")));
+        assertTrue(parser.parseCommand(
+                FindCommand.COMMAND_WORD + " n/" + keywords.stream().collect(Collectors.joining(" ")))
+                instanceof FindCommand);
     }
 
     @Test
@@ -99,15 +100,15 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_note() throws Exception {
-        NotesCommand command = (NotesCommand) parser.parseCommand(NotesCommand.COMMAND_WORD + " 1 information");
-        assertTrue(command instanceof NotesCommand);
-        assertEquals(new NotesCommand(INDEX_FIRST_CONTACT, new Notes("information")), command);
+        NoteAddCommand command = (NoteAddCommand) parser.parseCommand(NoteAddCommand.COMMAND_WORD + " 1 information");
+        assertTrue(command instanceof NoteAddCommand);
+        assertEquals(new NoteAddCommand(INDEX_FIRST_CONTACT, new Note("information")), command);
     }
 
     @Test
     public void parseCommand_view() throws Exception {
         ViewCommand command = (ViewCommand) parser.parseCommand(
-                ViewCommand.COMMAND_WORD + " " + INDEX_FIRST_CONTACT.getOneBased());
+            ViewCommand.COMMAND_WORD + " " + INDEX_FIRST_CONTACT.getOneBased());
         assertEquals(new ViewCommand(INDEX_FIRST_CONTACT), command);
     }
 

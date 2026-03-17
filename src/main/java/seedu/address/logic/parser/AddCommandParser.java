@@ -7,6 +7,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -17,7 +19,7 @@ import seedu.address.model.contact.Address;
 import seedu.address.model.contact.Contact;
 import seedu.address.model.contact.Email;
 import seedu.address.model.contact.Name;
-import seedu.address.model.contact.Notes;
+import seedu.address.model.contact.Note;
 import seedu.address.model.contact.Phone;
 import seedu.address.model.tag.Tag;
 
@@ -35,8 +37,12 @@ public class AddCommandParser implements Parser<AddCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_EMAIL)
-                || !argMultimap.getPreamble().isEmpty()) {
+        boolean isNamePrefixPresent = argMultimap.getValue(PREFIX_NAME).isPresent();
+        boolean isPhonePrefixPresent = argMultimap.getValue(PREFIX_PHONE).isPresent();
+        boolean isEmailPrefixPresent = argMultimap.getValue(PREFIX_EMAIL).isPresent();
+        boolean areContactablesPresent = isPhonePrefixPresent || isEmailPrefixPresent;
+
+        if (!(isNamePrefixPresent && areContactablesPresent) || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
@@ -53,7 +59,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                 : Optional.empty();
         Optional<Address> address = addressValue.isPresent() ? Optional.of(ParserUtil.parseAddress(addressValue.get()))
                 : Optional.empty();
-        Notes notes = new Notes("");
+        List<Note> notes = new ArrayList<>();
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
         Contact contact = new Contact(name, phone, email, address, notes, tagList);

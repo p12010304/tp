@@ -39,6 +39,7 @@ public class MainWindow extends UiPart<Stage> {
     private ContactDetailPanel contactDetailPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
+    private ReminderWindow reminderWindow;
 
     /** The name of the contact currently shown in the detail panel, or null if none. */
     private Name viewedContactName;
@@ -144,6 +145,11 @@ public class MainWindow extends UiPart<Stage> {
 
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+
+        if (logic.getFilteredContactList().stream().anyMatch(Contact::hasDueReminders)) {
+            reminderWindow = new ReminderWindow(logic.getFilteredContactList());
+            reminderWindow.show();
+        }
     }
 
     /**

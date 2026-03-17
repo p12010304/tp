@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_CONTACTS;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import seedu.address.commons.core.index.Index;
@@ -10,39 +11,29 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.contact.Contact;
-import seedu.address.model.contact.Notes;
+import seedu.address.model.contact.Note;
 
 /**
- * Changes the notes of an existing contact in the address book.
+ * Remove lines of notes from an existing contact in the address book.
  */
-public class NotesCommand extends Command {
+public class NoteRemoveCommand extends NoteCommand {
 
-    public static final String COMMAND_WORD = "note";
-
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the notes of the contact identified "
-            + "by the index number used in the last contact listing. "
-            + "Existing notes will be overwritten by the input.\n"
-            + "Parameters: INDEX (must be a positive integer) "
-            + "[NOTES]\n"
-            + "Example: " + COMMAND_WORD + " 1 "
-            + "Likes to swim.";
-
-    public static final String MESSAGE_ADD_NOTES_SUCCESS = "Added notes to Contact: %1$s";
-    public static final String MESSAGE_DELETE_NOTES_SUCCESS = "Removed notes from Contact: %1$s";
+    public static final String MESSAGE_REMOVE_NOTES_SUCCESS = "Removed notes from Contact: %1$s";
 
     private final Index index;
-    private final Notes notes;
+    private final int numLines;
 
     /**
-     * @param index of the contact in the filtered contact list to edit the notes
-     * @param notes of the contact to be updated to
+     * @param index    Index of the contact in the filtered contact list.
+     * @param numLines How many lines of notes to remove.
      */
-    public NotesCommand(Index index, Notes notes) {
-        requireAllNonNull(index, notes);
+    public NoteRemoveCommand(Index index, int numLines) {
+        requireAllNonNull(index);
 
         this.index = index;
-        this.notes = notes;
+        this.numLines = numLines;
     }
+
     @Override
     public CommandResult execute(Model model) throws CommandException {
         List<Contact> lastShownList = model.getFilteredContactList();
@@ -52,8 +43,14 @@ public class NotesCommand extends Command {
         }
 
         Contact contactToEdit = lastShownList.get(index.getZeroBased());
+
+        List<Note> newNotes = new ArrayList<>(contactToEdit.getNotes());
+
+        int numExistingLines = newNotes.size();
+        newNotes = newNotes.subList(Math.min(numLines, numExistingLines), numExistingLines);
+
         Contact editedContact = new Contact(contactToEdit.getName(), contactToEdit.getPhone(), contactToEdit.getEmail(),
-                contactToEdit.getAddress(), notes, contactToEdit.getTags());
+            contactToEdit.getAddress(), newNotes, contactToEdit.getTags());
 
         model.setContact(contactToEdit, editedContact);
         model.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
@@ -62,12 +59,11 @@ public class NotesCommand extends Command {
     }
 
     /**
-     * Generates a command execution success message based on whether the notes are added to or removed from
+     * Generates a command execution success message.
      * {@code contactToEdit}.
      */
     private String generateSuccessMessage(Contact contactToEdit) {
-        String message = !notes.value.isEmpty() ? MESSAGE_ADD_NOTES_SUCCESS : MESSAGE_DELETE_NOTES_SUCCESS;
-        return String.format(message, Messages.format(contactToEdit));
+        return String.format(MESSAGE_REMOVE_NOTES_SUCCESS, Messages.format(contactToEdit));
     }
 
     @Override
@@ -78,13 +74,13 @@ public class NotesCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof NotesCommand)) {
+        if (!(other instanceof NoteRemoveCommand)) {
             return false;
         }
 
         // state check
-        NotesCommand e = (NotesCommand) other;
+        NoteRemoveCommand e = (NoteRemoveCommand) other;
         return index.equals(e.index)
-                && notes.equals(e.notes);
+            && numLines == e.numLines;
     }
 }
