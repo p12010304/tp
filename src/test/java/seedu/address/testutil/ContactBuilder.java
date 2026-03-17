@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import seedu.address.model.contact.Address;
 import seedu.address.model.contact.Contact;
@@ -25,6 +26,7 @@ public class ContactBuilder {
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
 
+    private UUID id;
     private Name name;
     private Optional<Phone> phone;
     private Optional<Email> email;
@@ -36,6 +38,7 @@ public class ContactBuilder {
      * Creates a {@code ContactBuilder} with the default details.
      */
     public ContactBuilder() {
+        id = UUID.randomUUID();
         name = new Name(DEFAULT_NAME);
         phone = Optional.of(new Phone(DEFAULT_PHONE));
         email = Optional.of(new Email(DEFAULT_EMAIL));
@@ -48,6 +51,7 @@ public class ContactBuilder {
      * Initializes the ContactBuilder with the data of {@code contactToCopy}.
      */
     public ContactBuilder(Contact contactToCopy) {
+        id = contactToCopy.getId();
         name = contactToCopy.getName();
         phone = contactToCopy.getPhone();
         email = contactToCopy.getEmail();
@@ -105,7 +109,7 @@ public class ContactBuilder {
     }
 
     public Contact build() {
-        return new Contact(name, phone, email, address, notes, tags);
+        return new Contact(id, name, phone, email, address, notes, tags);
     }
 
 }

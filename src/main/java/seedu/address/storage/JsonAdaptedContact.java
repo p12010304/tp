@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -26,6 +27,7 @@ class JsonAdaptedContact {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Contact's %s field is missing!";
 
+    private final String id;
     private final String name;
     private final Optional<String> phone;
     private final Optional<String> email;
@@ -37,9 +39,11 @@ class JsonAdaptedContact {
      * Constructs a {@code JsonAdaptedContact} with the given contact details.
      */
     @JsonCreator
-    public JsonAdaptedContact(@JsonProperty("name") String name, @JsonProperty("phone") Optional<String> phone,
+    public JsonAdaptedContact(@JsonProperty("id") String id, @JsonProperty("name") String name,
+            @JsonProperty("phone") Optional<String> phone,
             @JsonProperty("email") Optional<String> email, @JsonProperty("address") Optional<String> address,
             @JsonProperty("notes") List<String> notes, @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+        this.id = id;
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -56,6 +60,7 @@ class JsonAdaptedContact {
      * Converts a given {@code Contact} into this class for Jackson use.
      */
     public JsonAdaptedContact(Contact source) {
+        id = source.getId().toString();
         name = source.getName().fullName;
         phone = source.getPhone().map(phone -> phone.value);
         email = source.getEmail().map(email -> email.value);
@@ -112,6 +117,7 @@ class JsonAdaptedContact {
         final List<Note> modelNotes = notes.stream().map(Note::fromJsonString).collect(Collectors.toList());
 
         final Set<Tag> modelTags = new HashSet<>(contactTags);
-        return new Contact(modelName, modelPhone, modelEmail, modelAddress, modelNotes, modelTags);
+        final UUID modelId = (id != null) ? UUID.fromString(id) : UUID.randomUUID();
+        return new Contact(modelId, modelName, modelPhone, modelEmail, modelAddress, modelNotes, modelTags);
     }
 }

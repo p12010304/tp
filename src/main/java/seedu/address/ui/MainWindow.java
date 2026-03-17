@@ -1,5 +1,6 @@
 package seedu.address.ui;
 
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
@@ -39,6 +40,9 @@ public class MainWindow extends UiPart<Stage> {
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
     private ReminderWindow reminderWindow;
+
+    /** The UUID of the contact currently shown in the detail panel, or null if none. */
+    private UUID viewedContactId;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -164,6 +168,26 @@ public class MainWindow extends UiPart<Stage> {
         contactDetailContainer.setVisible(false);
         contactDetailContainer.setManaged(false);
         splitPane.setDividerPositions(1.0);
+        viewedContactId = null;
+    }
+
+    /**
+     * Refreshes the contact detail panel with the latest data for the currently viewed contact.
+     * If the contact is no longer in the filtered list (e.g. deleted or filtered out),
+     * the detail panel is hidden.
+     */
+    private void refreshContactDetailPanel() {
+        Contact updatedContact = logic.getFilteredContactList().stream()
+                .filter(c -> c.getId().equals(viewedContactId))
+                .findFirst()
+                .orElse(null);
+
+        if (updatedContact != null) {
+            contactDetailPanel.setContact(updatedContact);
+        } else {
+            contactDetailPanel.clearContact();
+            hideContactDetailPanel();
+        }
     }
 
     /**
@@ -229,11 +253,17 @@ public class MainWindow extends UiPart<Stage> {
                 handleExit();
             }
 
-            if (commandResult.isShowContactDetail()) {
+            if (commandResult.isHideContactDetail()) {
+                contactDetailPanel.clearContact();
+                hideContactDetailPanel();
+            } else if (commandResult.isShowContactDetail()) {
                 commandResult.getContactToView().ifPresent(contact -> {
                     contactDetailPanel.setContact(contact);
+                    viewedContactId = contact.getId();
                     showContactDetailPanel();
                 });
+            } else if (viewedContactId != null) {
+                refreshContactDetailPanel();
             }
 
             return commandResult;
