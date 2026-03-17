@@ -18,6 +18,8 @@ import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.contact.Contact;
+import seedu.address.model.contact.Name;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -37,6 +39,9 @@ public class MainWindow extends UiPart<Stage> {
     private ContactDetailPanel contactDetailPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
+
+    /** The name of the contact currently shown in the detail panel, or null if none. */
+    private Name viewedContactName;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -157,6 +162,27 @@ public class MainWindow extends UiPart<Stage> {
         contactDetailContainer.setVisible(false);
         contactDetailContainer.setManaged(false);
         splitPane.setDividerPositions(1.0);
+        viewedContactName = null;
+    }
+
+    /**
+     * Refreshes the contact detail panel with the latest data for the currently viewed contact.
+     * If the contact is no longer in the filtered list (e.g. deleted or filtered out),
+     * the detail panel is hidden.
+     */
+    private void refreshContactDetailPanel() {
+        Contact updatedContact = logic.getFilteredContactList().stream()
+                .filter(c -> c.getName().equals(viewedContactName))
+                .findFirst()
+                .orElse(null);
+
+        if (updatedContact != null) {
+            contactDetailPanel.setContact(updatedContact);
+            viewedContactName = updatedContact.getName();
+        } else {
+            contactDetailPanel.clearContact();
+            hideContactDetailPanel();
+        }
     }
 
     /**
@@ -225,8 +251,11 @@ public class MainWindow extends UiPart<Stage> {
             if (commandResult.isShowContactDetail()) {
                 commandResult.getContactToView().ifPresent(contact -> {
                     contactDetailPanel.setContact(contact);
+                    viewedContactName = contact.getName();
                     showContactDetailPanel();
                 });
+            } else if (viewedContactName != null) {
+                refreshContactDetailPanel();
             }
 
             return commandResult;
