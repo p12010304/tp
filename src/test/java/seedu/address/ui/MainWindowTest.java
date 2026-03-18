@@ -120,7 +120,7 @@ public class MainWindowTest extends GuiUnitTest {
         }
 
         @Override
-        public ObservableList<Contact> getFilteredContactList() {
+        public ObservableList<Contact> getDisplayedContactList() {
             return contacts;
         }
 

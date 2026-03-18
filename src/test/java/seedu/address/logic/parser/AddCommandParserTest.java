@@ -7,9 +7,12 @@ import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_LAST_CONTACTED_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.LAST_CONTACTED_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.LAST_CONTACTED_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
@@ -26,6 +29,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_LAST_CONTACTED;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
@@ -55,6 +59,15 @@ public class AddCommandParserTest {
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB + TAG_DESC_FRIEND, new AddCommand(expectedContact));
+
+        // with last contacted
+        Contact expectedContactWithLastContacted = new ContactBuilder(BOB)
+                .withTags(VALID_TAG_FRIEND)
+                .withLastContacted("22/02/26")
+                .build();
+        assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
+                + ADDRESS_DESC_BOB + LAST_CONTACTED_DESC_AMY + TAG_DESC_FRIEND,
+                new AddCommand(expectedContactWithLastContacted));
 
 
         // multiple tags - all accepted
@@ -86,6 +99,10 @@ public class AddCommandParserTest {
         assertParseFailure(parser, ADDRESS_DESC_AMY + validExpectedContactString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
 
+        // multiple last contacted values
+        assertParseFailure(parser, LAST_CONTACTED_DESC_AMY + LAST_CONTACTED_DESC_BOB + validExpectedContactString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_LAST_CONTACTED));
+
         // multiple fields repeated
         assertParseFailure(parser,
                 validExpectedContactString + PHONE_DESC_AMY + EMAIL_DESC_AMY + NAME_DESC_AMY + ADDRESS_DESC_AMY
@@ -109,6 +126,10 @@ public class AddCommandParserTest {
         // invalid address
         assertParseFailure(parser, INVALID_ADDRESS_DESC + validExpectedContactString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
+
+        // invalid last contacted
+        assertParseFailure(parser, INVALID_LAST_CONTACTED_DESC + validExpectedContactString,
+                seedu.address.model.contact.LastContacted.MESSAGE_CONSTRAINTS);
 
         // valid value followed by invalid value
 

@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_LAST_CONTACTED;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
@@ -18,6 +19,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.contact.Address;
 import seedu.address.model.contact.Contact;
 import seedu.address.model.contact.Email;
+import seedu.address.model.contact.LastContacted;
 import seedu.address.model.contact.Name;
 import seedu.address.model.contact.Note;
 import seedu.address.model.contact.Phone;
@@ -35,7 +37,8 @@ public class AddCommandParser implements Parser<AddCommand> {
      */
     public AddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
+                        PREFIX_ADDRESS, PREFIX_LAST_CONTACTED, PREFIX_TAG);
 
         boolean isNamePrefixPresent = argMultimap.getValue(PREFIX_NAME).isPresent();
         boolean isPhonePrefixPresent = argMultimap.getValue(PREFIX_PHONE).isPresent();
@@ -46,11 +49,13 @@ public class AddCommandParser implements Parser<AddCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
+        argMultimap.verifyNoDuplicatePrefixesFor(
+                PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_LAST_CONTACTED);
 
         Optional<String> phoneValue = argMultimap.getValue(PREFIX_PHONE);
         Optional<String> emailValue = argMultimap.getValue(PREFIX_EMAIL);
         Optional<String> addressValue = argMultimap.getValue(PREFIX_ADDRESS);
+        Optional<String> lastContactedValue = argMultimap.getValue(PREFIX_LAST_CONTACTED);
 
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Optional<Phone> phone = phoneValue.isPresent() ? Optional.of(ParserUtil.parsePhone(phoneValue.get()))
@@ -59,10 +64,13 @@ public class AddCommandParser implements Parser<AddCommand> {
                 : Optional.empty();
         Optional<Address> address = addressValue.isPresent() ? Optional.of(ParserUtil.parseAddress(addressValue.get()))
                 : Optional.empty();
+        Optional<LastContacted> lastContacted = lastContactedValue.isPresent()
+                ? Optional.of(ParserUtil.parseLastContacted(lastContactedValue.get()))
+                : Optional.empty();
         List<Note> notes = new ArrayList<>();
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        Contact contact = new Contact(name, phone, email, address, notes, tagList);
+        Contact contact = new Contact(name, phone, email, address, lastContacted, notes, tagList);
 
         return new AddCommand(contact);
     }

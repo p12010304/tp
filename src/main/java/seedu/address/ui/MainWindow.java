@@ -177,7 +177,7 @@ public class MainWindow extends UiPart<Stage> {
      * the detail panel is hidden.
      */
     private void refreshContactDetailPanel() {
-        Contact updatedContact = logic.getFilteredContactList().stream()
+        Contact updatedContact = logic.getDisplayedContactList().stream()
                 .filter(c -> c.getId().equals(viewedContactId))
                 .findFirst()
                 .orElse(null);

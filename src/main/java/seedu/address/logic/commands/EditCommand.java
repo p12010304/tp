@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_LAST_CONTACTED;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
@@ -23,6 +24,7 @@ import seedu.address.model.Model;
 import seedu.address.model.contact.Address;
 import seedu.address.model.contact.Contact;
 import seedu.address.model.contact.Email;
+import seedu.address.model.contact.LastContacted;
 import seedu.address.model.contact.Name;
 import seedu.address.model.contact.Note;
 import seedu.address.model.contact.Phone;
@@ -43,10 +45,12 @@ public class EditCommand extends Command {
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
+            + "[" + PREFIX_LAST_CONTACTED + "LAST_CONTACTED] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
-            + PREFIX_EMAIL + "johndoe@example.com";
+            + PREFIX_EMAIL + "johndoe@example.com "
+            + PREFIX_LAST_CONTACTED + "22/02/26";
 
     public static final String MESSAGE_EDIT_CONTACT_SUCCESS = "Edited Contact: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
@@ -99,11 +103,13 @@ public class EditCommand extends Command {
         Optional<Phone> updatedPhone = editContactDescriptor.getPhone().or(() -> contactToEdit.getPhone());
         Optional<Email> updatedEmail = editContactDescriptor.getEmail().or(() -> contactToEdit.getEmail());
         Optional<Address> updatedAddress = editContactDescriptor.getAddress().or(() -> contactToEdit.getAddress());
+        Optional<LastContacted> updatedLastContacted =
+                editContactDescriptor.getLastContacted().or(() -> contactToEdit.getLastContacted());
         List<Note> updatedNotes = contactToEdit.getNotes();
         Set<Tag> updatedTags = editContactDescriptor.getTags().orElse(contactToEdit.getTags());
 
-        return new Contact(contactToEdit.getId(),
-                updatedName, updatedPhone, updatedEmail, updatedAddress, updatedNotes, updatedTags);
+        return new Contact(contactToEdit.getId(), updatedName, updatedPhone, updatedEmail,
+                updatedAddress, updatedLastContacted, updatedNotes, updatedTags);
     }
 
     @Override
@@ -139,6 +145,7 @@ public class EditCommand extends Command {
         private Phone phone;
         private Email email;
         private Address address;
+        private LastContacted lastContacted;
         private Set<Tag> tags;
 
         public EditContactDescriptor() {}
@@ -152,6 +159,7 @@ public class EditCommand extends Command {
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
             setAddress(toCopy.address);
+            setLastContacted(toCopy.lastContacted);
             setTags(toCopy.tags);
         }
 
@@ -159,7 +167,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, lastContacted, tags);
         }
 
         public void setName(Name name) {
@@ -192,6 +200,14 @@ public class EditCommand extends Command {
 
         public Optional<Address> getAddress() {
             return Optional.ofNullable(address);
+        }
+
+        public void setLastContacted(LastContacted lastContacted) {
+            this.lastContacted = lastContacted;
+        }
+
+        public Optional<LastContacted> getLastContacted() {
+            return Optional.ofNullable(lastContacted);
         }
 
         /**
@@ -227,6 +243,7 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditContactDescriptor.phone)
                     && Objects.equals(email, otherEditContactDescriptor.email)
                     && Objects.equals(address, otherEditContactDescriptor.address)
+                    && Objects.equals(lastContacted, otherEditContactDescriptor.lastContacted)
                     && Objects.equals(tags, otherEditContactDescriptor.tags);
         }
 
@@ -237,6 +254,7 @@ public class EditCommand extends Command {
                     .add("phone", phone)
                     .add("email", email)
                     .add("address", address)
+                    .add("lastContacted", lastContacted)
                     .add("tags", tags)
                     .toString();
         }

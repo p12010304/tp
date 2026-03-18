@@ -50,7 +50,8 @@ public class NoteRemoveCommand extends NoteCommand {
 
         Contact editedContact = new Contact(contactToEdit.getId(), contactToEdit.getName(),
             contactToEdit.getPhone(), contactToEdit.getEmail(),
-            contactToEdit.getAddress(), newNotes, contactToEdit.getTags());
+            contactToEdit.getAddress(), contactToEdit.getLastContacted(),
+            newNotes, contactToEdit.getTags());
 
         model.setContact(contactToEdit, editedContact);
         model.resetDisplayedContactList();
