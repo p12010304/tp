@@ -224,12 +224,11 @@ public class JsonAdaptedContactTest {
         for (String[] invalidTag : INVALID_TAGS) {
             List<JsonAdaptedTag> invalidTags = new ArrayList<>(VALID_TAGS);
             invalidTags.add(new JsonAdaptedTag(invalidTag));
-            JsonAdaptedContact contact =
-                new JsonAdaptedContact(
-                        VALID_ID, VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
-                        VALID_LAST_CONTACTED, VALID_LAST_UPDATED,
-                        VALID_NOTES, invalidTags);
-        assertThrows(IllegalValueException.class, contact::toModelType);
+            JsonAdaptedContact contact = new JsonAdaptedContact(
+                VALID_ID, VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
+                VALID_LAST_CONTACTED, VALID_LAST_UPDATED, VALID_NOTES, invalidTags);
+            assertThrows(IllegalValueException.class, contact::toModelType);
+        }
     }
 
     @Test
