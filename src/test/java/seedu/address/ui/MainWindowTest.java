@@ -16,7 +16,10 @@ import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.Logic;
+import seedu.address.logic.Messages;
+import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.AddressBook;
@@ -91,6 +94,24 @@ public class MainWindowTest extends GuiUnitTest {
             logic.setNextResult(new CommandResult("listed"));
             assertDoesNotThrow(() -> mainWindow.executeCommand("list"));
             assertNull(mainWindow.getViewedContactId());
+        });
+    }
+
+    @Test
+    public void scrollToTop_success() throws Exception {
+        runAndWait(() -> {
+            logic.setNextResult(new CommandResult(ListCommand.MESSAGE_SUCCESS));
+            assertDoesNotThrow(() -> mainWindow.executeCommand("list"));
+        });
+    }
+
+    @Test
+    public void scrollToBottom_success() throws Exception {
+        runAndWait(() -> {
+            logic.setNextResult(
+                    new CommandResult(
+                            String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(new ContactBuilder().build()))));
+            assertDoesNotThrow(() -> mainWindow.executeCommand("add"));
         });
     }
 
