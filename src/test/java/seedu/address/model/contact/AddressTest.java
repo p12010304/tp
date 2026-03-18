@@ -53,4 +53,24 @@ public class AddressTest {
         // different values -> returns false
         assertFalse(address.equals(new Address("Other Valid Address")));
     }
+
+    @Test
+    public void compareTo() {
+        Address address1 = new Address("Address A");
+        Address address2 = new Address("Address B");
+        Address address3 = new Address("Address A");
+        Address address4 = new Address("address a");
+
+        // address1 is less than address2
+        assertTrue(address1.compareTo(address2) < 0);
+
+        // address2 is greater than address1
+        assertTrue(address2.compareTo(address1) > 0);
+
+        // address1 is equal to address3
+        assertTrue(address1.compareTo(address3) == 0);
+
+        // address1 is equal to address4 (case-insensitive)
+        assertTrue(address1.compareTo(address4) == 0);
+    }
 }

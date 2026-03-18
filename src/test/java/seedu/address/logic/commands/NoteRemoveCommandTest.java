@@ -33,21 +33,21 @@ public class NoteRemoveCommandTest {
     public void execute_success() {
         NoteRemoveCommand notesCommand = new NoteRemoveCommand(INDEX_FIRST_CONTACT, REMOVE_ONE_LINE);
 
-        Contact contactToEdit = model.getFilteredContactList().get(0);
+        Contact contactToEdit = model.getDisplayedContactList().get(0);
         Contact editedContact = new Contact(contactToEdit.getName(), contactToEdit.getPhone(), contactToEdit.getEmail(),
                 contactToEdit.getAddress(), NOTES, contactToEdit.getTags());
 
         String expectedMessage = String.format(NoteRemoveCommand.MESSAGE_REMOVE_NOTES_SUCCESS,
                 Messages.format(contactToEdit));
         Model testModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        testModel.setContact(model.getFilteredContactList().get(0), editedContact);
+        testModel.setContact(model.getDisplayedContactList().get(0), editedContact);
 
         assertCommandSuccess(notesCommand, testModel, expectedMessage, model);
     }
 
     @Test
     public void execute_invalidContactIndexUnfilteredList_failure() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredContactList().size() + 1);
+        Index outOfBoundIndex = Index.fromOneBased(model.getDisplayedContactList().size() + 1);
         NoteRemoveCommand notesCommand = new NoteRemoveCommand(outOfBoundIndex, REMOVE_ONE_LINE);
 
         assertCommandFailure(notesCommand, model, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);

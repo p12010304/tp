@@ -58,9 +58,9 @@ public class FindCommandTest {
         String expectedMessage = String.format(MESSAGE_CONTACTS_LISTED_OVERVIEW, 1);
         Predicate<Contact> predicate = (Contact contact) -> contact.containsInName("Elle");
         FindCommand command = new FindCommand(predicate);
-        expectedModel.updateFilteredContactList(predicate);
+        expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(ELLE), model.getFilteredContactList());
+        assertEquals(Arrays.asList(ELLE), model.getDisplayedContactList());
     }
 
     @Test
@@ -68,8 +68,8 @@ public class FindCommandTest {
         String expectedMessage = String.format(MESSAGE_CONTACTS_LISTED_OVERVIEW, 4);
         Predicate<Contact> predicate = (Contact contact) -> contact.contains("ne");
         FindCommand command = new FindCommand(predicate);
-        expectedModel.updateFilteredContactList(predicate);
+        expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(ALICE, BENSON, DANIEL, ELLE), model.getFilteredContactList());
+        assertEquals(Arrays.asList(ALICE, BENSON, DANIEL, ELLE), model.getDisplayedContactList());
     }
 }

@@ -7,7 +7,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  * Represents a Contact's email in the address book.
  * Guarantees: immutable; is valid as declared in {@link #isValidEmail(String)}
  */
-public class Email {
+public class Email implements Comparable<Email> {
     // Allowed special characters in local-part
     private static final String SPECIAL_CHARACTERS = "._%+-";
 
@@ -80,6 +80,11 @@ public class Email {
     @Override
     public int hashCode() {
         return value.hashCode();
+    }
+
+    @Override
+    public int compareTo(Email o) {
+        return this.value.compareToIgnoreCase(o.value);
     }
 
 }

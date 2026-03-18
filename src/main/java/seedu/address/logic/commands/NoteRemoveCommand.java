@@ -1,7 +1,6 @@
 package seedu.address.logic.commands;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_CONTACTS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class NoteRemoveCommand extends NoteCommand {
     private final int numLines;
 
     /**
-     * @param index    Index of the contact in the filtered contact list.
+     * @param index    Index of the contact in the displayed contact list.
      * @param numLines How many lines of notes to remove.
      */
     public NoteRemoveCommand(Index index, int numLines) {
@@ -36,7 +35,7 @@ public class NoteRemoveCommand extends NoteCommand {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        List<Contact> lastShownList = model.getFilteredContactList();
+        List<Contact> lastShownList = model.getDisplayedContactList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
@@ -54,7 +53,7 @@ public class NoteRemoveCommand extends NoteCommand {
             contactToEdit.getAddress(), newNotes, contactToEdit.getTags());
 
         model.setContact(contactToEdit, editedContact);
-        model.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
+        model.resetDisplayedContactList();
 
         return new CommandResult(generateSuccessMessage(editedContact));
     }

@@ -124,7 +124,7 @@ How the parsing works:
 The `Model` component,
 
 * stores the address book data i.e., all `Contact` objects (which are contained in a `UniqueContactList` object).
-* stores the currently 'selected' `Contact` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Contact>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+* stores the currently 'selected' `Contact` objects (e.g., results of a search query) as a separate _displayed_ list which is exposed to outsiders as an unmodifiable `ObservableList<Contact>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
@@ -439,7 +439,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **Private contact detail**: A contact detail that is not meant to be shared with others
 * **Command**: A structured line of text entered by the user to instruct the application to perform a specific action.
 * **Contact**: A single entry stored in the address book, containing one or more pieces of contact information such as name, phone number, email, or address.
-* **Filtered list**: A subset of contacts displayed after applying a search or filtering operation.
+* **Displayed list**: A subset of contacts displayed after applying a search, filtering, or sorting operation.
 
 --------------------------------------------------------------------------------------------------------------------
 

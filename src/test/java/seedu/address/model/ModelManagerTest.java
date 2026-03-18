@@ -3,7 +3,6 @@ package seedu.address.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_CONTACTS;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalContacts.ALICE;
 import static seedu.address.testutil.TypicalContacts.BENSON;
@@ -14,6 +13,7 @@ import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.model.contact.ContactComparator;
 import seedu.address.testutil.AddressBookBuilder;
 import seedu.address.testutil.ContactPredicateBuilder;
 
@@ -88,8 +88,8 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void getFilteredContactList_modifyList_throwsUnsupportedOperationException() {
-        assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredContactList().remove(0));
+    public void getDisplayedContactList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> modelManager.getDisplayedContactList().remove(0));
     }
 
     @Test
@@ -115,13 +115,18 @@ public class ModelManagerTest {
         // different addressBook -> returns false
         assertFalse(modelManager.equals(new ModelManager(differentAddressBook, userPrefs)));
 
-        // different filteredList -> returns false
+        // different filtered list -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
-        modelManager.updateFilteredContactList(new ContactPredicateBuilder().nameContainsKeywords(keywords).build());
+        modelManager.filterDisplayedContactList(new ContactPredicateBuilder().nameContainsKeywords(keywords).build());
+        assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
+
+        // different sorted list -> returns false
+        modelManager.sortDisplayedContactList(
+                new ContactComparator(ContactComparator.Field.NAME, ContactComparator.Order.DESCENDING));
         assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
-        modelManager.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
+        modelManager.resetDisplayedContactList();
 
         // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();

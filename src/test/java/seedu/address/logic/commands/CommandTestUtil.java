@@ -97,30 +97,30 @@ public class CommandTestUtil {
      * Executes the given {@code command}, confirms that <br>
      * - a {@code CommandException} is thrown <br>
      * - the CommandException message matches {@code expectedMessage} <br>
-     * - the address book, filtered contact list and selected contact in {@code actualModel} remain unchanged
+     * - the address book, displayed contact list and selected contact in {@code actualModel} remain unchanged
      */
     public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage) {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.
         AddressBook expectedAddressBook = new AddressBook(actualModel.getAddressBook());
-        List<Contact> expectedFilteredList = new ArrayList<>(actualModel.getFilteredContactList());
+        List<Contact> expectedFilteredList = new ArrayList<>(actualModel.getDisplayedContactList());
 
         assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
         assertEquals(expectedAddressBook, actualModel.getAddressBook());
-        assertEquals(expectedFilteredList, actualModel.getFilteredContactList());
+        assertEquals(expectedFilteredList, actualModel.getDisplayedContactList());
     }
     /**
-     * Updates {@code model}'s filtered list to show only the contact at the given {@code targetIndex} in the
+     * Updates {@code model}'s displayed list to show only the contact at the given {@code targetIndex} in the
      * {@code model}'s address book.
      */
     public static void showContactAtIndex(Model model, Index targetIndex) {
-        assertTrue(targetIndex.getZeroBased() < model.getFilteredContactList().size());
+        assertTrue(targetIndex.getZeroBased() < model.getDisplayedContactList().size());
 
-        Contact contact = model.getFilteredContactList().get(targetIndex.getZeroBased());
+        Contact contact = model.getDisplayedContactList().get(targetIndex.getZeroBased());
         final String[] splitName = contact.getName().fullName.split("\\s+");
-        model.updateFilteredContactList((Contact c) -> c.containsInName(splitName[0]));
+        model.filterDisplayedContactList((Contact c) -> c.containsInName(splitName[0]));
 
-        assertEquals(1, model.getFilteredContactList().size());
+        assertEquals(1, model.getDisplayedContactList().size());
     }
 
 }

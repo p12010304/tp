@@ -85,4 +85,23 @@ public class EmailTest {
         // different values -> returns false
         assertFalse(email.equals(new Email("other.valid@email.com")));
     }
+
+    @Test
+    public void compareTo() {
+        Email email1 = new Email("email1@example.com");
+        Email email2 = new Email("email2@example.com");
+        Email email3 = new Email("EMAIL1@example.com");
+
+        // email1 is less than email2
+        assertTrue(email1.compareTo(email2) < 0);
+
+        // email1 is equal to email3
+        assertTrue(email1.compareTo(email3) == 0);
+
+        // email2 is greater than email3
+        assertTrue(email2.compareTo(email3) > 0);
+
+        // consistency
+        assertTrue(Integer.signum(email1.compareTo(email2)) == Integer.signum(email3.compareTo(email2)));
+    }
 }

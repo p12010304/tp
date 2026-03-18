@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -11,9 +12,6 @@ import seedu.address.model.contact.Contact;
  * The API of the Model component.
  */
 public interface Model {
-    /** {@code Predicate} that always evaluate to true */
-    Predicate<Contact> PREDICATE_SHOW_ALL_CONTACTS = unused -> true;
-
     /**
      * Replaces user prefs data with the data in {@code userPrefs}.
      */
@@ -82,12 +80,23 @@ public interface Model {
      */
     void setContact(Contact target, Contact editedContact);
 
-    /** Returns an unmodifiable view of the filtered contact list */
-    ObservableList<Contact> getFilteredContactList();
+    /** Returns an unmodifiable view of the displayed contact list */
+    ObservableList<Contact> getDisplayedContactList();
 
     /**
-     * Updates the filter of the filtered contact list to filter by the given {@code predicate}.
+     * Resets the displayed contact list to show all contacts in the address book order.
+     */
+    void resetDisplayedContactList();
+
+    /**
+     * Updates the filter of the displayed contact list to filter by the given {@code predicate}.
      * @throws NullPointerException if {@code predicate} is null.
      */
-    void updateFilteredContactList(Predicate<Contact> predicate);
+    void filterDisplayedContactList(Predicate<Contact> predicate);
+
+    /**
+     * Updates the order of the displayed contact list to sort by the given {@code comparator}.
+     * @throws NullPointerException if {@code comparator} is null.
+     */
+    void sortDisplayedContactList(Comparator<Contact> comparator);
 }

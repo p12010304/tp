@@ -29,7 +29,7 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredList_success() {
-        Contact contactToDelete = model.getFilteredContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
+        Contact contactToDelete = model.getDisplayedContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
         DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_CONTACT);
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_CONTACT_SUCCESS,
@@ -43,7 +43,7 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredContactList().size() + 1);
+        Index outOfBoundIndex = Index.fromOneBased(model.getDisplayedContactList().size() + 1);
         DeleteCommand deleteCommand = new DeleteCommand(outOfBoundIndex);
 
         assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
@@ -53,7 +53,7 @@ public class DeleteCommandTest {
     public void execute_validIndexFilteredList_success() {
         showContactAtIndex(model, INDEX_FIRST_CONTACT);
 
-        Contact contactToDelete = model.getFilteredContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
+        Contact contactToDelete = model.getDisplayedContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
         DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_CONTACT);
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_CONTACT_SUCCESS,
@@ -110,11 +110,11 @@ public class DeleteCommandTest {
     }
 
     /**
-     * Updates {@code model}'s filtered list to show no one.
+     * Updates {@code model}'s displayed list to show no one.
      */
     private void showNoContact(Model model) {
-        model.updateFilteredContactList(p -> false);
+        model.filterDisplayedContactList(p -> false);
 
-        assertTrue(model.getFilteredContactList().isEmpty());
+        assertTrue(model.getDisplayedContactList().isEmpty());
     }
 }

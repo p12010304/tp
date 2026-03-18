@@ -46,15 +46,15 @@ public class EditCommandTest {
                 Messages.format(editedContact));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.setContact(model.getFilteredContactList().get(0), editedContact);
+        expectedModel.setContact(model.getDisplayedContactList().get(0), editedContact);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_someFieldsSpecifiedUnfilteredList_success() {
-        Index indexLastContact = Index.fromOneBased(model.getFilteredContactList().size());
-        Contact lastContact = model.getFilteredContactList().get(indexLastContact.getZeroBased());
+        Index indexLastContact = Index.fromOneBased(model.getDisplayedContactList().size());
+        Contact lastContact = model.getDisplayedContactList().get(indexLastContact.getZeroBased());
 
         ContactBuilder contactInList = new ContactBuilder(lastContact);
         Contact editedContact = contactInList.withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
@@ -76,7 +76,7 @@ public class EditCommandTest {
     @Test
     public void execute_noFieldSpecifiedUnfilteredList_success() {
         EditCommand editCommand = new EditCommand(INDEX_FIRST_CONTACT, new EditContactDescriptor());
-        Contact editedContact = model.getFilteredContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
+        Contact editedContact = model.getDisplayedContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_CONTACT_SUCCESS,
                 Messages.format(editedContact));
@@ -90,7 +90,7 @@ public class EditCommandTest {
     public void execute_filteredList_success() {
         showContactAtIndex(model, INDEX_FIRST_CONTACT);
 
-        Contact contactInFilteredList = model.getFilteredContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
+        Contact contactInFilteredList = model.getDisplayedContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
         Contact editedContact = new ContactBuilder(contactInFilteredList).withName(VALID_NAME_BOB).build();
         EditCommand editCommand = new EditCommand(INDEX_FIRST_CONTACT,
                 new EditContactDescriptorBuilder().withName(VALID_NAME_BOB).build());
@@ -99,14 +99,14 @@ public class EditCommandTest {
                 Messages.format(editedContact));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.setContact(model.getFilteredContactList().get(0), editedContact);
+        expectedModel.setContact(model.getDisplayedContactList().get(0), editedContact);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_duplicateContactUnfilteredList_failure() {
-        Contact firstContact = model.getFilteredContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
+        Contact firstContact = model.getDisplayedContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
         EditContactDescriptor descriptor = new EditContactDescriptorBuilder(firstContact).build();
         EditCommand editCommand = new EditCommand(INDEX_SECOND_CONTACT, descriptor);
 
@@ -117,7 +117,7 @@ public class EditCommandTest {
     public void execute_duplicateContactFilteredList_failure() {
         showContactAtIndex(model, INDEX_FIRST_CONTACT);
 
-        // edit contact in filtered list into a duplicate in address book
+        // edit contact in displayed list into a duplicate in address book
         Contact contactInList = model.getAddressBook().getContactList().get(INDEX_SECOND_CONTACT.getZeroBased());
         EditCommand editCommand = new EditCommand(INDEX_FIRST_CONTACT,
                 new EditContactDescriptorBuilder(contactInList).build());
@@ -127,7 +127,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_invalidContactIndexUnfilteredList_failure() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredContactList().size() + 1);
+        Index outOfBoundIndex = Index.fromOneBased(model.getDisplayedContactList().size() + 1);
         EditContactDescriptor descriptor = new EditContactDescriptorBuilder().withName(VALID_NAME_BOB).build();
         EditCommand editCommand = new EditCommand(outOfBoundIndex, descriptor);
 
@@ -135,7 +135,7 @@ public class EditCommandTest {
     }
 
     /**
-     * Edit filtered list where index is larger than size of filtered list,
+     * Edit displayed list where index is larger than size of displayed list,
      * but smaller than size of address book
      */
     @Test

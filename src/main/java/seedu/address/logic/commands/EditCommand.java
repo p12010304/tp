@@ -6,7 +6,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_CONTACTS;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -57,7 +56,7 @@ public class EditCommand extends Command {
     private final EditContactDescriptor editContactDescriptor;
 
     /**
-     * @param index of the contact in the filtered contact list to edit
+     * @param index of the contact in the displayed contact list to edit
      * @param editContactDescriptor details to edit the contact with
      */
     public EditCommand(Index index, EditContactDescriptor editContactDescriptor) {
@@ -71,7 +70,7 @@ public class EditCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Contact> lastShownList = model.getFilteredContactList();
+        List<Contact> lastShownList = model.getDisplayedContactList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
@@ -85,7 +84,7 @@ public class EditCommand extends Command {
         }
 
         model.setContact(contactToEdit, editedContact);
-        model.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
+        model.resetDisplayedContactList();
         return new CommandResult(String.format(MESSAGE_EDIT_CONTACT_SUCCESS, Messages.format(editedContact)));
     }
 

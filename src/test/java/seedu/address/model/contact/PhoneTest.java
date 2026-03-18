@@ -60,4 +60,21 @@ public class PhoneTest {
         // different values -> returns false
         assertFalse(phone.equals(new Phone("99512345")));
     }
+
+    @Test
+    public void compareTo() {
+        Phone phone1 = new Phone("91112345");
+        Phone phone2 = new Phone("93121534");
+        Phone phone3 = new Phone("91112345");
+        Phone phone4 = new Phone("+91112344");
+
+        // phone1 is less than phone2
+        assertTrue(phone1.compareTo(phone2) < 0);
+
+        // phone1 is equal to phone3
+        assertTrue(phone1.compareTo(phone3) == 0);
+
+        // phone1 is greater than phone4 (ignoring the '+' sign)
+        assertTrue(phone1.compareTo(phone4) > 0);
+    }
 }

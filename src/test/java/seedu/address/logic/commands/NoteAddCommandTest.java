@@ -31,21 +31,21 @@ public class NoteAddCommandTest {
 
     @Test
     public void execute_success() {
-        Contact contactToEdit = model.getFilteredContactList().get(0);
+        Contact contactToEdit = model.getDisplayedContactList().get(0);
         Contact editedContact = new Contact(contactToEdit.getName(), contactToEdit.getPhone(), contactToEdit.getEmail(),
                 contactToEdit.getAddress(), NOTES, contactToEdit.getTags());
         NoteAddCommand notesCommand = new NoteAddCommand(INDEX_FIRST_CONTACT, NOTE);
         String expectedMessage = String.format(NoteAddCommand.MESSAGE_ADD_NOTES_SUCCESS,
                 Messages.format(editedContact));
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.setContact(model.getFilteredContactList().get(0), editedContact);
+        expectedModel.setContact(model.getDisplayedContactList().get(0), editedContact);
 
         assertCommandSuccess(notesCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_invalidContactIndexUnfilteredList_failure() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredContactList().size() + 1);
+        Index outOfBoundIndex = Index.fromOneBased(model.getDisplayedContactList().size() + 1);
         NoteAddCommand notesCommand = new NoteAddCommand(outOfBoundIndex, NOTE);
 
         assertCommandFailure(notesCommand, model, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);

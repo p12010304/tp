@@ -31,21 +31,21 @@ public class NoteClearCommandTest {
     public void execute_success() {
         NoteClearCommand notesCommand = new NoteClearCommand(INDEX_FIRST_CONTACT);
 
-        Contact contactToEdit = model.getFilteredContactList().get(0);
+        Contact contactToEdit = model.getDisplayedContactList().get(0);
         Contact editedContact = new Contact(contactToEdit.getName(), contactToEdit.getPhone(), contactToEdit.getEmail(),
                 contactToEdit.getAddress(), NOTES, contactToEdit.getTags());
 
         String expectedMessage = String.format(NoteClearCommand.MESSAGE_REMOVE_NOTES_SUCCESS,
                 Messages.format(contactToEdit));
         Model testModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        testModel.setContact(model.getFilteredContactList().get(0), editedContact);
+        testModel.setContact(model.getDisplayedContactList().get(0), editedContact);
 
         assertCommandSuccess(notesCommand, testModel, expectedMessage, model);
     }
 
     @Test
     public void execute_invalidContactIndexUnfilteredList_failure() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredContactList().size() + 1);
+        Index outOfBoundIndex = Index.fromOneBased(model.getDisplayedContactList().size() + 1);
         NoteClearCommand notesCommand = new NoteClearCommand(outOfBoundIndex);
 
         assertCommandFailure(notesCommand, model, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);

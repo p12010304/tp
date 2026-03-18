@@ -29,7 +29,7 @@ public class ViewCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredList_success() {
-        Contact contactToView = model.getFilteredContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
+        Contact contactToView = model.getDisplayedContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
         ViewCommand viewCommand = new ViewCommand(INDEX_FIRST_CONTACT);
 
         String expectedMessage = String.format(ViewCommand.MESSAGE_VIEW_CONTACT_SUCCESS,
@@ -43,7 +43,7 @@ public class ViewCommandTest {
 
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredContactList().size() + 1);
+        Index outOfBoundIndex = Index.fromOneBased(model.getDisplayedContactList().size() + 1);
         ViewCommand viewCommand = new ViewCommand(outOfBoundIndex);
 
         assertCommandFailure(viewCommand, model, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
@@ -53,7 +53,7 @@ public class ViewCommandTest {
     public void execute_validIndexFilteredList_success() {
         showContactAtIndex(model, INDEX_FIRST_CONTACT);
 
-        Contact contactToView = model.getFilteredContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
+        Contact contactToView = model.getDisplayedContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
         ViewCommand viewCommand = new ViewCommand(INDEX_FIRST_CONTACT);
 
         String expectedMessage = String.format(ViewCommand.MESSAGE_VIEW_CONTACT_SUCCESS,

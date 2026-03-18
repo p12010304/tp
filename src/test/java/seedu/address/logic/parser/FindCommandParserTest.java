@@ -49,9 +49,9 @@ public class FindCommandParserTest {
         FindCommand command = parser.parse("ne");
         String expectedMessage = String.format(MESSAGE_CONTACTS_LISTED_OVERVIEW, 4);
         Predicate<Contact> predicate = (Contact contact) -> contact.contains("ne");
-        expectedModel.updateFilteredContactList(predicate);
+        expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(ALICE, BENSON, DANIEL, ELLE), model.getFilteredContactList());
+        assertEquals(Arrays.asList(ALICE, BENSON, DANIEL, ELLE), model.getDisplayedContactList());
     }
 
     @Test
@@ -59,9 +59,9 @@ public class FindCommandParserTest {
         FindCommand command = parser.parse(" " + PREFIX_NAME + "Elle");
         String expectedMessage = String.format(MESSAGE_CONTACTS_LISTED_OVERVIEW, 1);
         Predicate<Contact> predicate = (Contact contact) -> contact.containsInName("Elle");
-        expectedModel.updateFilteredContactList(predicate);
+        expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(ELLE), model.getFilteredContactList());
+        assertEquals(Arrays.asList(ELLE), model.getDisplayedContactList());
     }
 
     @Test
@@ -69,9 +69,9 @@ public class FindCommandParserTest {
         FindCommand command = parser.parse(" " + PREFIX_PHONE + "94");
         String expectedMessage = String.format(MESSAGE_CONTACTS_LISTED_OVERVIEW, 4);
         Predicate<Contact> predicate = (Contact contact) -> contact.containsInPhone("94");
-        expectedModel.updateFilteredContactList(predicate);
+        expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(ALICE, ELLE, FIONA, GEORGE), model.getFilteredContactList());
+        assertEquals(Arrays.asList(ALICE, ELLE, FIONA, GEORGE), model.getDisplayedContactList());
     }
 
     @Test
@@ -79,9 +79,9 @@ public class FindCommandParserTest {
         FindCommand command = parser.parse(" " + PREFIX_EMAIL + "ANNA");
         String expectedMessage = String.format(MESSAGE_CONTACTS_LISTED_OVERVIEW, 1);
         Predicate<Contact> predicate = (Contact contact) -> contact.containsInEmail("ANNA");
-        expectedModel.updateFilteredContactList(predicate);
+        expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(GEORGE), model.getFilteredContactList());
+        assertEquals(Arrays.asList(GEORGE), model.getDisplayedContactList());
     }
 
     @Test
@@ -89,9 +89,9 @@ public class FindCommandParserTest {
         FindCommand command = parser.parse(" " + PREFIX_ADDRESS + "street");
         String expectedMessage = String.format(MESSAGE_CONTACTS_LISTED_OVERVIEW, 3);
         Predicate<Contact> predicate = (Contact contact) -> contact.containsInAddress("street");
-        expectedModel.updateFilteredContactList(predicate);
+        expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(CARL, DANIEL, GEORGE), model.getFilteredContactList());
+        assertEquals(Arrays.asList(CARL, DANIEL, GEORGE), model.getDisplayedContactList());
     }
 
     @Test
@@ -99,9 +99,9 @@ public class FindCommandParserTest {
         FindCommand command = parser.parse(" " + PREFIX_TAG + "friends");
         String expectedMessage = String.format(MESSAGE_CONTACTS_LISTED_OVERVIEW, 3);
         Predicate<Contact> predicate = (Contact contact) -> contact.hasTag("friends");
-        expectedModel.updateFilteredContactList(predicate);
+        expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(ALICE, BENSON, DANIEL), model.getFilteredContactList());
+        assertEquals(Arrays.asList(ALICE, BENSON, DANIEL), model.getDisplayedContactList());
     }
 
     @Test
@@ -109,9 +109,9 @@ public class FindCommandParserTest {
         FindCommand command = parser.parse(" " + PREFIX_TAG + "friend");
         String expectedMessage = String.format(MESSAGE_CONTACTS_LISTED_OVERVIEW, 0);
         Predicate<Contact> predicate = (Contact contact) -> contact.hasTag("friend");
-        expectedModel.updateFilteredContactList(predicate);
+        expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(List.of(), model.getFilteredContactList());
+        assertEquals(List.of(), model.getDisplayedContactList());
     }
 
     @Test
@@ -120,8 +120,8 @@ public class FindCommandParserTest {
         String expectedMessage = String.format(MESSAGE_CONTACTS_LISTED_OVERVIEW, 1);
         Predicate<Contact> predicate =
                 new ContactPredicateBuilder().addressContainsKeywords("street").tagsHasKeywords("friends").build();
-        expectedModel.updateFilteredContactList(predicate);
+        expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(DANIEL), model.getFilteredContactList());
+        assertEquals(Arrays.asList(DANIEL), model.getDisplayedContactList());
     }
 }
