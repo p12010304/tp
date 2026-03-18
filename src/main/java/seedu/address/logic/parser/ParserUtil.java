@@ -101,6 +101,11 @@ public class ParserUtil {
         return new Email(trimmedEmail);
     }
 
+    /**
+     * Parses a {@code String tagName} and a {@code String tagValue} into a {@code RankedTag}.
+     * @param tagName The name of the tag.
+     * @param tagValue The value for the tag.
+     */
     public static RankedTag parseRankedTag(String tagName, String tagValue) throws ParseException {
         requireNonNull(tagName);
         requireNonNull(tagValue);
