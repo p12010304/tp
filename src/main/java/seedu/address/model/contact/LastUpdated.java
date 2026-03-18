@@ -13,7 +13,7 @@ import seedu.address.model.timepoint.TimePoint;
  * Represents a contact's last updated time.
  * Guarantees: immutable; value is non-blank.
  */
-public class LastUpdated {
+public class LastUpdated implements Comparable<LastUpdated> {
     public static final String MESSAGE_CONSTRAINTS = "Last updated time should not be blank.";
 
     public final TimePoint<?> value;
@@ -57,6 +57,22 @@ public class LastUpdated {
     @Override
     public String toString() {
         return value.toString();
+    }
+
+    @Override
+    public int compareTo(LastUpdated other) {
+        requireNonNull(other);
+        if (value.equals(other.value)) {
+            return 0;
+        }
+        if (value.isBefore(other.value)) {
+            return -1;
+        }
+        if (value.isAfter(other.value)) {
+            return 1;
+        }
+        // Fallback when both values are non-chronological string timepoints.
+        return value.toString().compareTo(other.value.toString());
     }
 
     @Override

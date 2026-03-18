@@ -60,4 +60,30 @@ public class LastUpdatedTest {
         LastUpdated second = new LastUpdated("22/02/26");
         assertEquals(first.hashCode(), second.hashCode());
     }
+
+    @Test
+    public void compareTo_sameValue_returnsZero() {
+        LastUpdated first = new LastUpdated("22/02/26");
+        LastUpdated second = new LastUpdated("22/02/26");
+
+        assertEquals(0, first.compareTo(second));
+    }
+
+    @Test
+    public void compareTo_chronologicalValues_ordersByTime() {
+        LastUpdated earlier = new LastUpdated("22/02/26");
+        LastUpdated later = new LastUpdated("23/02/26");
+
+        assertTrue(earlier.compareTo(later) < 0);
+        assertTrue(later.compareTo(earlier) > 0);
+    }
+
+    @Test
+    public void compareTo_nonChronologicalStringValues_fallsBackToLexicalOrder() {
+        LastUpdated alpha = new LastUpdated("alpha");
+        LastUpdated zeta = new LastUpdated("zeta");
+
+        assertTrue(alpha.compareTo(zeta) < 0);
+        assertTrue(zeta.compareTo(alpha) > 0);
+    }
 }

@@ -11,7 +11,7 @@ import java.util.Map;
 public final class ContactComparator implements Comparator<Contact> {
     /** The fields that can be used for sorting contacts. */
     public static enum Field {
-        NAME, PHONE, EMAIL, ADDRESS
+        NAME, PHONE, EMAIL, ADDRESS, LAST_UPDATED
     }
 
     /** The orders that can be used for sorting contacts. */
@@ -42,7 +42,10 @@ public final class ContactComparator implements Comparator<Contact> {
                     Comparator.comparing(contact -> contact.getAddress().orElse(null),
                             Comparator.nullsLast(Comparator.naturalOrder())),
                     Order.DESCENDING, Comparator.comparing(contact -> contact.getAddress().orElse(null),
-                            Comparator.nullsLast(Comparator.reverseOrder()))));
+                            Comparator.nullsLast(Comparator.reverseOrder()))),
+            Field.LAST_UPDATED, Map.of(
+                    Order.ASCENDING, Comparator.comparing(Contact::getLastUpdated, Comparator.naturalOrder()),
+                    Order.DESCENDING, Comparator.comparing(Contact::getLastUpdated, Comparator.reverseOrder())));
 
     private final Comparator<Contact> comparator;
 
