@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.timepoint.TimePoint;
@@ -72,8 +74,8 @@ public class LastUpdatedTest {
 
     @Test
     public void compareTo_chronologicalValues_ordersByTime() {
-        LastUpdated earlier = new LastUpdated("22/02/26");
-        LastUpdated later = new LastUpdated("23/02/26");
+        LastUpdated earlier = new LastUpdated(TimePoint.of(LocalDateTime.of(2026, 2, 22, 9, 0)));
+        LastUpdated later = new LastUpdated(TimePoint.of(LocalDateTime.of(2026, 2, 23, 9, 0)));
 
         assertTrue(earlier.compareTo(later) < 0);
         assertTrue(later.compareTo(earlier) > 0);
