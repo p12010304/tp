@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ClearCommand;
+import seedu.address.logic.commands.CloseViewCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditContactDescriptor;
@@ -104,6 +105,26 @@ public class AddressBookParserTest {
         ViewCommand command = (ViewCommand) parser.parseCommand(
             ViewCommand.COMMAND_WORD + " " + INDEX_FIRST_CONTACT.getOneBased());
         assertEquals(new ViewCommand(INDEX_FIRST_CONTACT), command);
+    }
+
+    @Test
+    public void parseCommand_closeView() throws Exception {
+        assertTrue(parser.parseCommand(CloseViewCommand.COMMAND_WORD + " "
+                + CloseViewCommand.COMMAND_SUBWORD) instanceof CloseViewCommand);
+    }
+
+    @Test
+    public void parseCommand_closeWithoutView_throwsParseException() {
+        assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                CloseViewCommand.MESSAGE_USAGE), ()
+                -> parser.parseCommand(CloseViewCommand.COMMAND_WORD));
+    }
+
+    @Test
+    public void parseCommand_closeWithWrongSubword_throwsParseException() {
+        assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                CloseViewCommand.MESSAGE_USAGE), ()
+                -> parser.parseCommand(CloseViewCommand.COMMAND_WORD + " wrong"));
     }
 
     @Test

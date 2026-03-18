@@ -44,7 +44,8 @@ public class NoteAddCommand extends NoteCommand {
         Contact contactToEdit = lastShownList.get(index.getZeroBased());
         List<Note> newNotes = new ArrayList<>(contactToEdit.getNotes());
         newNotes.add(note);
-        Contact editedContact = new Contact(contactToEdit.getName(), contactToEdit.getPhone(), contactToEdit.getEmail(),
+        Contact editedContact = new Contact(contactToEdit.getId(), contactToEdit.getName(),
+                contactToEdit.getPhone(), contactToEdit.getEmail(),
                 contactToEdit.getAddress(), newNotes, contactToEdit.getTags());
 
         model.setContact(contactToEdit, editedContact);

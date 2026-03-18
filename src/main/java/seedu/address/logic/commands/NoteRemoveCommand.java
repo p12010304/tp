@@ -49,7 +49,8 @@ public class NoteRemoveCommand extends NoteCommand {
         int numExistingLines = newNotes.size();
         newNotes = newNotes.subList(Math.min(numLines, numExistingLines), numExistingLines);
 
-        Contact editedContact = new Contact(contactToEdit.getName(), contactToEdit.getPhone(), contactToEdit.getEmail(),
+        Contact editedContact = new Contact(contactToEdit.getId(), contactToEdit.getName(),
+            contactToEdit.getPhone(), contactToEdit.getEmail(),
             contactToEdit.getAddress(), newNotes, contactToEdit.getTags());
 
         model.setContact(contactToEdit, editedContact);

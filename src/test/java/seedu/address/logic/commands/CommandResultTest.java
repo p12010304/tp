@@ -60,7 +60,8 @@ public class CommandResultTest {
         CommandResult commandResult = new CommandResult("feedback");
         String expected = CommandResult.class.getCanonicalName() + "{feedbackToUser="
                 + commandResult.getFeedbackToUser() + ", showHelp=" + commandResult.isShowHelp()
-                + ", exit=" + commandResult.isExit() + ", contactToView=null}";
+                + ", exit=" + commandResult.isExit() + ", contactToView=null"
+                + ", hideContactDetail=false}";
         assertEquals(expected, commandResult.toString());
     }
 
@@ -125,5 +126,41 @@ public class CommandResultTest {
         // different contactToView value -> returns different hashcode
         assertNotEquals(commandResult.hashCode(),
                 new CommandResult("feedback", false, false, null).hashCode());
+    }
+
+    @Test
+    public void isHideContactDetail_defaultFalse() {
+        CommandResult commandResult = new CommandResult("feedback");
+        assertFalse(commandResult.isHideContactDetail());
+    }
+
+    @Test
+    public void isHideContactDetail_setTrue() {
+        CommandResult commandResult = new CommandResult("feedback", false, false, null, true);
+        assertTrue(commandResult.isHideContactDetail());
+    }
+
+    @Test
+    public void equals_withHideContactDetail() {
+        CommandResult commandResult = new CommandResult("feedback", false, false, null, true);
+
+        // same values -> returns true
+        assertTrue(commandResult.equals(new CommandResult("feedback", false, false, null, true)));
+
+        // different hideContactDetail -> returns false
+        assertFalse(commandResult.equals(new CommandResult("feedback", false, false, null, false)));
+    }
+
+    @Test
+    public void hashcode_withHideContactDetail() {
+        CommandResult commandResult = new CommandResult("feedback", false, false, null, true);
+
+        // same values -> returns same hashcode
+        assertEquals(commandResult.hashCode(),
+                new CommandResult("feedback", false, false, null, true).hashCode());
+
+        // different hideContactDetail -> returns different hashcode
+        assertNotEquals(commandResult.hashCode(),
+                new CommandResult("feedback", false, false, null, false).hashCode());
     }
 }

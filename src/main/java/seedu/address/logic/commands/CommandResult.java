@@ -24,21 +24,33 @@ public class CommandResult {
     /** Contact to view in detail panel. */
     private final Contact contactToView;
 
+    /** Whether to hide the contact detail panel. */
+    private final boolean hideContactDetail;
+
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
     public CommandResult(String feedbackToUser, boolean showHelp, boolean exit) {
-        this(feedbackToUser, showHelp, exit, null);
+        this(feedbackToUser, showHelp, exit, null, false);
     }
 
     /**
      * Constructs a {@code CommandResult} with the specified fields including contact to view.
      */
     public CommandResult(String feedbackToUser, boolean showHelp, boolean exit, Contact contactToView) {
+        this(feedbackToUser, showHelp, exit, contactToView, false);
+    }
+
+    /**
+     * Constructs a {@code CommandResult} with all fields specified.
+     */
+    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit,
+            Contact contactToView, boolean hideContactDetail) {
         this.feedbackToUser = requireNonNull(feedbackToUser);
         this.showHelp = showHelp;
         this.exit = exit;
         this.contactToView = contactToView;
+        this.hideContactDetail = hideContactDetail;
     }
 
     /**
@@ -46,7 +58,7 @@ public class CommandResult {
      * and other fields set to their default value.
      */
     public CommandResult(String feedbackToUser) {
-        this(feedbackToUser, false, false, null);
+        this(feedbackToUser, false, false, null, false);
     }
 
     public String getFeedbackToUser() {
@@ -75,6 +87,13 @@ public class CommandResult {
         return contactToView != null;
     }
 
+    /**
+     * Returns true if the contact detail panel should be hidden.
+     */
+    public boolean isHideContactDetail() {
+        return hideContactDetail;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -90,12 +109,13 @@ public class CommandResult {
         return feedbackToUser.equals(otherCommandResult.feedbackToUser)
                 && showHelp == otherCommandResult.showHelp
                 && exit == otherCommandResult.exit
-                && Objects.equals(contactToView, otherCommandResult.contactToView);
+                && Objects.equals(contactToView, otherCommandResult.contactToView)
+                && hideContactDetail == otherCommandResult.hideContactDetail;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(feedbackToUser, showHelp, exit, contactToView);
+        return Objects.hash(feedbackToUser, showHelp, exit, contactToView, hideContactDetail);
     }
 
     @Override
@@ -105,6 +125,7 @@ public class CommandResult {
                 .add("showHelp", showHelp)
                 .add("exit", exit)
                 .add("contactToView", contactToView)
+                .add("hideContactDetail", hideContactDetail)
                 .toString();
     }
 
