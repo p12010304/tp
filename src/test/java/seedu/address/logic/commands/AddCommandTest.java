@@ -170,7 +170,12 @@ public class AddCommandTest {
         }
 
         @Override
-        public void copySnapshot(Snapshot snapshot) {
+        public void saveSnapshot(String snapshotName) {
+            return;
+        }
+
+        @Override
+        public String changeSnapshot(int stepsToMove) throws Exception {
             throw new AssertionError("This method should not be called.");
         }
     }

@@ -24,40 +24,21 @@ public class CommandResult {
     /** Contact to view in detail panel. */
     private final Contact contactToView;
 
-    /** Number of steps to shift forward or backward. */
-    private final int snapshotSteps;
-
-    /**
-     * Constructs a {@code CommandResult} with the specified {@code stepsToShift}.
-     */
-    public CommandResult(String feedbackToUser, int snapshotSteps) {
-        this(feedbackToUser, false, false, null, snapshotSteps);
-    }
-
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
     public CommandResult(String feedbackToUser, boolean showHelp, boolean exit) {
-        this(feedbackToUser, showHelp, exit, null, 0);
+        this(feedbackToUser, showHelp, exit, null);
     }
-
-    /**
-     * Constructs a {@code CommandResult} with the specified fields without the number of snapshots to move
-     */
-    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit, Contact contactToView) {
-        this(feedbackToUser, showHelp, exit, contactToView, 0);
-    }
-
     /**
      * Constructs a {@code CommandResult} with the specified fields including contact to view.
      */
     public CommandResult(
-            String feedbackToUser, boolean showHelp, boolean exit, Contact contactToView, int snapshotSteps) {
+            String feedbackToUser, boolean showHelp, boolean exit, Contact contactToView) {
         this.feedbackToUser = requireNonNull(feedbackToUser);
         this.showHelp = showHelp;
         this.exit = exit;
         this.contactToView = contactToView;
-        this.snapshotSteps = snapshotSteps;
     }
 
     /**
@@ -65,7 +46,7 @@ public class CommandResult {
      * and other fields set to their default value.
      */
     public CommandResult(String feedbackToUser) {
-        this(feedbackToUser, false, false, null, 0);
+        this(feedbackToUser, false, false, null);
     }
 
     public String getFeedbackToUser() {
@@ -78,10 +59,6 @@ public class CommandResult {
 
     public boolean isExit() {
         return exit;
-    }
-
-    public int getSnapshotSteps() {
-        return snapshotSteps;
     }
 
     /**

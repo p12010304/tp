@@ -22,6 +22,11 @@ public class UndoCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        return new CommandResult(MESSAGE_UNDO_SUCCESS, -1);
+        try {
+            String undoneCommand = model.changeSnapshot(-1);
+            return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, undoneCommand));
+        } catch (Exception e) {
+            return new CommandResult(e.getMessage());
+        }
     }
 }

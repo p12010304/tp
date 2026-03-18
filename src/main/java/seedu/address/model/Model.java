@@ -94,10 +94,18 @@ public interface Model {
     /**
      * Returns a {@code Snapshot} of the model for undo/redo features.
      */
-    Snapshot getSnapshot();
+    public Snapshot getSnapshot();
 
     /**
-     * Copies data from a {@code Snapshot} for undo/redo features.
+     * Saves a {@code Snapshot} internally for undo/redo features
+     * @param snapshotName Name of the snapshot.
      */
-    void copySnapshot(Snapshot snapshot);
+    void saveSnapshot(String snapshotName);
+
+    /**
+     * Moves the model forward or backwards by the indicated number of steps.
+     * @param stepsToMove Number of snapshots to move the model by.
+     * @return Name of the snapshot model successfully moved to.
+     */
+    String changeSnapshot(int stepsToMove) throws Exception;
 }

@@ -45,8 +45,10 @@ public class NoteClearCommand extends NoteCommand {
 
         model.setContact(contactToEdit, editedContact);
         model.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
+        String feedback = generateSuccessMessage(editedContact);
+        model.saveSnapshot(feedback);
 
-        return new CommandResult(generateSuccessMessage(editedContact));
+        return new CommandResult(feedback);
     }
 
     /**

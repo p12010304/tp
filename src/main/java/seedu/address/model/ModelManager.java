@@ -5,26 +5,35 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.util.Pair;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.contact.Contact;
 
 /**
  * Represents the in-memory model of the address book data.
  */
 public class ModelManager implements Model {
+    public static final String UNDO_LIMIT_MESSAGE = "Model already at earliest snapshot.";
+    public static final String REDO_LIMIT_MESSAGE = "Model already at newest snapshot.";
+
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
+
+    private final List<Pair<String, Snapshot>> snapshots;
 
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Contact> filteredContacts;
 
     private Predicate<Contact> filterPredicate;
+    private int snapshotPosition;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -38,6 +47,10 @@ public class ModelManager implements Model {
         this.userPrefs = new UserPrefs(userPrefs);
         filteredContacts = new FilteredList<>(this.addressBook.getContactList());
         filterPredicate = PREDICATE_SHOW_ALL_CONTACTS;
+
+        snapshots = new ArrayList<>();
+        snapshots.add(new Pair<String, Snapshot>("", getSnapshot()));
+        snapshotPosition = 0;
     }
 
     public ModelManager() {
@@ -154,8 +167,7 @@ public class ModelManager implements Model {
     /**
      * Copies data from a {@code Snapshot} for undo/redo features.
      */
-    @Override
-    public void copySnapshot(Snapshot snapshot) {
+    private void copySnapshot(Snapshot snapshot) {
         requireNonNull(snapshot);
         addressBook.setContacts(snapshot.contactList());
         setUserPrefs(snapshot.userPrefs());
@@ -163,6 +175,45 @@ public class ModelManager implements Model {
         filterPredicate = snapshot.filterPredicate();
     }
 
+    /**
+     * Saves a {@code Snapshot} internally for undo/redo features
+     * @param snapshotName Name of the snapshot.
+     */
+    public void saveSnapshot(String snapshotName) {
+        snapshotPosition++;
+        if (snapshotPosition < snapshots.size()) {
+            snapshots.subList(snapshotPosition, snapshots.size()).clear();
+        }
+        snapshots.add(snapshotPosition, new Pair<String, Snapshot>(snapshotName, getSnapshot()));
+    }
+
+    /**
+     * Moves the model forward or backwards by the indicated number of steps.
+     * @param stepsToMove Number of snapshots to move the model by.
+     * @return Name of the snapshot model successfully moved to.
+     */
+    public String changeSnapshot(int stepsToMove) throws CommandException {
+        assert(stepsToMove != 0);
+        if (stepsToMove > 0) {
+            int snapshotsToShift = Math.min(snapshots.size() - snapshotPosition - 1, stepsToMove);
+            if (snapshotsToShift > 0) {
+                snapshotPosition += snapshotsToShift;
+                copySnapshot(snapshots.get(snapshotPosition).getValue());
+                return snapshots.get(snapshotPosition).getKey();
+            } else {
+                throw new CommandException(REDO_LIMIT_MESSAGE);
+            }
+        } else {
+            int snapshotsToShift = Math.min(snapshotPosition, -stepsToMove);
+            if (snapshotsToShift > 0) {
+                snapshotPosition -= snapshotsToShift;
+                copySnapshot(snapshots.get(snapshotPosition).getValue());
+                return snapshots.get(snapshotPosition + 1).getKey();
+            } else {
+                throw new CommandException(UNDO_LIMIT_MESSAGE);
+            }
+        }
+    }
     //=========== Override ================================================================================
 
     @Override

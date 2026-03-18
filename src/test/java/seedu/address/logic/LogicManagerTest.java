@@ -79,7 +79,7 @@ public class LogicManagerTest {
     @Test
     public void execute_undoCommand_hitLimit() throws Exception {
         String undoCommand = UndoCommand.COMMAND_WORD;
-        assertCommandSuccess(undoCommand, LogicManager.UNDO_LIMIT_MESSAGE, model);
+        assertCommandSuccess(undoCommand, ModelManager.UNDO_LIMIT_MESSAGE, model);
     }
 
     @Test
@@ -100,13 +100,13 @@ public class LogicManagerTest {
         Snapshot undoCommandSnapshot = model.getSnapshot();
         assertTrue(initialSnapshot.equals(undoCommandSnapshot));
 
-        assertCommandSuccess(undoCommand, LogicManager.UNDO_LIMIT_MESSAGE, model);
+        assertCommandSuccess(undoCommand, ModelManager.UNDO_LIMIT_MESSAGE, model);
     }
 
     @Test
     public void execute_redoCommand_hitLimit() throws Exception {
         String redoCommand = RedoCommand.COMMAND_WORD;
-        assertCommandSuccess(redoCommand, LogicManager.REDO_LIMIT_MESSAGE, model);
+        assertCommandSuccess(redoCommand, ModelManager.REDO_LIMIT_MESSAGE, model);
     }
 
     @Test
@@ -126,7 +126,7 @@ public class LogicManagerTest {
         Snapshot redoCommandSnapshot = model.getSnapshot();
         assertTrue(postCommandSnapshot.equals(redoCommandSnapshot));
 
-        assertCommandSuccess(redoCommand, LogicManager.REDO_LIMIT_MESSAGE, model);
+        assertCommandSuccess(redoCommand, ModelManager.REDO_LIMIT_MESSAGE, model);
     }
 
     @Test
