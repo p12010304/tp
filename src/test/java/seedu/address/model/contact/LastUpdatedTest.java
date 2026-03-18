@@ -2,6 +2,7 @@ package seedu.address.model.contact;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -85,5 +86,17 @@ public class LastUpdatedTest {
 
         assertTrue(alpha.compareTo(zeta) < 0);
         assertTrue(zeta.compareTo(alpha) > 0);
+    }
+
+    @Test
+    public void compareTo_nullOther_throwsNullPointerException() {
+        LastUpdated value = new LastUpdated("22/02/26");
+        assertThrows(NullPointerException.class, () -> value.compareTo(null));
+    }
+
+    @Test
+    public void now_returnsCurrentTimePoint() {
+        LastUpdated value = LastUpdated.now();
+        assertNotNull(value.value);
     }
 }
