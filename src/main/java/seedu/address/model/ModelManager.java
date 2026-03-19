@@ -23,8 +23,9 @@ public class ModelManager implements Model {
 
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
-    private final ObservableList<Contact> masterContacts;
-    private ObservableList<Contact> displayedContacts;
+    private final ObservableList<Contact> displayedContacts;
+    private final FilteredList<Contact> filteredContacts;
+    private final SortedList<Contact> sortedContacts;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -36,8 +37,9 @@ public class ModelManager implements Model {
 
         this.addressBook = new AddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
-        this.masterContacts = this.addressBook.getContactList();
-        this.displayedContacts = this.masterContacts;
+        this.filteredContacts = new FilteredList<>(this.addressBook.getContactList());
+        this.sortedContacts = new SortedList<>(this.filteredContacts);
+        this.displayedContacts = this.sortedContacts;
     }
 
     public ModelManager() {
@@ -134,25 +136,27 @@ public class ModelManager implements Model {
 
     @Override
     public void resetDisplayedContactList() {
-        displayedContacts = masterContacts;
+        filteredContacts.setPredicate(null);
+        sortedContacts.setComparator(null);
     }
 
     @Override
     public void filterDisplayedContactList(Predicate<Contact> predicate) {
         requireNonNull(predicate);
 
-        final FilteredList<Contact> filteredContacts = new FilteredList<>(displayedContacts);
-        filteredContacts.setPredicate(predicate);
-        displayedContacts = filteredContacts;
+        @SuppressWarnings("unchecked")
+        Predicate<Contact> currentPredicate = (Predicate<Contact>) filteredContacts.getPredicate();
+        filteredContacts.setPredicate(currentPredicate == null ? predicate : currentPredicate.and(predicate));
     }
 
     @Override
     public void sortDisplayedContactList(Comparator<Contact> comparator) {
         requireNonNull(comparator);
 
-        final SortedList<Contact> sortedContacts = new SortedList<>(displayedContacts);
-        sortedContacts.setComparator(comparator);
-        displayedContacts = sortedContacts;
+        @SuppressWarnings("unchecked")
+        Comparator<Contact> currentComparator = (Comparator<Contact>) sortedContacts.getComparator();
+        sortedContacts
+                .setComparator(currentComparator == null ? comparator : currentComparator.thenComparing(comparator));
     }
 
     @Override
