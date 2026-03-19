@@ -23,6 +23,7 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.Snapshot;
 import seedu.address.model.contact.Contact;
 import seedu.address.testutil.ContactBuilder;
 
@@ -171,6 +172,21 @@ public class AddCommandTest {
 
         @Override
         public void filterDisplayedContactList(Predicate<Contact> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public Snapshot getSnapshot() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void saveSnapshot(String snapshotName) {
+            return;
+        }
+
+        @Override
+        public String moveSnapshot(int offset) throws IndexOutOfBoundsException {
             throw new AssertionError("This method should not be called.");
         }
     }

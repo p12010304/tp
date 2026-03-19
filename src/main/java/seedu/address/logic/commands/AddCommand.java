@@ -71,7 +71,10 @@ public class AddCommand extends Command {
         }
 
         model.addContact(toAdd);
-        return new CommandResult(String.format(message, Messages.format(toAdd)));
+
+        String feedback = String.format(message, Messages.format(toAdd));
+        model.saveSnapshot(feedback);
+        return new CommandResult(feedback);
     }
 
     @Override

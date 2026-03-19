@@ -45,8 +45,11 @@ public class FindCommand extends Command {
         requireNonNull(model);
         model.resetDisplayedContactList();
         model.filterDisplayedContactList(predicate);
-        return new CommandResult(
-                String.format(Messages.MESSAGE_CONTACTS_LISTED_OVERVIEW, model.getDisplayedContactList().size()));
+
+        String feedback =
+                String.format(Messages.MESSAGE_CONTACTS_LISTED_OVERVIEW, model.getDisplayedContactList().size());
+        model.saveSnapshot(feedback);
+        return new CommandResult(feedback);
     }
 
     @Override

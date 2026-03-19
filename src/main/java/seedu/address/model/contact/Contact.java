@@ -41,16 +41,6 @@ public class Contact {
      */
     public Contact(
             Name name, Optional<Phone> phone, Optional<Email> email,
-            Optional<Address> address, List<Note> notes, Set<Tag> tags) {
-        this(UUID.randomUUID(), name, phone, email, address, Optional.empty(), LastUpdated.now(),
-                notes, tags);
-    }
-
-    /**
-     * Every field must be present and not null. Generates a new unique ID.
-     */
-    public Contact(
-            Name name, Optional<Phone> phone, Optional<Email> email,
             Optional<Address> address, Optional<LastContacted> lastContacted,
             List<Note> notes, Set<Tag> tags) {
         this(UUID.randomUUID(), name, phone, email, address, lastContacted, LastUpdated.now(),
@@ -58,7 +48,7 @@ public class Contact {
     }
 
     /**
-     * Creates a Contact with a specified ID. Used when preserving identity across edits.
+     * Creates a Contact with all fields except {@link Contact#lastUpdated} specified. Used for editing contacts.
      * The last updated time is auto-set to now.
      */
     public Contact(
@@ -69,7 +59,7 @@ public class Contact {
     }
 
     /**
-     * Creates a Contact with a specified ID and last updated time.
+     * Creates a Contact with all fields specified.
      */
     public Contact(
             UUID id, Name name, Optional<Phone> phone, Optional<Email> email,
@@ -88,19 +78,15 @@ public class Contact {
         this.tags.addAll(tags);
     }
 
-    /**
-     * Creates a Contact with a specified ID and optional last updated time.
-     * Missing values are normalized to {@code LastUpdated.now()}.
-     */
-    public Contact(
-            UUID id, Name name, Optional<Phone> phone, Optional<Email> email,
-            Optional<Address> address, Optional<LastContacted> lastContacted,
-            Optional<LastUpdated> lastUpdated, List<Note> notes, Set<Tag> tags) {
-        this(id, name, phone, email, address, lastContacted, lastUpdated.orElse(LastUpdated.now()), notes, tags);
-    }
-
     public UUID getId() {
         return id;
+    }
+
+    /**
+     * Creates a new instance of {@code Contact} with the same data as this {@code Contact}.
+     */
+    public Contact copy() {
+        return new Contact(id, name, phone, email, address, lastContacted, lastUpdated, notes, tags);
     }
 
     public Name getName() {

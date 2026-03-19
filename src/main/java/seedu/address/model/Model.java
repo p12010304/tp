@@ -99,4 +99,22 @@ public interface Model {
      * @throws NullPointerException if {@code comparator} is null.
      */
     void sortDisplayedContactList(Comparator<Contact> comparator);
+
+    /**
+     * Returns a {@code Snapshot} of the current model for undo/redo features.
+     */
+    public Snapshot getSnapshot();
+
+    /**
+     * Saves a {@code Snapshot} internally for undo/redo features
+     * @param description Description of the snapshot.
+     */
+    public void saveSnapshot(String description);
+
+    /**
+     * Moves the model forward or backwards by the indicated number of steps.
+     * @param offset Number of snapshots to move the model by.
+     * @return Name of the snapshot model successfully moved to.
+     */
+    public String moveSnapshot(int offset) throws IndexOutOfBoundsException;
 }

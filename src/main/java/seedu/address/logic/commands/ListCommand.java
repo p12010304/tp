@@ -17,7 +17,11 @@ public class ListCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
+
         model.resetDisplayedContactList();
-        return new CommandResult(MESSAGE_SUCCESS);
+
+        String feedback = MESSAGE_SUCCESS;
+        model.saveSnapshot(feedback);
+        return new CommandResult(feedback);
     }
 }

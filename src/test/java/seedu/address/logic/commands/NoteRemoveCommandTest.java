@@ -35,7 +35,7 @@ public class NoteRemoveCommandTest {
 
         Contact contactToEdit = model.getDisplayedContactList().get(0);
         Contact editedContact = new Contact(contactToEdit.getName(), contactToEdit.getPhone(), contactToEdit.getEmail(),
-                contactToEdit.getAddress(), NOTES, contactToEdit.getTags());
+                contactToEdit.getAddress(), contactToEdit.getLastContacted(), NOTES, contactToEdit.getTags());
 
         String expectedMessage = String.format(NoteRemoveCommand.MESSAGE_REMOVE_NOTES_SUCCESS,
                 Messages.format(contactToEdit));
