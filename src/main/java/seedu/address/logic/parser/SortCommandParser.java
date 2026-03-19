@@ -44,15 +44,15 @@ public class SortCommandParser implements Parser<SortCommand> {
         ContactComparatorSet combinedComparator = new ContactComparatorSet();
 
         for (Prefix prefix : PREFIX_FIELD_MAP.keySet()) {
-            Optional<String> values = argMultimap.getValue(prefix);
+            Optional<String> value = argMultimap.getValue(prefix);
 
-            if (values.isEmpty()) {
+            if (value.isEmpty()) {
                 continue;
             }
 
             combinedComparator.addComparator(new ContactComparator(
                 PREFIX_FIELD_MAP.get(prefix),
-                values.get().equals(SortCommand.DESCENDING_KEYWORD)
+                value.get().equals(SortCommand.DESCENDING_KEYWORD)
                     ? ContactComparator.Order.DESCENDING
                     : ContactComparator.Order.ASCENDING
             ));
