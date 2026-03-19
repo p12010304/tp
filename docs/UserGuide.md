@@ -74,7 +74,7 @@ Business to Business for You (B2B4U) is a **desktop app for managing contacts, o
   ![unknown command](images/unknownCommand.png)
 </box>
 
-### Viewing help : `help`
+### Viewing help: `help`
 
 Shows a message explaining how to access the help page.
 
@@ -107,7 +107,7 @@ Examples:
 
 ![add contact](images/addContact.png)
 
-### Listing all contacts : `list`
+### Listing all contacts: `list`
 
 Shows a list of all contacts in the address book.
 
@@ -115,7 +115,7 @@ Format: `list`
 
 ![list contacts](images/listContacts.png)
 
-### Viewing a specific contact : `view`
+### Viewing a specific contact: `view`
 
 Displays a specific contact's full details in a side panel.
 
@@ -131,7 +131,7 @@ Example:
 
 ![view contact](images/viewContact.png)
 
-### Closing the contact detail panel : `close view`
+### Closing the contact detail panel: `close view`
 
 Closes the currently open contact detail panel and returns to the main list view.
 
@@ -145,7 +145,7 @@ Example:
 
 ![close view](images/closeView.png)
 
-### Editing a contact : `edit`
+### Editing a contact: `edit`
 
 Edits an existing contact in the address book.
 
@@ -165,7 +165,7 @@ Examples:
 
 ![edit contact](images/editContact.png)
 
-### Adding notes/reminders to a contact : `note`
+### Adding notes/reminders to a contact: `note`
 
 Manages notes and reminders for an existing contact in the address book.
 
@@ -228,7 +228,7 @@ Examples:
 
 ![find contacts](images/findContacts.png)
 
-### Deleting a contact : `delete`
+### Deleting a contact: `delete`
 
 Deletes the specified contact from the address book.
 
@@ -244,7 +244,7 @@ Examples:
 
 ![delete contact](images/deleteContact.png)
 
-### Undoing a command : `undo`
+### Undoing a command: `undo`
 
 Reverts the last executed command that modified data.
 
@@ -260,7 +260,7 @@ Examples:
 
 ![undo command](images/undoCommand.png)
 
-### Redoing a command : `redo`
+### Redoing a command: `redo`
 
 Reverses the effect of an `undo` command, effectively re-applying the previously undone action.
 
@@ -276,7 +276,7 @@ Examples:
 
 ![redo command](images/redoCommand.png)
 
-### Sorting contacts : `sort`
+### Sorting contacts: `sort`
 
 Sorts the currently displayed contacts by the specified field(s).
 
@@ -292,7 +292,7 @@ Examples:
 * `sort lu/` sorts contacts by when they were last updated.
 * `sort n/ t/vip` sorts contacts alphabetically by name, with contacts tagged `vip` shown first.
 
-### Clearing all entries : `clear`
+### Clearing all entries: `clear`
 
 Clears all entries from the address book.
 
@@ -300,7 +300,7 @@ Format: `clear`
 
 ![clear](images/clear.png)
 
-### Exiting the program : `exit`
+### Exiting the program: `exit`
 
 Exits the program.
 
@@ -343,20 +343,20 @@ _Details coming soon ..._
 
 ## Command summary
 
-Action            | Format, Examples
-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-**Add**           | `add n/NAME [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [lc/LAST_CONTACTED] [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-**Clear**         | `clear`
-**Close View**    | `close view`
-**Delete**        | `delete INDEX`<br> e.g., `delete 3`
-**Edit**          | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [lc/LAST_CONTACTED] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Note (add)**    | `note INDEX NOTE [on/TIME]` <br> e.g., `note 1 To meet in February on/15 Apr`
-**Note (remove)** | `note INDEX c/LINES_TO_REMOVE` <br> e.g., `note 1 c/2`
-**Note (clear)**  | `note INDEX ca/` <br> e.g., `note 1 ca/`
-**Find**          | `find [KEYWORD]… [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…`<br> e.g., `find n/James t/friends`
-**List**          | `list`
-**Redo**          | `redo`
-**Sort**          | `sort [n/] [p/] [e/] [a/] [lu/] [lc/] [t/TAG_NAME]…` <br> e.g., `sort n/`
-**Undo**          | `undo`
-**View**          | `view INDEX` <br> e.g., `view 1`
-**Help**          | `help`
+| Action             | Format, Examples                                                                                                                                                                                |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Help**           | `help`                                                                                                                                                                                          |
+| **Add contact**    | `add n/NAME [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [lc/LAST_CONTACTED] [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague` |
+| **Edit contact**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [lc/LAST_CONTACTED] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`                                                 |
+| **Delete contact** | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                                             |
+| **Clear contacts** | `clear`                                                                                                                                                                                         |
+| **Note (add)**     | `note INDEX NOTE [on/TIME]` <br> e.g., `note 1 To meet in February on/15 Apr`                                                                                                                   |
+| **Note (remove)**  | `note INDEX c/LINES_TO_REMOVE` <br> e.g., `note 1 c/2`                                                                                                                                          |
+| **Note (clear)**   | `note INDEX ca/` <br> e.g., `note 1 ca/`                                                                                                                                                        |
+| **List contacts**           | `list`                                                                                                                                                                                          |
+| **Find contacts**           | `find [KEYWORD]… [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…`<br> e.g., `find n/James t/friends`                                                                                          |
+| **Sort contacts**           | `sort [n/] [p/] [e/] [a/] [lu/] [lc/] [t/TAG_NAME]…` <br> e.g., `sort n/`                                                                                                                       |
+| **Undo**           | `undo`                                                                                                                                                                                          |
+| **Redo**           | `redo`                                                                                                                                                                                          |
+| **View contact**           | `view INDEX` <br> e.g., `view 1`                                                                                                                                                                |
+| **Close view**     | `close view`                                                                                                                                                                                    |
