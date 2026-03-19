@@ -4,8 +4,11 @@ import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Orientation;
+import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.contact.Contact;
@@ -19,6 +22,8 @@ public class ContactListPanel extends UiPart<Region> {
 
     @FXML
     private ListView<Contact> contactListView;
+
+    private ScrollBar scrollBar;
 
     /**
      * Creates a {@code ContactListPanel} with the given {@code ObservableList}.
@@ -47,11 +52,28 @@ public class ContactListPanel extends UiPart<Region> {
     }
 
     /**
+     * Sets up the custom scroll bar functions of {@code ContactListPanel};
+     */
+    public void setUp() {
+        for (Node node : contactListView.lookupAll(".scroll-bar")) {
+            if (node instanceof ScrollBar) {
+                final ScrollBar bar = (ScrollBar) node;
+                if (bar.getOrientation().equals(Orientation.VERTICAL)) {
+                    scrollBar = bar;
+                }
+            }
+        }
+    }
+
+    /**
      * Scrolls the list to the top.
      */
     public void scrollToTop() {
-        if (contactListView.getItems().size() > 0) {
-            contactListView.scrollTo(0);
+        if (scrollBar == null) {
+            setUp();
+        }
+        if (scrollBar != null) {
+            scrollBar.setValue(scrollBar.getMin());
         }
     }
 
@@ -59,9 +81,11 @@ public class ContactListPanel extends UiPart<Region> {
      * Scrolls the list to the bottom.
      */
     public void scrollToBottom() {
-        int finalIndex = contactListView.getItems().size() - 1;
-        if (finalIndex >= 0) {
-            contactListView.scrollTo(contactListView.getItems().get(finalIndex));
+        if (scrollBar == null) {
+            setUp();
+        }
+        if (scrollBar != null) {
+            scrollBar.setValue(scrollBar.getMax());
         }
     }
 }
