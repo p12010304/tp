@@ -42,7 +42,7 @@ public class MainWindow extends UiPart<Stage> {
     private HelpWindow helpWindow;
     private ReminderWindow reminderWindow;
 
-    // Listeners to track changes in the width of the window and divider position of the split pane
+    /** Listener to keep the split pane divider at the right edge when the detail panel is hidden */
     private final ChangeListener<Number> splitPaneListener;
 
     /** The UUID of the contact currently shown in the detail panel, or null if none. */
@@ -89,7 +89,7 @@ public class MainWindow extends UiPart<Stage> {
 
         helpWindow = new HelpWindow();
 
-        // 
+        // Set up the split pane listener to keep the divider at the right edge when the detail panel is hidden
         splitPaneListener = (obs, oldVal, newVal) -> {
             if (!contactDetailContainer.isVisible()) {
                 splitPane.setDividerPositions(1.0);
