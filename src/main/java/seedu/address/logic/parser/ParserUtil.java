@@ -128,7 +128,7 @@ public class ParserUtil {
         String trimmedTagName = tagName.trim();
         String trimmedTagValue = tagValue.trim();
 
-        if (!Tag.isValidTagName(trimmedTagName)) {
+        if (!RankedTag.isValidTagName(trimmedTagName)) {
             throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
         }
 
