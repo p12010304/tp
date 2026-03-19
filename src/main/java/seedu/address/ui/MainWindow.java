@@ -3,6 +3,7 @@ package seedu.address.ui;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
@@ -40,6 +41,10 @@ public class MainWindow extends UiPart<Stage> {
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
     private ReminderWindow reminderWindow;
+
+    // Listeners to track changes in the width of the window and divider position of the split pane
+    private final ChangeListener<Number> widthListener;
+    private final ChangeListener<Number> dividerListener;
 
     /** The UUID of the contact currently shown in the detail panel, or null if none. */
     private UUID viewedContactId;
@@ -84,6 +89,21 @@ public class MainWindow extends UiPart<Stage> {
         setAccelerators();
 
         helpWindow = new HelpWindow();
+
+        // Set up listeners to ensure the split pane divider is always at the right position when the detail panel is hidden
+        widthListener = (obs, oldVal, newVal) -> {
+            if (!contactDetailContainer.isVisible()) {
+                splitPane.setDividerPositions(1.0);
+            }
+        };
+
+        dividerListener = (obs, oldVal, newVal) -> {
+            if (!contactDetailContainer.isVisible()) {
+                splitPane.setDividerPositions(1.0);
+            }
+        };
+
+        hideContactDetailPanel();
     }
 
     public Stage getPrimaryStage() {
@@ -158,6 +178,8 @@ public class MainWindow extends UiPart<Stage> {
     private void showContactDetailPanel() {
         contactDetailContainer.setVisible(true);
         contactDetailContainer.setManaged(true);
+        splitPane.widthProperty().removeListener(widthListener);
+        splitPane.getDividers().get(0).positionProperty().removeListener(dividerListener);
         splitPane.setDividerPositions(0.6);
     }
 
@@ -167,6 +189,8 @@ public class MainWindow extends UiPart<Stage> {
     private void hideContactDetailPanel() {
         contactDetailContainer.setVisible(false);
         contactDetailContainer.setManaged(false);
+        splitPane.widthProperty().addListener(widthListener);
+        splitPane.getDividers().get(0).positionProperty().addListener(dividerListener);
         splitPane.setDividerPositions(1.0);
         viewedContactId = null;
     }
