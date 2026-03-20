@@ -3,6 +3,8 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_LAST_CONTACTED;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_LAST_UPDATED;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
@@ -27,10 +29,12 @@ public class SortCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Sorts contacts by the given fields "
         + "and displays them as a list with index numbers.\n"
         + "Parameters: "
-        + "[" + PREFIX_NAME + "NAME_KEYWORDS] "
-        + "[" + PREFIX_PHONE + "PHONE_KEYWORDS] "
-        + "[" + PREFIX_EMAIL + "EMAIL_KEYWORDS] "
-        + "[" + PREFIX_ADDRESS + "ADDRESS_KEYWORDS] "
+        + "[" + PREFIX_NAME + "] "
+        + "[" + PREFIX_PHONE + "] "
+        + "[" + PREFIX_EMAIL + "] "
+        + "[" + PREFIX_ADDRESS + "] "
+        + "[" + PREFIX_LAST_UPDATED + "] "
+        + "[" + PREFIX_LAST_CONTACTED + "] "
         + "[" + PREFIX_TAG + "TAG]...\n"
         + "Example: " + COMMAND_WORD + " "
         + PREFIX_NAME + "John Doe "

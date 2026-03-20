@@ -8,7 +8,7 @@ import java.util.Optional;
 import seedu.address.model.tag.RankedTag;
 
 /**
- * Comparator for sorting contacts based on specified field and order.
+ * Comparator for tags within contacts.
  */
 public final class ContactTagComparator implements Comparator<Contact> {
 
