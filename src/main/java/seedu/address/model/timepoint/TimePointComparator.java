@@ -6,11 +6,21 @@ import java.util.Comparator;
  * Contains methods to modify {@code TimePoint} Comparators.
  */
 public abstract class TimePointComparator implements Comparator<TimePoint> {
-    public static Comparator<TimePoint> StringTimePointLast(Comparator<TimePoint> comparator) {
+    /**
+     * Returns a StringTimePoint-friendly comparator that considers {@code StringTimePoint} to be larger than other
+     * {@code TimePoint} types.
+     * @param comparator a Comparator for comparing {@code TimePoint}
+     */
+    public static Comparator<TimePoint> stringTimePointLast(Comparator<TimePoint> comparator) {
         return new StringTimePointLast(comparator);
     }
 
-    public static Comparator<TimePoint> IfSameDayDateTimePointFirst(Comparator<TimePoint> comparator) {
+    /**
+     * Returns a comparator that considers {@code DateTimePoint} to be less than a  {@code DateTimeTimePoint} when
+     * both {@code TimePoint} are on the same day.
+     * @param comparator a Comparator for comparing {@code TimePoint}
+     */
+    public static Comparator<TimePoint> ifSameDayDateTimePointFirst(Comparator<TimePoint> comparator) {
         return new IfSameDayDateTimePointFirst(comparator);
     }
 
@@ -26,8 +36,7 @@ public abstract class TimePointComparator implements Comparator<TimePoint> {
             if (tp1 instanceof StringTimePoint == tp2 instanceof StringTimePoint) {
                 return comparator.compare(tp1, tp2);
             }
-            if (tp1 instanceof StringTimePoint)
-            {
+            if (tp1 instanceof StringTimePoint) {
                 return 1;
             } else {
                 return -1;
@@ -35,7 +44,7 @@ public abstract class TimePointComparator implements Comparator<TimePoint> {
         }
     }
 
-    public static class IfSameDayDateTimePointFirst extends TimePointComparator {
+    private static class IfSameDayDateTimePointFirst extends TimePointComparator {
         private final Comparator<TimePoint> comparator;
 
         public IfSameDayDateTimePointFirst(Comparator<TimePoint> comparator) {

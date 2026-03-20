@@ -95,7 +95,8 @@ public class SortCommandParser implements Parser<SortCommand> {
         }
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
-            PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_LAST_CONTACTED, PREFIX_LAST_UPDATED, PREFIX_TAG);
+            PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
+                PREFIX_LAST_CONTACTED, PREFIX_LAST_UPDATED, PREFIX_TAG);
 
         Comparator<Contact> combinedComparator = makeCombinedComparator(argMultimap);
 

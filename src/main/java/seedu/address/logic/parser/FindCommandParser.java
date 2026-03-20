@@ -3,8 +3,12 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_AFTER;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_BEFORE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_LAST_CONTACTED;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ON;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
@@ -37,7 +41,9 @@ public class FindCommandParser implements Parser<FindCommand> {
         }
 
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
+                ArgumentTokenizer.tokenize(
+                        args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
+                        PREFIX_ADDRESS, PREFIX_TAG, PREFIX_LAST_CONTACTED);
 
         // Checks that all search phrases are non-empty
         validateNonEmptyPhrases(argMultimap);
@@ -69,9 +75,31 @@ public class FindCommandParser implements Parser<FindCommand> {
                 keyword -> cumulativePredicate.addPredicate(contact -> contact.containsInEmail(keyword)));
         argMultimap.getAllValues(PREFIX_ADDRESS).forEach(
                 keyword -> cumulativePredicate.addPredicate(contact -> contact.containsInAddress(keyword)));
+        argMultimap.getAllValues(PREFIX_LAST_CONTACTED).forEach(
+                keyword -> cumulativePredicate.addPredicate(makeLastContactedPredicate(" " + keyword)));
         argMultimap.getAllValues(PREFIX_TAG).forEach(
                 keyword -> cumulativePredicate.addPredicate((Contact contact) -> contact.hasTag(keyword)));
         return cumulativePredicate;
+    }
+    /**
+     * Constructs a cumulative based on the search phrase prefixed by {@code PREFIX_LAST_CONTACTED}.
+     */
+    private ConjunctiveContactPredicateSet makeLastContactedPredicate(String lastContactedValue) {
+        ArgumentMultimap argMultimap =
+                ArgumentTokenizer.tokenize(lastContactedValue, PREFIX_ON, PREFIX_BEFORE, PREFIX_AFTER);
+        ConjunctiveContactPredicateSet lastContactedPredicate = new ConjunctiveContactPredicateSet();
+        splitKeywords(argMultimap.getPreamble()).forEach(
+                keyword -> lastContactedPredicate.addPredicate(contact -> contact.containsInLastContacted(keyword)));
+        argMultimap.getAllValues(PREFIX_ON).stream().map(TimePointParser::toTimePoint).forEach(
+                timePoint -> lastContactedPredicate.addPredicate(
+                        contact -> contact.lastContactedIsSameDayAs(timePoint)));
+        argMultimap.getAllValues(PREFIX_AFTER).stream().map(TimePointParser::toTimePoint).forEach(
+                timePoint -> lastContactedPredicate.addPredicate(
+                        contact -> contact.lastContactedIsAfter(timePoint)));
+        argMultimap.getAllValues(PREFIX_BEFORE).stream().map(TimePointParser::toTimePoint).forEach(
+                timePoint -> lastContactedPredicate.addPredicate(
+                        contact -> contact.lastContactedIsBefore(timePoint)));
+        return lastContactedPredicate;
     }
 
     /**

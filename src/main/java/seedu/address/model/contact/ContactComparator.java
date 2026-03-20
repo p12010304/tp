@@ -4,6 +4,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Comparator;
 import java.util.Map;
+
 import seedu.address.model.timepoint.TimePointComparator;
 
 /**
@@ -20,6 +21,7 @@ public final class ContactComparator implements Comparator<Contact> {
         ASCENDING, DESCENDING
     }
 
+    @SuppressWarnings("unchecked")
     private static final Map<Field, Map<Order, Comparator<Contact>>> COMPARATORS = Map.of(
             Field.NAME, Map.of(
                     Order.ASCENDING, Comparator.comparing(Contact::getName, Comparator.naturalOrder()),
@@ -49,15 +51,15 @@ public final class ContactComparator implements Comparator<Contact> {
                     Comparator.comparing((Contact contact) -> contact.getLastContacted()
                                     .map(lastContacted -> lastContacted.value).orElse(null),
                             Comparator.nullsLast(
-                                    TimePointComparator.StringTimePointLast(
-                                            TimePointComparator.IfSameDayDateTimePointFirst(
+                                    TimePointComparator.stringTimePointLast(
+                                            TimePointComparator.ifSameDayDateTimePointFirst(
                                                     Comparator.naturalOrder())))),
                     Order.DESCENDING,
                     Comparator.comparing((Contact contact) -> contact.getLastContacted()
                                     .map(lastContacted -> lastContacted.value).orElse(null),
                             Comparator.nullsLast(
-                                    TimePointComparator.StringTimePointLast(
-                                            TimePointComparator.IfSameDayDateTimePointFirst(
+                                    TimePointComparator.stringTimePointLast(
+                                            TimePointComparator.ifSameDayDateTimePointFirst(
                                                     Comparator.reverseOrder()))))),
             Field.LAST_UPDATED, Map.of(
                     Order.ASCENDING, Comparator.comparing(Contact::getLastUpdated, Comparator.naturalOrder()),
