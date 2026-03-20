@@ -103,6 +103,10 @@ public class AddCommandParserTest {
         assertParseFailure(parser, LAST_CONTACTED_DESC_AMY + LAST_CONTACTED_DESC_BOB + validExpectedContactString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_LAST_CONTACTED));
 
+        // multiple tags of the same name
+        assertParseFailure(parser, TAG_DESC_FRIEND + validExpectedContactString,
+                Tag.TAGSET_MESSAGE_CONSTRAINTS);
+
         // multiple fields repeated
         assertParseFailure(parser,
                 validExpectedContactString + PHONE_DESC_AMY + EMAIL_DESC_AMY + NAME_DESC_AMY + ADDRESS_DESC_AMY
