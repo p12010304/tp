@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
@@ -93,5 +95,30 @@ public class NoteAddCommandTest {
         expectedModel.setContact(firstContact, editedContact);
 
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_noteWithOutOfRangeIndex_leftAsLiteral() throws CommandException {
+        // @999 is out of range, should be left as literal text
+        Note noteWithBadRef = new Note("talked to @999");
+        NoteAddCommand command = new NoteAddCommand(INDEX_FIRST_CONTACT, noteWithBadRef);
+        CommandResult result = command.execute(model);
+
+        // The note should still contain @999 as-is
+        Contact updated = model.getDisplayedContactList().get(0);
+        Note addedNote = updated.getNotes().get(updated.getNotes().size() - 1);
+        assertTrue(addedNote.value.contains("@999"));
+    }
+
+    @Test
+    public void execute_noteWithNoRefs_noChange() throws CommandException {
+        // Note without any @INDEX references should be added as-is
+        Note plainNote = new Note("no references here");
+        NoteAddCommand command = new NoteAddCommand(INDEX_FIRST_CONTACT, plainNote);
+        command.execute(model);
+
+        Contact updated = model.getDisplayedContactList().get(0);
+        Note addedNote = updated.getNotes().get(updated.getNotes().size() - 1);
+        assertEquals("no references here", addedNote.value);
     }
 }

@@ -115,6 +115,25 @@ public class FindCommandTest {
     }
 
     @Test
+    public void execute_crossRefNoRelatedContacts_returnsNoRelatedMessage() throws CommandException {
+        // Create an address book with one contact that has a unique tag no one else shares
+        AddressBook ab = new AddressBook();
+        Contact uniqueTagContact = new ContactBuilder().withName("Unique Tag Person")
+                .withPhone("91234567").withEmail("unique@example.com")
+                .withTags("uniqueOnlyTag").build();
+        Contact otherContact = new ContactBuilder().withName("Other Person")
+                .withPhone("98765432").withEmail("other@example.com")
+                .withTags("differentTag").build();
+        ab.addContact(uniqueTagContact);
+        ab.addContact(otherContact);
+        Model testModel = new ModelManager(ab, new UserPrefs());
+
+        FindCommand command = new FindCommand(INDEX_FIRST_CONTACT);
+        CommandResult result = command.execute(testModel);
+        assertTrue(result.getFeedbackToUser().contains("No other contacts share tags"));
+    }
+
+    @Test
     public void equals_crossRef() {
         FindCommand findFirst = new FindCommand(INDEX_FIRST_CONTACT);
         FindCommand findSecond = new FindCommand(INDEX_SECOND_CONTACT);
