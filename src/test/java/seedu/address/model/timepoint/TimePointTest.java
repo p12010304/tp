@@ -163,6 +163,9 @@ public class TimePointTest {
         assertFalse(dateTime.isBefore(stringDate));
         assertFalse(dateTime.isBefore(null));
     }
+
+    @SuppressWarnings("unchecked")
+    @Test
     public void compareToTests() {
         TimePoint stringDateFirst = TimePoint.of("ABC");
         TimePoint stringDateSecond = TimePoint.of("DEF");
@@ -172,13 +175,13 @@ public class TimePointTest {
         TimePoint dateTime2 = TimePoint.of(LocalDateTime.of(2024, 5, 10, 15, 0));
 
         assertTrue(stringDateFirst.compareTo(stringDateFirst) == 0);
-        assertTrue(stringDateFirst.compareTo(stringDateSecond) == -1);
+        assertTrue(stringDateFirst.compareTo(stringDateSecond) < 0);
         assertTrue(date1.compareTo(date1) == 0);
-        assertTrue(date1.compareTo(date2) == -1);
-        assertTrue(date2.compareTo(date1) == 1);
+        assertTrue(date1.compareTo(date2) < 0);
+        assertTrue(date2.compareTo(date1) > 0);
         assertTrue(dateTime.compareTo(dateTime) == 0);
-        assertTrue(dateTime.compareTo(dateTime2) == -1);
-        assertTrue(dateTime2.compareTo(dateTime) == 1);
+        assertTrue(dateTime.compareTo(dateTime2) < 0);
+        assertTrue(dateTime2.compareTo(dateTime) > 0);
     }
 
     @Test

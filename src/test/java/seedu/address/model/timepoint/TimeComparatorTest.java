@@ -41,6 +41,16 @@ public class TimeComparatorTest {
         assertEquals(expectedList, timePointList2);
     }
 
+    @Test
+    public void dateTimeLaterTestCompareSameDates() {
+        List<TimePoint> timePointList = Arrays.asList(DATE, DATE);
+        Comparator<TimePoint> comparator =
+                TimePointComparator.ifSameDayDateTimePointFirst(new NeutralComparator());
+        timePointList.sort(comparator);
+        List<TimePoint> expectedList = Arrays.asList(DATE, DATE);
+        assertEquals(expectedList, timePointList);
+    }
+
     private static class NeutralComparator implements Comparator<TimePoint> {
         @Override
         public int compare(TimePoint o1, TimePoint o2) {
