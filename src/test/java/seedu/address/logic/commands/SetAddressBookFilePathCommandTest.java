@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
+import seedu.address.model.UserPrefs;
 
 public class SetAddressBookFilePathCommandTest {
     private static final String FILE_NAME = "new_book";
@@ -18,11 +19,10 @@ public class SetAddressBookFilePathCommandTest {
         Model model = new ModelManager();
         SetAddressBookFilePathCommand setCommand = new SetAddressBookFilePathCommand("new_book");
         CommandResult commandResult = setCommand.execute(model);
-        assertEquals("data\\new_book.json", model.getAddressBookFilePath().toString());
+        assertEquals(UserPrefs.formatAddressBookFilePath("new_book"), model.getAddressBookFilePath());
         assertEquals(
                 String.format(SetAddressBookFilePathCommand.MESSAGE_SUCCESS, "data\\new_book.json"),
                 commandResult.getFeedbackToUser());
-
     }
 
     @Test
