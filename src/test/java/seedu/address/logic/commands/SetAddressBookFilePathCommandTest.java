@@ -1,12 +1,29 @@
 package seedu.address.logic.commands;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
+
 public class SetAddressBookFilePathCommandTest {
     private static final String FILE_NAME = "new_book";
+
+    @Test
+    public void executeTest() throws CommandException {
+        Model model = new ModelManager();
+        SetAddressBookFilePathCommand setCommand = new SetAddressBookFilePathCommand("new_book");
+        CommandResult commandResult = setCommand.execute(model);
+        assertEquals("data\\new_book.json", model.getAddressBookFilePath().toString());
+        assertEquals(
+                String.format(SetAddressBookFilePathCommand.MESSAGE_SUCCESS, "data\\new_book.json"),
+                commandResult.getFeedbackToUser());
+
+    }
 
     @Test
     public void equals() {
