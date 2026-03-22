@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_LAST_CONTACTED;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
@@ -31,14 +32,8 @@ public class FindCommandParser implements Parser<FindCommand> {
     public FindCommand parse(String args) throws ParseException {
         requireNonNull(args);
 
-        // Checks that argument(s) are provided
-        if (args.isBlank()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
-        }
-
-        ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
+                        PREFIX_ADDRESS, PREFIX_TAG, PREFIX_LAST_CONTACTED);
 
         // Checks that all search phrases are non-empty
         validateNonEmptyPhrases(argMultimap);
@@ -59,14 +54,15 @@ public class FindCommandParser implements Parser<FindCommand> {
      * @return the cumulative predicate
      */
     private Predicate<Contact> makeCumulativePredicate(ArgumentMultimap argMultimap) {
-        return new ContactPredicateBuilder()
+        ContactPredicateBuilder predicateBuilder = new ContactPredicateBuilder()
                 .containsKeywords(splitKeywords(argMultimap.getPreamble()))
                 .nameContainsKeywords(argMultimap.getAllValues(PREFIX_NAME))
                 .phoneContainsKeywords(argMultimap.getAllValues(PREFIX_PHONE))
                 .emailContainsKeywords(argMultimap.getAllValues(PREFIX_EMAIL))
                 .addressContainsKeywords(argMultimap.getAllValues(PREFIX_ADDRESS))
                 .tagsHasKeywords(argMultimap.getAllValues(PREFIX_TAG))
-                .build();
+                .addLastContactedPredicate(argMultimap.getAllValues(PREFIX_LAST_CONTACTED));
+        return predicateBuilder.build();
     }
 
     /**

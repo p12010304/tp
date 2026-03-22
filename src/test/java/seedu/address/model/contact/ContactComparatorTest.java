@@ -37,6 +37,7 @@ public class ContactComparatorTest {
                 .withPhone("11111111")
                 .withEmail("alice@test.com")
                 .withAddress("A Street")
+                .withLastContacted("22/02/26")
                 .withLastUpdated("22/02/26")
                 .build();
 
@@ -45,6 +46,7 @@ public class ContactComparatorTest {
                 .withPhone("22222222")
                 .withEmail("bob@test.com")
                 .withAddress("B Street")
+                .withLastContacted("23/02/26")
                 .withLastUpdated("23/02/26")
                 .build();
 
@@ -65,6 +67,7 @@ public class ContactComparatorTest {
                 .withPhone("11111111")
                 .withEmail("alice@test.com")
                 .withAddress("A Street")
+                .withLastContacted("22/02/26")
                 .withLastUpdated("22/02/26")
                 .build();
 
@@ -73,6 +76,7 @@ public class ContactComparatorTest {
                 .withPhone("22222222")
                 .withEmail("bob@test.com")
                 .withAddress("B Street")
+                .withLastContacted("23/02/26")
                 .withLastUpdated("23/02/26")
                 .build();
 

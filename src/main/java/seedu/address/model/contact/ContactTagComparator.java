@@ -9,7 +9,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.RankedTag;
 
 /**
- * Comparator for sorting contacts based on specified field and order.
+ * Comparator for tags within contacts.
  */
 public final class ContactTagComparator extends ContactComparator {
     private final String tag;

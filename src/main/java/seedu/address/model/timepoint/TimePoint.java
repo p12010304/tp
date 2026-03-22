@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
  * Custom time object that can represent a point in time using either string, LocalDate or LocalDateTime
  */
 
-public abstract class TimePoint<T> {
+public abstract class TimePoint<T> implements Comparable<TimePoint<T>> {
     /** Strings for months of the year. */
     public static final String[] MONTHS = {
         "JANUARY",
@@ -99,4 +99,19 @@ public abstract class TimePoint<T> {
      * @return True only if this TimePoint is before other, given they are not stored as a string.
      */
     public abstract boolean isBefore(TimePoint other);
+
+    @Override
+    public int compareTo(TimePoint<T> other) {
+        if (this.equals(other)) {
+            return 0;
+        }
+        if (this.isBefore(other)) {
+            return -1;
+        }
+        if (this.isAfter(other)) {
+            return 1;
+        }
+        // Fallback when both values are non-chronological string timepoints.
+        return value.toString().compareTo(other.value.toString());
+    }
 }

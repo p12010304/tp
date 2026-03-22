@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_LAST_CONTACTED;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_LAST_UPDATED;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -28,6 +29,7 @@ public class SortCommandParser implements Parser<SortCommand> {
         PREFIX_PHONE, ContactFieldComparator.Field.PHONE,
         PREFIX_EMAIL, ContactFieldComparator.Field.EMAIL,
         PREFIX_ADDRESS, ContactFieldComparator.Field.ADDRESS,
+        PREFIX_LAST_CONTACTED, ContactFieldComparator.Field.LAST_CONTACTED,
         PREFIX_LAST_UPDATED, ContactFieldComparator.Field.LAST_UPDATED
     );
 
@@ -90,7 +92,8 @@ public class SortCommandParser implements Parser<SortCommand> {
         }
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
-            PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_LAST_UPDATED, PREFIX_TAG);
+            PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
+                PREFIX_LAST_CONTACTED, PREFIX_LAST_UPDATED, PREFIX_TAG);
 
         if (!argMultimap.getPreamble().isBlank()) {
             System.err.println("Non-empty preamble detected: '" + argMultimap.getPreamble() + "'");

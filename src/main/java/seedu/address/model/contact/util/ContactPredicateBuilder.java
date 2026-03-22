@@ -1,8 +1,17 @@
 package seedu.address.model.contact.util;
 
+import static seedu.address.logic.parser.CliSyntax.PREFIX_AFTER;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_BEFORE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ON;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
+import seedu.address.logic.parser.ArgumentMultimap;
+import seedu.address.logic.parser.ArgumentTokenizer;
+import seedu.address.logic.parser.TimePointParser;
 import seedu.address.model.contact.Contact;
 
 /**
@@ -75,7 +84,46 @@ public class ContactPredicateBuilder {
         return this;
     }
 
+    /**
+     * Adds predicates that search for keywords in the {@code LastContacted} of the {@code Contact}.
+     */
+    public ContactPredicateBuilder addLastContactedPredicate(List<String> lastContactedValues) {
+        for (String lastContactedValue : lastContactedValues) {
+            if (lastContactedValue.isBlank()) {
+                contactPredicates = contactPredicates.and(contact -> contact.getLastContacted().isPresent());
+            }
+            lastContactedValue = " " + lastContactedValue; // Prepend a whitespace to make the prefix parsing work
+            ArgumentMultimap argMultimap =
+                    ArgumentTokenizer.tokenize(lastContactedValue, PREFIX_ON, PREFIX_BEFORE, PREFIX_AFTER);
+            for (String keyword : splitKeywords(argMultimap.getPreamble())) {
+                contactPredicates = contactPredicates.and(contact -> contact.containsInLastContacted(keyword));
+            }
+            for (String onValue : argMultimap.getAllValues(PREFIX_ON)) {
+                contactPredicates = contactPredicates.and(contact -> contact.lastContactedIsSameDayAs(
+                        TimePointParser.toTimePoint(onValue)));
+            }
+            for (String afterValue : argMultimap.getAllValues(PREFIX_AFTER)) {
+                contactPredicates = contactPredicates.and(contact -> contact.lastContactedIsAfter(
+                        TimePointParser.toTimePoint(afterValue)));
+            }
+            for (String beforeValue : argMultimap.getAllValues(PREFIX_BEFORE)) {
+                contactPredicates = contactPredicates.and(contact -> contact.lastContactedIsBefore(
+                        TimePointParser.toTimePoint(beforeValue)));
+            }
+        }
+        return this;
+    }
+
     public Predicate<Contact> build() {
         return contactPredicates;
+    }
+
+    /**
+     * Splits a raw keyword string by whitespace and drops empty tokens.
+     */
+    private List<String> splitKeywords(String rawKeywords) {
+        return Arrays.stream(rawKeywords.trim().split("\\s+"))
+                .filter(keyword -> !keyword.isBlank())
+                .collect(Collectors.toList());
     }
 }

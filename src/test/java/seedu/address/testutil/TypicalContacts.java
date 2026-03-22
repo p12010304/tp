@@ -25,22 +25,21 @@ public class TypicalContacts {
 
     public static final Contact ALICE = new ContactBuilder().withName("Alice Pauline")
             .withAddress("123, Jurong West Ave 6, #08-111").withEmail("alice@example.com")
-            .withPhone("94351253")
-            .withTags("friends:best").build();
+            .withPhone("94351253").withTags("friends:best").build();
     public static final Contact BENSON = new ContactBuilder().withName("Benson Meier")
-            .withAddress("311, Clementi Ave 2, #02-25")
-            .withEmail("johnd@example.com").withPhone("98765432")
-            .withTags("owesMoney", "friends").withNotes("to meet on/tomorrow 15:00").build();
+            .withAddress("311, Clementi Ave 2, #02-25").withEmail("johnd@example.com")
+            .withPhone("98765432").withTags("owesMoney", "friends").withNotes("to meet on/tomorrow 15:00").build();
     public static final Contact CARL = new ContactBuilder().withName("Carl Kurz").withPhone("95352563")
-            .withEmail("heinz@example.com").withAddress("wall street").build();
+            .withEmail("heinz@example.com").withAddress("wall street").withLastContacted("23/02/2026").build();
     public static final Contact DANIEL = new ContactBuilder().withName("Daniel Meier").withPhone("87652533")
-            .withEmail("cornelia@example.com").withAddress("10th street").withTags("friends").build();
+            .withEmail("cornelia@example.com").withAddress("10th street")
+            .withTags("friends").withLastContacted("21/02/2026").build();
     public static final Contact ELLE = new ContactBuilder().withName("Elle Meyer").withPhone("94822224")
-            .withEmail("werner@example.com").withAddress("michegan ave").build();
+            .withEmail("werner@example.com").withAddress("michegan ave").withLastContacted("a year ago").build();
     public static final Contact FIONA = new ContactBuilder().withName("Fiona Kunz").withPhone("94824277")
-            .withEmail("lydia@example.com").withAddress("little tokyo").build();
+            .withEmail("lydia@example.com").withAddress("little tokyo").withLastContacted("22/02/2026 13:00").build();
     public static final Contact GEORGE = new ContactBuilder().withName("George Best").withPhone("94824422")
-            .withEmail("anna@example.com").withAddress("4th street").build();
+            .withEmail("anna@example.com").withAddress("4th street").withLastContacted("22/02/2026 15:00").build();
 
     // Manually added
     public static final Contact HOON = new ContactBuilder().withName("Hoon Meier").withPhone("84824242")

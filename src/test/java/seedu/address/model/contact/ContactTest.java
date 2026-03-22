@@ -14,6 +14,7 @@ import static seedu.address.testutil.TypicalContacts.ALICE;
 import static seedu.address.testutil.TypicalContacts.BOB;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ public class ContactTest {
     private static final Contact JOHN = new ContactBuilder()
             .withName("John Smith").withPhone("94455028").withEmail("john@email.com")
             .withAddress("Block 470, J Street 92").withTags("friends", "contractor")
-            .withNotes("Met in 2024 February.").build();
+            .withNotes("Met in 2024 February.").withLastContacted("22/04/2026").build();
 
     @Test
     public void asObservableList_modifyList_throwsUnsupportedOperationException() {
@@ -131,6 +132,39 @@ public class ContactTest {
         assertTrue(JOHN.containsInNotes("feb"));
         assertTrue(JOHN.containsInNotes("In"));
         assertFalse(JOHN.containsInNotes("John"));
+    }
+
+    @Test
+    public void containsInLastContactedTest() {
+        assertTrue(JOHN.containsInLastContacted("2026"));
+        assertTrue(JOHN.containsInLastContacted("apr"));
+        assertTrue(JOHN.containsInLastContacted(""));
+        assertFalse(JOHN.containsInLastContacted("John"));
+        assertTrue(new ContactBuilder().withLastContacted("John").build().containsInLastContacted("John"));
+    }
+
+    @Test
+    public void lastContactedIsSameDayAsTest() {
+        assertTrue(JOHN.lastContactedIsSameDayAs(TimePoint.of(LocalDate.of(2026, 4, 22))));
+        assertTrue(JOHN.lastContactedIsSameDayAs(TimePoint.of(LocalDateTime.of(2026, 4, 22, 10, 30))));
+        assertFalse(JOHN.lastContactedIsSameDayAs(TimePoint.of("22/4/2026")));
+        assertFalse(JOHN.lastContactedIsSameDayAs(null));
+    }
+
+    @Test
+    public void lastContactedIsBeforeTest() {
+        assertTrue(JOHN.lastContactedIsBefore(TimePoint.of(LocalDate.of(2026, 4, 23))));
+        assertFalse(JOHN.lastContactedIsBefore(TimePoint.of(LocalDate.of(2026, 4, 22))));
+        assertFalse(JOHN.lastContactedIsBefore(TimePoint.of("23/4/2026")));
+        assertFalse(JOHN.lastContactedIsBefore(null));
+    }
+
+    @Test
+    public void lastContactedIsAfterTest() {
+        assertTrue(JOHN.lastContactedIsAfter(TimePoint.of(LocalDate.of(2026, 4, 21))));
+        assertFalse(JOHN.lastContactedIsAfter(TimePoint.of(LocalDate.of(2026, 4, 22))));
+        assertFalse(JOHN.lastContactedIsAfter(TimePoint.of("21/4/2026")));
+        assertFalse(JOHN.lastContactedIsAfter(null));
     }
 
     @Test

@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.timepoint.TimePoint;
 
 /**
  * Represents a Contact in the address book.
@@ -227,6 +228,67 @@ public class Contact {
         return address
                 .map(address -> address.value.toLowerCase(Locale.ROOT).contains(string.toLowerCase(Locale.ROOT)))
                 .orElse(false);
+    }
+
+    /**
+     * Returns true if the {@code LastContacted} of this contact contains the given string.
+     * @param string {@code String} to check against this contact.
+     */
+    public boolean containsInLastContacted(String string) {
+        if (string.isEmpty()) {
+            return true;
+        }
+        return lastContacted
+                .map(lastContacted ->
+                        lastContacted.value.toString().toLowerCase(Locale.ROOT)
+                                .contains(string.toLowerCase(Locale.ROOT)))
+                .orElse(false);
+    }
+
+    /**
+     * Returns true if the {@code LastContacted} is on the same day as a given timePoint.
+     * @param timePoint {@code TimePoint} to check against this contact.
+     */
+    public boolean lastContactedIsSameDayAs(TimePoint timePoint) {
+        if (timePoint == null) {
+            return false;
+        }
+        return lastContacted
+                .map(lastContacted -> lastContacted.value.isSameDayAs(timePoint))
+                .orElse(false);
+    }
+
+    /**
+     * Returns true if the {@code LastContacted} is before a given timePoint.
+     * @param timePoint {@code TimePoint} to check against this contact.
+     */
+    public boolean lastContactedIsBefore(TimePoint timePoint) {
+        if (timePoint == null) {
+            return false;
+        }
+        return lastContacted
+                .map(lastContacted -> lastContacted.value.isBefore(timePoint))
+                .orElse(false);
+    }
+
+    /**
+     * Returns true if the {@code LastContacted} is after a given timePoint.
+     * @param timePoint {@code TimePoint} to check against this contact.
+     */
+    public boolean lastContactedIsAfter(TimePoint timePoint) {
+        if (timePoint == null) {
+            return false;
+        }
+        return lastContacted
+                .map(lastContacted -> lastContacted.value.isAfter(timePoint))
+                .orElse(false);
+    }
+
+    /**
+     * Returns true if this contact has a {@code LastContact}.
+     */
+    public boolean hasLastContacted() {
+        return lastContacted.isPresent();
     }
 
     /**
