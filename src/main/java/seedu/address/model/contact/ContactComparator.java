@@ -1,6 +1,7 @@
 package seedu.address.model.contact;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -17,13 +18,17 @@ public abstract class ContactComparator implements Comparator<Contact> {
     }
 
     private static final ContactComparator IDENTITY = new ContactComparator() {
+        {
+            comparators.clear();
+        }
+
         @Override
         public int compare(Contact o1, Contact o2) {
             return 0;
         }
     };
 
-    protected final List<ContactComparator> comparators = new ArrayList<>();
+    protected final List<ContactComparator> comparators = new ArrayList<>(Arrays.asList(this));
 
     /**
      * Returns a lexicographic-order comparator with another comparator. If this
@@ -41,15 +46,17 @@ public abstract class ContactComparator implements Comparator<Contact> {
     public ContactComparator thenComparing(ContactComparator other) {
         List<ContactComparator> newComparators = new ArrayList<>(this.comparators);
         newComparators.addAll(other.comparators);
+        ContactComparator outerThis = this;
 
         return new ContactComparator() {
             {
+                comparators.clear();
                 comparators.addAll(newComparators);
             }
 
             @Override
             public int compare(Contact o1, Contact o2) {
-                int result = this.compare(o1, o2);
+                int result = outerThis.compare(o1, o2);
                 return result != 0 ? result : other.compare(o1, o2);
             }
 
