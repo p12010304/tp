@@ -170,7 +170,8 @@ public class ParserUtil {
         requireNonNull(tags);
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {
-            if (tagSet.stream().anyMatch(tag -> tag.name.equals(tagName))) {
+            Tag newTag = parseTag(tagName);
+            if (tagSet.stream().anyMatch(tag -> tag.name.equals(newTag.name))) {
                 throw new ParseException(Messages.MESSAGE_DUPLICATE_TAGS);
             }
             tagSet.add(parseTag(tagName));

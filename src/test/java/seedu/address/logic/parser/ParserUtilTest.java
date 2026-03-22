@@ -199,6 +199,13 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseTags_collectionWithSameTagNames_throwsParseException() {
+        assertThrows(
+                ParseException.class, () -> ParserUtil.parseTags(
+                        Arrays.asList(VALID_RANKED_TAG, VALID_RANKED_TAG_NAME)));
+    }
+
+    @Test
     public void parseTags_emptyCollection_returnsEmptySet() throws Exception {
         assertTrue(ParserUtil.parseTags(Collections.emptyList()).isEmpty());
     }
