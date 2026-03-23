@@ -144,7 +144,7 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_set() throws Exception {
-        assertTrue(parser.parseCommand(SetCommand.COMMAND_WORD + " source/newbook") instanceof SetCommand);
+        assertTrue(parser.parseCommand(SetCommand.COMMAND_WORD + " file/newbook") instanceof SetCommand);
     }
 
     @Test

@@ -54,6 +54,11 @@ public class StorageManager implements Storage {
     }
 
     @Override
+    public void setAddressBookFilePath(Path addressBookFilePath) {
+        this.addressBookStorage = new JsonAddressBookStorage(addressBookFilePath);
+    }
+
+    @Override
     public Optional<ReadOnlyAddressBook> readAddressBook() throws DataLoadingException {
         return readAddressBook(addressBookStorage.getAddressBookFilePath());
     }

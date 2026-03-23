@@ -19,12 +19,7 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.contact.Contact;
-import seedu.address.storage.AddressBookStorage;
-import seedu.address.storage.JsonAddressBookStorage;
-import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.Storage;
-import seedu.address.storage.StorageManager;
-import seedu.address.storage.UserPrefsStorage;
 
 /**
  * The main LogicManager of the app.
@@ -59,10 +54,8 @@ public class LogicManager implements Logic {
         commandResult = command.execute(model);
 
         if (model.getAddressBookFilePath() != storage.getAddressBookFilePath()) {
-            UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(storage.getUserPrefsFilePath());
-            AddressBookStorage addressBookStorage = new JsonAddressBookStorage(model.getAddressBookFilePath());
-            storage = new StorageManager(addressBookStorage, userPrefsStorage);
-            logger.info("Using data file : " + storage.getAddressBookFilePath());
+            storage.setAddressBookFilePath(model.getAddressBookFilePath());
+            logger.info("Using data file: " + storage.getAddressBookFilePath());
 
             Optional<ReadOnlyAddressBook> addressBookOptional;
             ReadOnlyAddressBook data;

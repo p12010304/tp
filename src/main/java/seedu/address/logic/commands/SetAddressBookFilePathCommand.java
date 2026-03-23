@@ -13,7 +13,7 @@ import seedu.address.model.UserPrefs;
  * Changes the address book file path.
  */
 public class SetAddressBookFilePathCommand extends SetCommand {
-    public static final String MESSAGE_SUCCESS = "Set data source path to %1$s";
+    public static final String MESSAGE_SUCCESS = "Using data file: %1$s";
     public static final String MESSAGE_CONSTRAINTS =
             "File names should only contain alphanumeric characters and the underscore character '_'.";
 
