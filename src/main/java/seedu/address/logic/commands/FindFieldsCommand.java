@@ -29,7 +29,6 @@ public class FindFieldsCommand extends FindCommand {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        model.resetDisplayedContactList();
         model.filterDisplayedContactList(predicate);
 
         String feedback =

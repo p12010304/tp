@@ -61,7 +61,6 @@ public class FindAssociationsCommand extends FindCommand {
                     String.format(MESSAGE_NO_RELATED_CONTACTS, targetContact.getName()));
         }
 
-        model.resetDisplayedContactList();
         model.filterDisplayedContactList(contact ->
                 contact.isSameContact(targetContact)
                 || referencedIds.contains(contact.getId()));
