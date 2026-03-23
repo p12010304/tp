@@ -3,18 +3,16 @@ package seedu.address.model.contact;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
-import java.util.Comparator;
 import java.util.Objects;
 
 import seedu.address.logic.parser.TimePointParser;
 import seedu.address.model.timepoint.TimePoint;
-import seedu.address.model.timepoint.TimePointComparator;
 
 /**
  * Represents a contact's last contacted time.
  * Guarantees: immutable; value is non-blank.
  */
-public class LastContacted implements Comparable<LastContacted> {
+public class LastContacted {
     public static final String MESSAGE_CONSTRAINTS = "Last contacted time should not be blank.";
 
     public final TimePoint<?> value;
@@ -68,13 +66,5 @@ public class LastContacted implements Comparable<LastContacted> {
     @Override
     public int hashCode() {
         return Objects.hash(value.toString());
-    }
-
-    @Override
-    public int compareTo(LastContacted o) {
-        return TimePointComparator
-                .stringTimePointLast(
-                        TimePointComparator.ifSameDayDateTimePointFirst(Comparator.<TimePoint>naturalOrder()))
-                .compare(value, o.value);
     }
 }

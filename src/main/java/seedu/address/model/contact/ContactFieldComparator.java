@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.timepoint.TimePointComparator;
 
 /**
  * Comparator for sorting contacts based on specified field and order.
@@ -17,6 +18,7 @@ public class ContactFieldComparator extends ContactComparator {
         NAME, PHONE, EMAIL, ADDRESS, LAST_CONTACTED, LAST_UPDATED
     }
 
+    @SuppressWarnings("unchecked")
     private static final Map<Field, Map<Order, Comparator<Contact>>> COMPARATORS = Map.of(
             Field.NAME, Map.of(
                     Order.ASCENDING, Comparator.comparing(Contact::getName, Comparator.naturalOrder()),
@@ -43,11 +45,16 @@ public class ContactFieldComparator extends ContactComparator {
                             Comparator.nullsLast(Comparator.reverseOrder()))),
             Field.LAST_CONTACTED, Map.of(
                     Order.ASCENDING,
-                    Comparator.comparing(contact -> contact.getLastContacted().orElse(null),
-                            Comparator.nullsLast(Comparator.naturalOrder())),
+                    Comparator.comparing((Contact contact) -> contact.getLastContacted()
+                                    .map(lastContacted -> lastContacted.value).orElse(null),
+                            Comparator.nullsLast(TimePointComparator.stringTimePointLast(
+                                    TimePointComparator.ifSameDayDateTimePointFirst(Comparator.naturalOrder())))),
                     Order.DESCENDING,
-                    Comparator.comparing(contact -> contact.getLastContacted().orElse(null),
-                            Comparator.nullsLast(Comparator.reverseOrder()))),
+                    Comparator.comparing((Contact contact) -> contact.getLastContacted()
+                                    .map(lastContacted -> lastContacted.value).orElse(null),
+                            Comparator.nullsLast(TimePointComparator.stringTimePointLast(
+                                    TimePointComparator.ifSameDayDateTimePointFirst(Comparator
+                                            .reverseOrder()))))),
             Field.LAST_UPDATED, Map.of(
                     Order.ASCENDING, Comparator.comparing(Contact::getLastUpdated, Comparator.naturalOrder()),
                     Order.DESCENDING, Comparator.comparing(Contact::getLastUpdated, Comparator.reverseOrder())));
