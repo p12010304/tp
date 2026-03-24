@@ -110,10 +110,26 @@ public class ContactBuilder {
     }
 
     /**
+     * Clears the {@code Phone} of the {@code Contact} that we are building.
+     */
+    public ContactBuilder withoutPhone() {
+        this.phone = Optional.empty();
+        return this;
+    }
+
+    /**
      * Sets the {@code Email} of the {@code Contact} that we are building.
      */
     public ContactBuilder withEmail(String email) {
         this.email = email != null ? Optional.of(new Email(email)) : Optional.empty();
+        return this;
+    }
+
+    /**
+     * Clears the {@code Email} of the {@code Contact} that we are building.
+     */
+    public ContactBuilder withoutEmail() {
+        this.email = Optional.empty();
         return this;
     }
 

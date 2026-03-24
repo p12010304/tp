@@ -91,6 +91,38 @@ public class EditContactDescriptorBuilder {
         return this;
     }
 
+    /**
+     * Sets the clear phone flag of the {@code EditContactDescriptor} that we are building.
+     */
+    public EditContactDescriptorBuilder withClearPhone() {
+        descriptor.setClearPhone(true);
+        return this;
+    }
+
+    /**
+     * Sets the clear email flag of the {@code EditContactDescriptor} that we are building.
+     */
+    public EditContactDescriptorBuilder withClearEmail() {
+        descriptor.setClearEmail(true);
+        return this;
+    }
+
+    /**
+     * Sets the clear address flag of the {@code EditContactDescriptor} that we are building.
+     */
+    public EditContactDescriptorBuilder withClearAddress() {
+        descriptor.setClearAddress(true);
+        return this;
+    }
+
+    /**
+     * Sets the clear last contacted flag of the {@code EditContactDescriptor} that we are building.
+     */
+    public EditContactDescriptorBuilder withClearLastContacted() {
+        descriptor.setClearLastContacted(true);
+        return this;
+    }
+
     public EditContactDescriptor build() {
         return descriptor;
     }
