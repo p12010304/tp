@@ -63,7 +63,7 @@ public class MainWindow extends UiPart<Stage> {
     private StackPane contactDetailPanelPlaceholder;
 
     @FXML
-    private VBox contactDetailContainer;
+    private VBox viewPanelContainer;
 
     @FXML
     private SplitPane splitPane;
@@ -93,7 +93,7 @@ public class MainWindow extends UiPart<Stage> {
 
         // Set up the split pane listener to keep the divider at the right edge when the detail panel is hidden
         splitPaneListener = (obs, oldVal, newVal) -> {
-            if (!contactDetailContainer.isVisible()) {
+            if (!viewPanelContainer.isVisible()) {
                 splitPane.setDividerPositions(1.0);
             }
         };
@@ -152,7 +152,7 @@ public class MainWindow extends UiPart<Stage> {
         contactDetailPanelPlaceholder.getChildren().add(contactDetailPanel.getRoot());
 
         // Initially hide the detail panel
-        hideContactDetailPanel();
+        hideViewPanel();
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -172,16 +172,16 @@ public class MainWindow extends UiPart<Stage> {
     /**
      * Shows the contact detail panel.
      */
-    private void showContactDetailPanel() {
-        NodeUtil.show(contactDetailContainer);
+    private void showViewPanel() {
+        NodeUtil.show(viewPanelContainer);
         splitPane.setDividerPositions(0.6);
     }
 
     /**
      * Hides the contact detail panel.
      */
-    private void hideContactDetailPanel() {
-        NodeUtil.hide(contactDetailContainer);
+    private void hideViewPanel() {
+        NodeUtil.hide(viewPanelContainer);
         splitPane.setDividerPositions(1.0);
         viewedContactId = null;
     }
@@ -201,7 +201,7 @@ public class MainWindow extends UiPart<Stage> {
             contactDetailPanel.setContact(updatedContact);
         } else {
             contactDetailPanel.clearContact();
-            hideContactDetailPanel();
+            hideViewPanel();
         }
     }
 
@@ -284,12 +284,12 @@ public class MainWindow extends UiPart<Stage> {
 
             if (commandResult.isHideViewPanel()) {
                 contactDetailPanel.clearContact();
-                hideContactDetailPanel();
+                hideViewPanel();
             } else if (commandResult.isShowContactDetail()) {
                 commandResult.getContactToView().ifPresent(contact -> {
                     contactDetailPanel.setContact(contact);
                     viewedContactId = contact.getId();
-                    showContactDetailPanel();
+                    showViewPanel();
                 });
             } else if (viewedContactId != null) {
                 refreshContactDetailPanel();
