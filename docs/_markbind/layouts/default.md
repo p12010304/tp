@@ -6,7 +6,7 @@
   <navbar type="dark">
     <a slot="brand" href="{{baseUrl}}/index.html" title="Home" class="navbar-brand">B2B4U</a>
     <li><a href="{{baseUrl}}/index.html" class="nav-link">Home</a></li>
-    <li><a href="{{baseUrl}}/UserGuide.html" class="nav-link">User Guide</a></li>
+    <li><a href="{{baseUrl}}/user-guide/index.html" class="nav-link">User Guide</a></li>
     <li><a href="{{baseUrl}}/DeveloperGuide.html" class="nav-link">Developer Guide</a></li>
     <li><a href="{{baseUrl}}/AboutUs.html" class="nav-link">About Us</a></li>
     <li><a href="https://github.com/AY2526S2-CS2103T-T08-1/tp" target="_blank" class="nav-link"><md>:fab-github:</md></a>
@@ -27,11 +27,25 @@
     <div class="nav-component slim-scroll">
       <site-nav>
 * [Home]({{ baseUrl }}/index.html)
-* [User Guide]({{ baseUrl }}/UserGuide.html) :expanded:
-  * [Quick Start]({{ baseUrl }}/UserGuide.html#quick-start)
-  * [Features]({{ baseUrl }}/UserGuide.html#features)
-  * [FAQ]({{ baseUrl }}/UserGuide.html#faq)
-  * [Command Summary]({{ baseUrl }}/UserGuide.html#faq)
+* [User Guide]({{ baseUrl }}/user-guide/index.html) :expanded:
+  * [Quick Start]({{ baseUrl }}/user-guide/quick-start.html)
+  * [Features]({{ baseUrl }}/user-guide/features.html)
+  * [Commands]({{ baseUrl }}/user-guide/commands/index.html)
+    * [Viewing Help]({{ baseUrl }}/user-guide/commands/view-help.html)
+    * [Adding a Contact]({{ baseUrl }}/user-guide/commands/add-contact.html)
+    * [Editing a Contact]({{ baseUrl }}/user-guide/commands/edit-contact.html)
+    * [Deleting a Contact]({{ baseUrl }}/user-guide/commands/delete-contact.html)
+    * [Clearing Contacts]({{ baseUrl }}/user-guide/commands/clear-contacts.html)
+    * [Listing Contacts]({{ baseUrl }}/user-guide/commands/list-contacts.html)
+    * [Finding Contacts]({{ baseUrl }}/user-guide/commands/find-contacts.html)
+    * [Sorting Contacts]({{ baseUrl }}/user-guide/commands/sort-contacts.html)
+    * [Managing Notes]({{ baseUrl }}/user-guide/commands/notes.html)
+    * [Undoing a Command]({{ baseUrl }}/user-guide/commands/undo-command.html)
+    * [Redoing a Command]({{ baseUrl }}/user-guide/commands/redo-command.html)
+    * [Viewing Contact Details]({{ baseUrl }}/user-guide/commands/view-contact.html)
+    * [Closing the Contact View]({{ baseUrl }}/user-guide/commands/close-view-contact.html)
+    * [Exiting the Program]({{ baseUrl }}/user-guide/commands/exit-program.html)
+  * [FAQ & Known Issues]({{ baseUrl }}/user-guide/faq-known-issues.html)
 * [Developer Guide]({{ baseUrl }}/DeveloperGuide.html) :expanded:
   * [Acknowledgements]({{ baseUrl }}/DeveloperGuide.html#acknowledgements)
   * [Setting Up]({{ baseUrl }}/DeveloperGuide.html#setting-up-getting-started)
