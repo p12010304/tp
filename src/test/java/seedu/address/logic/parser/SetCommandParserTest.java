@@ -1,7 +1,7 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_SOURCE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_FILE;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -27,14 +27,14 @@ public class SetCommandParserTest {
                 new SetAddressBookFilePathCommand(FILENAME);
         assertParseSuccess(
                 parser,
-                " " + PREFIX_SOURCE + FILENAME,
+                " " + PREFIX_FILE + FILENAME,
                 expectedSetAddressBookFilePathCommand);
     }
 
     @Test
     public void parse_missingParts_failure() {
         // no index specified
-        assertParseFailure(parser, PREFIX_SOURCE.toString(), MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, PREFIX_FILE.toString(), MESSAGE_INVALID_FORMAT);
 
         // no field specified
         assertParseFailure(parser, "1", MESSAGE_INVALID_FORMAT);
@@ -43,8 +43,8 @@ public class SetCommandParserTest {
         assertParseFailure(parser, "", MESSAGE_INVALID_FORMAT);
 
         // clear command with no index specified
-        assertParseFailure(parser, PREFIX_SOURCE + "&newbook", MESSAGE_INVALID_FILENAME);
+        assertParseFailure(parser, PREFIX_FILE + "&newbook", MESSAGE_INVALID_FILENAME);
 
-        assertThrows(ParseException.class, () -> parser.parse(PREFIX_SOURCE + "&newbook"));
+        assertThrows(ParseException.class, () -> parser.parse(PREFIX_FILE + "&newbook"));
     }
 }

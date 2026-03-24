@@ -15,7 +15,7 @@ public class CliSyntax {
     public static final Prefix PREFIX_LAST_UPDATED = new Prefix("lu/");
     public static final Prefix PREFIX_CLEAR = new Prefix("c/");
     public static final Prefix PREFIX_CLEAR_ALL = new Prefix("ca/");
-    public static final Prefix PREFIX_SOURCE = new Prefix("file/");
+    public static final Prefix PREFIX_FILE = new Prefix("file/");
     public static final Prefix PREFIX_ON = new Prefix("on/");
     public static final Prefix PREFIX_BEFORE = new Prefix("before/");
     public static final Prefix PREFIX_AFTER = new Prefix("after/");

@@ -2,7 +2,7 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_SOURCE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_FILE;
 
 import seedu.address.logic.commands.SetAddressBookFilePathCommand;
 import seedu.address.logic.commands.SetCommand;
@@ -21,10 +21,10 @@ public class SetCommandParser implements Parser<SetCommand> {
      */
     public SetCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_SOURCE);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FILE);
 
         boolean isPreamblePresent = !argMultimap.getPreamble().isEmpty();
-        boolean isDataSourcePresent = argMultimap.getValue(PREFIX_SOURCE).isPresent();
+        boolean isDataSourcePresent = argMultimap.getValue(PREFIX_FILE).isPresent();
 
 
         if (isPreamblePresent) {
@@ -36,11 +36,11 @@ public class SetCommandParser implements Parser<SetCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetCommand.MESSAGE_USAGE));
         }
 
-        String fileName = argMultimap.getValue(PREFIX_SOURCE).get();
+        String fileName = argMultimap.getValue(PREFIX_FILE).get();
         if (!UserPrefs.isValidFileName(fileName)) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetAddressBookFilePathCommand.MESSAGE_CONSTRAINTS));
         }
-        return new SetAddressBookFilePathCommand(argMultimap.getValue(PREFIX_SOURCE).get());
+        return new SetAddressBookFilePathCommand(argMultimap.getValue(PREFIX_FILE).get());
     }
 }
