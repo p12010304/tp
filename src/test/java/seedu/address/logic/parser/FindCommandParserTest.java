@@ -60,7 +60,7 @@ public class FindCommandParserTest {
         Predicate<Contact> predicate = (Contact contact) -> contact.contains("ne");
         expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(ALICE, BENSON, DANIEL, ELLE), model.getDisplayedContactList());
+        assertEquals(Arrays.asList(DANIEL, ELLE, ALICE, BENSON), model.getDisplayedContactList());
     }
 
     @Test
@@ -80,7 +80,7 @@ public class FindCommandParserTest {
         Predicate<Contact> predicate = (Contact contact) -> contact.containsInPhone("94");
         expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(ALICE, ELLE, FIONA, GEORGE), model.getDisplayedContactList());
+        assertEquals(Arrays.asList(GEORGE, FIONA, ELLE, ALICE), model.getDisplayedContactList());
     }
 
     @Test
@@ -100,7 +100,7 @@ public class FindCommandParserTest {
         Predicate<Contact> predicate = (Contact contact) -> contact.containsInAddress("street");
         expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(CARL, DANIEL, GEORGE), model.getDisplayedContactList());
+        assertEquals(Arrays.asList(CARL, GEORGE, DANIEL), model.getDisplayedContactList());
     }
 
     @Test
@@ -110,7 +110,7 @@ public class FindCommandParserTest {
         Predicate<Contact> predicate = (Contact contact) -> contact.hasTag("friends");
         expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(ALICE, BENSON, DANIEL), model.getDisplayedContactList());
+        assertEquals(Arrays.asList(DANIEL, ALICE, BENSON), model.getDisplayedContactList());
     }
 
     @Test
@@ -120,7 +120,7 @@ public class FindCommandParserTest {
         Predicate<Contact> predicate = Contact::hasLastContacted;
         expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(CARL, DANIEL, ELLE, FIONA, GEORGE), model.getDisplayedContactList());
+        assertEquals(Arrays.asList(CARL, GEORGE, FIONA, DANIEL, ELLE), model.getDisplayedContactList());
     }
 
     @Test
@@ -131,7 +131,7 @@ public class FindCommandParserTest {
                 contact -> contact.lastContactedIsSameDayAs(TimePoint.of(LocalDate.of(2026, 2, 22)));
         expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(FIONA, GEORGE), model.getDisplayedContactList());
+        assertEquals(Arrays.asList(GEORGE, FIONA), model.getDisplayedContactList());
     }
 
     @Test
@@ -153,7 +153,7 @@ public class FindCommandParserTest {
                 contact -> contact.lastContactedIsBefore(TimePoint.of(LocalDateTime.of(2026, 2, 22, 14, 0)));
         expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(DANIEL, FIONA), model.getDisplayedContactList());
+        assertEquals(Arrays.asList(FIONA, DANIEL), model.getDisplayedContactList());
     }
 
     @Test

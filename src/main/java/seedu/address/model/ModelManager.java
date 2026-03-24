@@ -17,6 +17,7 @@ import javafx.util.Pair;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.contact.Contact;
+import seedu.address.model.contact.ContactComparator;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -24,6 +25,8 @@ import seedu.address.model.contact.Contact;
 public class ModelManager implements Model {
     public static final String UNDO_LIMIT_MESSAGE = "Model already at earliest snapshot.";
     public static final String REDO_LIMIT_MESSAGE = "Model already at newest snapshot.";
+    private static final Comparator<Contact> DEFAULT_DISPLAY_COMPARATOR =
+            new ContactComparator(ContactComparator.Field.LAST_CONTACTED, ContactComparator.Order.DESCENDING);
 
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
@@ -36,6 +39,7 @@ public class ModelManager implements Model {
     private final SortedList<Contact> sortedContacts;
 
     private int snapshotPosition;
+    private boolean isUsingDefaultSort;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -49,7 +53,9 @@ public class ModelManager implements Model {
         this.userPrefs = new UserPrefs(userPrefs);
         this.filteredContacts = new FilteredList<>(this.addressBook.getContactList());
         this.sortedContacts = new SortedList<>(this.filteredContacts);
+        this.sortedContacts.setComparator(DEFAULT_DISPLAY_COMPARATOR);
         this.displayedContacts = this.sortedContacts;
+        this.isUsingDefaultSort = true;
 
         snapshots = new ArrayList<>();
         snapshots.add(new Pair<String, Snapshot>("", getSnapshot()));
@@ -150,7 +156,8 @@ public class ModelManager implements Model {
     @Override
     public void resetDisplayedContactList() {
         filteredContacts.setPredicate(null);
-        sortedContacts.setComparator(null);
+        sortedContacts.setComparator(DEFAULT_DISPLAY_COMPARATOR);
+        isUsingDefaultSort = true;
     }
 
     @Override
@@ -170,8 +177,12 @@ public class ModelManager implements Model {
 
         @SuppressWarnings("unchecked")
         Comparator<Contact> currentComparator = (Comparator<Contact>) sortedContacts.getComparator();
-        sortedContacts
-                .setComparator(currentComparator == null ? comparator : currentComparator.thenComparing(comparator));
+        if (isUsingDefaultSort || currentComparator == null) {
+            sortedContacts.setComparator(comparator);
+            isUsingDefaultSort = false;
+            return;
+        }
+        sortedContacts.setComparator(currentComparator.thenComparing(comparator));
     }
 
     //=========== Snapshot ================================================================================

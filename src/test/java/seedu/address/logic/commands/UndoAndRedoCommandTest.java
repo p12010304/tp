@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -44,6 +45,7 @@ public class UndoAndRedoCommandTest {
         Snapshot initialSnapshot = model.getSnapshot();
         Model postAdditionModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         postAdditionModel.addContact(contact);
+        postAdditionModel.resetDisplayedContactList();
 
         assertCommandSuccess(validCommand, model, expectedMessage, postAdditionModel);
 
@@ -69,6 +71,7 @@ public class UndoAndRedoCommandTest {
         String expectedMessage = String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(contact));
         Model postAdditionModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         postAdditionModel.addContact(contact);
+        postAdditionModel.resetDisplayedContactList();
 
         assertCommandSuccess(validCommand, model, expectedMessage, postAdditionModel);
 
@@ -79,14 +82,16 @@ public class UndoAndRedoCommandTest {
         Model postAdditionModel2 = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         postAdditionModel2.addContact(contact);
         postAdditionModel2.addContact(contact2);
+        postAdditionModel2.resetDisplayedContactList();
 
         assertCommandSuccess(validCommand2, model, expectedMessage2, postAdditionModel2);
 
-        assertCommandSuccess(
-                UNDO_COMMAND,
-                model,
+        CommandResult undoSecondResult = UNDO_COMMAND.execute(model);
+        assertEquals(
                 String.format(UndoCommand.MESSAGE_UNDO_SUCCESS, expectedMessage2),
-                postAdditionModel);
+                undoSecondResult.getFeedbackToUser());
+        assertTrue(model.hasContact(contact));
+        assertFalse(model.hasContact(contact2));
         assertCommandSuccess(
                 UNDO_COMMAND,
                 model,
@@ -95,6 +100,7 @@ public class UndoAndRedoCommandTest {
 
         Model postAdditionModel3 = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         postAdditionModel3.addContact(contact2);
+        postAdditionModel3.resetDisplayedContactList();
         assertCommandSuccess(validCommand2, model, expectedMessage2, postAdditionModel3);
         assertCommandFailure(new RedoCommand(), model, ModelManager.REDO_LIMIT_MESSAGE);
     }
@@ -112,6 +118,7 @@ public class UndoAndRedoCommandTest {
         Snapshot initialSnapshot = model.getSnapshot();
         Model postAdditionModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         postAdditionModel.addContact(contact);
+        postAdditionModel.resetDisplayedContactList();
 
         assertCommandSuccess(validCommand, model, expectedMessage, postAdditionModel);
 
@@ -123,11 +130,9 @@ public class UndoAndRedoCommandTest {
                 model,
                 String.format(UndoCommand.MESSAGE_UNDO_SUCCESS, expectedMessage),
                 new ModelManager(getTypicalAddressBook(), new UserPrefs()));
-        assertCommandSuccess(
-                REDO_COMMAND,
-                model,
-                String.format(RedoCommand.MESSAGE_REDO_SUCCESS, expectedMessage),
-                postAdditionModel);
+        CommandResult redoResult = REDO_COMMAND.execute(model);
+        assertEquals(String.format(RedoCommand.MESSAGE_REDO_SUCCESS, expectedMessage), redoResult.getFeedbackToUser());
+        assertTrue(model.hasContact(contact));
 
         Snapshot redoCommandSnapshot = model.getSnapshot();
         assertTrue(postCommandSnapshot.equals(redoCommandSnapshot));

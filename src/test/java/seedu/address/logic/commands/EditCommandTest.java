@@ -38,7 +38,14 @@ public class EditCommandTest {
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
-        Contact editedContact = new ContactBuilder().build();
+        Contact contactToEdit = model.getDisplayedContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
+        Contact editedContact = new ContactBuilder(contactToEdit)
+                .withName("Edited Name")
+                .withPhone("81112222")
+                .withEmail("edited@example.com")
+                .withAddress("123 Edited Street")
+                .withTags("edited")
+                .build();
         EditContactDescriptor descriptor = new EditContactDescriptorBuilder(editedContact).build();
         EditCommand editCommand = new EditCommand(INDEX_FIRST_CONTACT, descriptor);
 
@@ -46,7 +53,8 @@ public class EditCommandTest {
                 Messages.format(editedContact));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.setContact(model.getDisplayedContactList().get(0), editedContact);
+        expectedModel.setContact(contactToEdit, editedContact);
+        expectedModel.resetDisplayedContactList();
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
@@ -69,6 +77,7 @@ public class EditCommandTest {
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setContact(lastContact, editedContact);
+        expectedModel.resetDisplayedContactList();
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
@@ -82,6 +91,7 @@ public class EditCommandTest {
                 Messages.format(editedContact));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.resetDisplayedContactList();
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
@@ -100,6 +110,7 @@ public class EditCommandTest {
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setContact(model.getDisplayedContactList().get(0), editedContact);
+        expectedModel.resetDisplayedContactList();
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }

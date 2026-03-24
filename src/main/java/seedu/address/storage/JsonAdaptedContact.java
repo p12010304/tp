@@ -3,6 +3,7 @@ package seedu.address.storage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -53,7 +54,7 @@ class JsonAdaptedContact {
         @JsonProperty("lastContacted") Optional<String> lastContacted,
         @JsonProperty("lastUpdated") Optional<String> lastUpdated,
         @JsonProperty("notes") Object notes,
-        @JsonProperty("tags") List<JsonAdaptedTag> tags
+        @JsonProperty("tags") Object tags
     ) {
         this.id = id;
         this.name = name;
@@ -63,9 +64,7 @@ class JsonAdaptedContact {
         this.lastUpdated = lastUpdated == null ? Optional.empty() : lastUpdated;
         this.notes.addAll(parseNotes(notes));
         this.address = address;
-        if (tags != null) {
-            this.tags.addAll(tags);
-        }
+        this.tags.addAll(parseTags(tags));
     }
 
     /**
@@ -73,7 +72,7 @@ class JsonAdaptedContact {
      * This overload keeps backward compatibility with existing tests/data producers.
      */
     public JsonAdaptedContact(String id, String name, Optional<String> phone, Optional<String> email,
-            Optional<String> address, Optional<String> lastContacted, Object notes, List<JsonAdaptedTag> tags) {
+            Optional<String> address, Optional<String> lastContacted, Object notes, Object tags) {
         this(id, name, phone, email, address, lastContacted, Optional.empty(), notes, tags);
     }
 
@@ -120,6 +119,48 @@ class JsonAdaptedContact {
             }
         }
         return parsedNotes;
+    }
+
+    /**
+     * Parses tags from legacy and current JSON shapes.
+     * Supports arrays of tag name strings (legacy), arrays of tag objects with {@code name} (and optional
+     * {@code rank} for ranked tags), and arrays of {@link JsonAdaptedTag} (test helpers).
+     */
+    private static List<JsonAdaptedTag> parseTags(Object tagsValue) {
+        List<JsonAdaptedTag> parsedTags = new ArrayList<>();
+        if (tagsValue == null) {
+            return parsedTags;
+        }
+        if (!(tagsValue instanceof List<?>)) {
+            return parsedTags;
+        }
+        for (Object item : (List<?>) tagsValue) {
+            if (item == null) {
+                continue;
+            }
+            if (item instanceof JsonAdaptedTag) {
+                parsedTags.add((JsonAdaptedTag) item);
+                continue;
+            }
+            if (item instanceof String) {
+                parsedTags.add(new JsonAdaptedTag((String) item));
+                continue;
+            }
+            if (item instanceof Map) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> map = (Map<String, Object>) item;
+                Object nameObj = map.get("name");
+                String tagName = nameObj != null ? nameObj.toString() : null;
+                if (map.containsKey("rank")) {
+                    Object rankObj = map.get("rank");
+                    String rank = rankObj != null ? rankObj.toString() : null;
+                    parsedTags.add(new JsonAdaptedRankedTag(tagName, rank));
+                } else {
+                    parsedTags.add(new JsonAdaptedTag(tagName));
+                }
+            }
+        }
+        return parsedTags;
     }
 
     /**

@@ -13,8 +13,10 @@ import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.model.contact.Contact;
 import seedu.address.model.contact.ContactComparator;
 import seedu.address.testutil.AddressBookBuilder;
+import seedu.address.testutil.ContactBuilder;
 import seedu.address.testutil.ContactPredicateBuilder;
 
 public class ModelManagerTest {
@@ -132,5 +134,48 @@ public class ModelManagerTest {
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setAddressBookFilePath(Paths.get("differentFilePath"));
         assertFalse(modelManager.equals(new ModelManager(addressBook, differentUserPrefs)));
+    }
+
+    @Test
+    public void sortDisplayedContactList_firstExplicitSort_replacesDefaultSort() {
+        Contact aliceOlder = new ContactBuilder()
+                .withName("Alice")
+                .withLastContacted("1/1/2020")
+                .build();
+        Contact bobNewer = new ContactBuilder()
+                .withName("Bob")
+                .withLastContacted("2/1/2020")
+                .build();
+        modelManager = new ModelManager(
+                new AddressBookBuilder().withContact(aliceOlder).withContact(bobNewer).build(), new UserPrefs());
+
+        modelManager.sortDisplayedContactList(
+                new ContactComparator(ContactComparator.Field.NAME, ContactComparator.Order.ASCENDING));
+
+        assertEquals(aliceOlder, modelManager.getDisplayedContactList().get(0));
+    }
+
+    @Test
+    public void sortDisplayedContactList_secondExplicitSort_chainsWithFirstExplicitSort() {
+        Contact nameAEmailZ = new ContactBuilder()
+                .withName("A")
+                .withEmail("z@test.com")
+                .withLastContacted("2/1/2020")
+                .build();
+        Contact nameBEmailA = new ContactBuilder()
+                .withName("B")
+                .withEmail("a@test.com")
+                .withLastContacted("1/1/2020")
+                .build();
+        modelManager = new ModelManager(
+                new AddressBookBuilder().withContact(nameAEmailZ).withContact(nameBEmailA).build(), new UserPrefs());
+
+        modelManager.sortDisplayedContactList(
+                new ContactComparator(ContactComparator.Field.NAME, ContactComparator.Order.ASCENDING));
+        modelManager.sortDisplayedContactList(
+                new ContactComparator(ContactComparator.Field.EMAIL, ContactComparator.Order.ASCENDING));
+
+        assertEquals(nameAEmailZ, modelManager.getDisplayedContactList().get(0));
+        assertEquals(nameBEmailA, modelManager.getDisplayedContactList().get(1));
     }
 }
