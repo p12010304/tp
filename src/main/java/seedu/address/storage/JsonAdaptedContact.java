@@ -1,5 +1,6 @@
 package seedu.address.storage;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +37,7 @@ class JsonAdaptedContact {
     private final Optional<String> email;
     private final Optional<String> address;
     private final Optional<String> lastContacted;
-    private final Optional<String> lastUpdated;
+    private final LocalDateTime lastUpdated;
     private final List<String> notes = new ArrayList<>();
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
@@ -51,7 +52,7 @@ class JsonAdaptedContact {
         @JsonProperty("email") Optional<String> email,
         @JsonProperty("address") Optional<String> address,
         @JsonProperty("lastContacted") Optional<String> lastContacted,
-        @JsonProperty("lastUpdated") Optional<String> lastUpdated,
+        @JsonProperty("lastUpdated") LocalDateTime lastUpdated,
         @JsonProperty("notes") Object notes,
         @JsonProperty("tags") List<JsonAdaptedTag> tags
     ) {
@@ -60,21 +61,12 @@ class JsonAdaptedContact {
         this.phone = phone;
         this.email = email;
         this.lastContacted = lastContacted == null ? Optional.empty() : lastContacted;
-        this.lastUpdated = lastUpdated == null ? Optional.empty() : lastUpdated;
+        this.lastUpdated = lastUpdated;
         this.notes.addAll(parseNotes(notes));
         this.address = address;
         if (tags != null) {
             this.tags.addAll(tags);
         }
-    }
-
-    /**
-     * Constructs a {@code JsonAdaptedContact} with the given contact details.
-     * This overload keeps backward compatibility with existing tests/data producers.
-     */
-    public JsonAdaptedContact(String id, String name, Optional<String> phone, Optional<String> email,
-            Optional<String> address, Optional<String> lastContacted, Object notes, List<JsonAdaptedTag> tags) {
-        this(id, name, phone, email, address, lastContacted, Optional.empty(), notes, tags);
     }
 
     /**
@@ -87,7 +79,7 @@ class JsonAdaptedContact {
         email = source.getEmail().map(email -> email.value);
         address = source.getAddress().map(address -> address.value);
         lastContacted = source.getLastContacted().map(LastContacted::toString);
-        lastUpdated = Optional.of(source.getLastUpdated().toString());
+        lastUpdated = source.getLastUpdated().value;
         notes.addAll(source.getNotes().stream().map(Note::toJsonString).collect(Collectors.toList()));
         tags.addAll(source.getTags().stream()
                 .map((Tag tag) -> tag instanceof RankedTag
@@ -123,7 +115,7 @@ class JsonAdaptedContact {
     }
 
     /**
-     * Converts this Jackson-friendly adapted contact object into the model's {@code Contact} object.
+     * Converts this Jackson-friendly adapted contact object into the model's {@link Contact} object.
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted contact.
      */
@@ -169,12 +161,12 @@ class JsonAdaptedContact {
             throw new IllegalValueException(LastContacted.MESSAGE_CONSTRAINTS);
         }
         final Optional<LastContacted> modelLastContacted = lastContacted.map(LastContacted::new);
-        if (lastUpdated.isPresent() && !LastUpdated.isValidLastUpdated(lastUpdated.get())) {
-            throw new IllegalValueException(LastUpdated.MESSAGE_CONSTRAINTS);
+
+        if (lastUpdated == null) {
+            throw new IllegalValueException(
+                    String.format(MISSING_FIELD_MESSAGE_FORMAT, LastUpdated.class.getSimpleName()));
         }
-        final LastUpdated modelLastUpdated = lastUpdated
-            .map(LastUpdated::new)
-            .orElseGet(LastUpdated::now);
+        final LastUpdated modelLastUpdated = new LastUpdated(lastUpdated);
 
         final List<Note> modelNotes = notes.stream().map(Note::fromJsonString).collect(Collectors.toList());
 

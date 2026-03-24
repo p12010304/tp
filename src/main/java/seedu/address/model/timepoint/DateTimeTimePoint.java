@@ -56,12 +56,7 @@ public class DateTimeTimePoint extends TimePoint<LocalDateTime> {
 
     @Override
     public String toString() {
-        LocalDateTime localDateTime = this.getTime();
-        return localDateTime.getHour()
-                + ":" + (localDateTime.getMinute() < 10 ? "0" : "") + localDateTime.getMinute()
-                + ", " + TimePoint.PASCAL_MTHS[localDateTime.getMonthValue() - 1]
-                + " " + localDateTime.getDayOfMonth()
-                + ", " + localDateTime.getYear();
+        return DateTimeUtil.toDisplayString(this.getTime());
     }
 
     @Override

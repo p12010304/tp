@@ -173,8 +173,7 @@ public class MainWindow extends UiPart<Stage> {
      * Shows the contact detail panel.
      */
     private void showContactDetailPanel() {
-        contactDetailContainer.setVisible(true);
-        contactDetailContainer.setManaged(true);
+        NodeUtil.show(contactDetailContainer);
         splitPane.setDividerPositions(0.6);
     }
 
@@ -182,8 +181,7 @@ public class MainWindow extends UiPart<Stage> {
      * Hides the contact detail panel.
      */
     private void hideContactDetailPanel() {
-        contactDetailContainer.setVisible(false);
-        contactDetailContainer.setManaged(false);
+        NodeUtil.hide(contactDetailContainer);
         splitPane.setDividerPositions(1.0);
         viewedContactId = null;
     }

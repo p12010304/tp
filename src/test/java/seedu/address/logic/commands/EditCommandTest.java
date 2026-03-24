@@ -114,6 +114,34 @@ public class EditCommandTest {
     }
 
     @Test
+    public void execute_clearBothPhoneAndEmail_failure() {
+        EditContactDescriptor descriptor = new EditContactDescriptorBuilder()
+                .withClearPhone().withClearEmail().build();
+        EditCommand editCommand = new EditCommand(INDEX_FIRST_CONTACT, descriptor);
+
+        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_MUST_HAVE_CONTACT_METHOD);
+    }
+
+    @Test
+    public void execute_clearPhoneKeepEmail_success() {
+        Contact firstContact = model.getDisplayedContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
+        // First contact (ALICE) has both phone and email, so clearing phone should succeed
+        EditContactDescriptor descriptor = new EditContactDescriptorBuilder().withClearPhone().build();
+        EditCommand editCommand = new EditCommand(INDEX_FIRST_CONTACT, descriptor);
+
+        ContactBuilder contactInList = new ContactBuilder(firstContact);
+        Contact editedContact = contactInList.withoutPhone().build();
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_CONTACT_SUCCESS,
+                Messages.format(editedContact));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setContact(firstContact, editedContact);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
     public void execute_duplicateContactFilteredList_failure() {
         showContactAtIndex(model, INDEX_FIRST_CONTACT);
 

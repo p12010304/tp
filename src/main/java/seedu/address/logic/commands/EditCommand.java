@@ -55,6 +55,8 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_CONTACT_SUCCESS = "Edited Contact: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_CONTACT = "This contact already exists in the address book.";
+    public static final String MESSAGE_MUST_HAVE_CONTACT_METHOD =
+            "A contact must have at least a phone number or an email address.";
 
     private final Index index;
     private final EditContactDescriptor editContactDescriptor;
@@ -83,6 +85,10 @@ public class EditCommand extends Command {
         Contact contactToEdit = lastShownList.get(index.getZeroBased());
         Contact editedContact = createEditedContact(contactToEdit, editContactDescriptor);
 
+        if (editedContact.getPhone().isEmpty() && editedContact.getEmail().isEmpty()) {
+            throw new CommandException(MESSAGE_MUST_HAVE_CONTACT_METHOD);
+        }
+
         if (!contactToEdit.isSameContact(editedContact) && model.hasContact(editedContact)) {
             throw new CommandException(MESSAGE_DUPLICATE_CONTACT);
         }
@@ -103,11 +109,18 @@ public class EditCommand extends Command {
         assert contactToEdit != null;
 
         Name updatedName = editContactDescriptor.getName().orElse(contactToEdit.getName());
-        Optional<Phone> updatedPhone = editContactDescriptor.getPhone().or(() -> contactToEdit.getPhone());
-        Optional<Email> updatedEmail = editContactDescriptor.getEmail().or(() -> contactToEdit.getEmail());
-        Optional<Address> updatedAddress = editContactDescriptor.getAddress().or(() -> contactToEdit.getAddress());
-        Optional<LastContacted> updatedLastContacted =
-                editContactDescriptor.getLastContacted().or(() -> contactToEdit.getLastContacted());
+        Optional<Phone> updatedPhone = editContactDescriptor.isClearPhone()
+                ? Optional.empty()
+                : editContactDescriptor.getPhone().or(() -> contactToEdit.getPhone());
+        Optional<Email> updatedEmail = editContactDescriptor.isClearEmail()
+                ? Optional.empty()
+                : editContactDescriptor.getEmail().or(() -> contactToEdit.getEmail());
+        Optional<Address> updatedAddress = editContactDescriptor.isClearAddress()
+                ? Optional.empty()
+                : editContactDescriptor.getAddress().or(() -> contactToEdit.getAddress());
+        Optional<LastContacted> updatedLastContacted = editContactDescriptor.isClearLastContacted()
+                ? Optional.empty()
+                : editContactDescriptor.getLastContacted().or(() -> contactToEdit.getLastContacted());
         List<Note> updatedNotes = contactToEdit.getNotes();
         Set<Tag> updatedTags = editContactDescriptor.getTags().orElse(contactToEdit.getTags());
 
@@ -150,6 +163,10 @@ public class EditCommand extends Command {
         private Address address;
         private LastContacted lastContacted;
         private Set<Tag> tags;
+        private boolean clearPhone;
+        private boolean clearEmail;
+        private boolean clearAddress;
+        private boolean clearLastContacted;
 
         public EditContactDescriptor() {}
 
@@ -164,13 +181,18 @@ public class EditCommand extends Command {
             setAddress(toCopy.address);
             setLastContacted(toCopy.lastContacted);
             setTags(toCopy.tags);
+            this.clearPhone = toCopy.clearPhone;
+            this.clearEmail = toCopy.clearEmail;
+            this.clearAddress = toCopy.clearAddress;
+            this.clearLastContacted = toCopy.clearLastContacted;
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, lastContacted, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, lastContacted, tags)
+                    || clearPhone || clearEmail || clearAddress || clearLastContacted;
         }
 
         public void setName(Name name) {
@@ -213,6 +235,38 @@ public class EditCommand extends Command {
             return Optional.ofNullable(lastContacted);
         }
 
+        public void setClearPhone(boolean clearPhone) {
+            this.clearPhone = clearPhone;
+        }
+
+        public boolean isClearPhone() {
+            return clearPhone;
+        }
+
+        public void setClearEmail(boolean clearEmail) {
+            this.clearEmail = clearEmail;
+        }
+
+        public boolean isClearEmail() {
+            return clearEmail;
+        }
+
+        public void setClearAddress(boolean clearAddress) {
+            this.clearAddress = clearAddress;
+        }
+
+        public boolean isClearAddress() {
+            return clearAddress;
+        }
+
+        public void setClearLastContacted(boolean clearLastContacted) {
+            this.clearLastContacted = clearLastContacted;
+        }
+
+        public boolean isClearLastContacted() {
+            return clearLastContacted;
+        }
+
         /**
          * Sets {@code tags} to this object's {@code tags}.
          * A defensive copy of {@code tags} is used internally.
@@ -247,7 +301,11 @@ public class EditCommand extends Command {
                     && Objects.equals(email, otherEditContactDescriptor.email)
                     && Objects.equals(address, otherEditContactDescriptor.address)
                     && Objects.equals(lastContacted, otherEditContactDescriptor.lastContacted)
-                    && Objects.equals(tags, otherEditContactDescriptor.tags);
+                    && Objects.equals(tags, otherEditContactDescriptor.tags)
+                    && clearPhone == otherEditContactDescriptor.clearPhone
+                    && clearEmail == otherEditContactDescriptor.clearEmail
+                    && clearAddress == otherEditContactDescriptor.clearAddress
+                    && clearLastContacted == otherEditContactDescriptor.clearLastContacted;
         }
 
         @Override
@@ -259,6 +317,10 @@ public class EditCommand extends Command {
                     .add("address", address)
                     .add("lastContacted", lastContacted)
                     .add("tags", tags)
+                    .add("clearPhone", clearPhone)
+                    .add("clearEmail", clearEmail)
+                    .add("clearAddress", clearAddress)
+                    .add("clearLastContacted", clearLastContacted)
                     .toString();
         }
     }

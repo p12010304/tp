@@ -53,17 +53,36 @@ public class EditCommandParser implements Parser<EditCommand> {
             editContactDescriptor.setName(ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get()));
         }
         if (argMultimap.getValue(PREFIX_PHONE).isPresent()) {
-            editContactDescriptor.setPhone(ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get()));
+            String phoneValue = argMultimap.getValue(PREFIX_PHONE).get().trim();
+            if (phoneValue.isEmpty()) {
+                editContactDescriptor.setClearPhone(true);
+            } else {
+                editContactDescriptor.setPhone(ParserUtil.parsePhone(phoneValue));
+            }
         }
         if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
-            editContactDescriptor.setEmail(ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get()));
+            String emailValue = argMultimap.getValue(PREFIX_EMAIL).get().trim();
+            if (emailValue.isEmpty()) {
+                editContactDescriptor.setClearEmail(true);
+            } else {
+                editContactDescriptor.setEmail(ParserUtil.parseEmail(emailValue));
+            }
         }
         if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
-            editContactDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));
+            String addressValue = argMultimap.getValue(PREFIX_ADDRESS).get().trim();
+            if (addressValue.isEmpty()) {
+                editContactDescriptor.setClearAddress(true);
+            } else {
+                editContactDescriptor.setAddress(ParserUtil.parseAddress(addressValue));
+            }
         }
         if (argMultimap.getValue(PREFIX_LAST_CONTACTED).isPresent()) {
-            editContactDescriptor.setLastContacted(
-                    ParserUtil.parseLastContacted(argMultimap.getValue(PREFIX_LAST_CONTACTED).get()));
+            String lastContactedValue = argMultimap.getValue(PREFIX_LAST_CONTACTED).get().trim();
+            if (lastContactedValue.isEmpty()) {
+                editContactDescriptor.setClearLastContacted(true);
+            } else {
+                editContactDescriptor.setLastContacted(ParserUtil.parseLastContacted(lastContactedValue));
+            }
         }
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editContactDescriptor::setTags);
 

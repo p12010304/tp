@@ -75,47 +75,38 @@ public class ContactDetailPanel extends UiPart<Region> {
         // Phone
         if (contact.getPhone().isPresent()) {
             phone.setText(contact.getPhone().get().value);
-            phoneContainer.setVisible(true);
-            phoneContainer.setManaged(true);
+            NodeUtil.show(phoneContainer);
         } else {
-            phoneContainer.setVisible(false);
-            phoneContainer.setManaged(false);
+            NodeUtil.hide(phoneContainer);
         }
 
         // Email
         if (contact.getEmail().isPresent()) {
             email.setText(contact.getEmail().get().value);
-            emailContainer.setVisible(true);
-            emailContainer.setManaged(true);
+            NodeUtil.show(emailContainer);
         } else {
-            emailContainer.setVisible(false);
-            emailContainer.setManaged(false);
+            NodeUtil.hide(emailContainer);
         }
 
         // Address
         if (contact.getAddress().isPresent()) {
             address.setText(contact.getAddress().get().value);
-            addressContainer.setVisible(true);
-            addressContainer.setManaged(true);
+            NodeUtil.show(addressContainer);
         } else {
-            addressContainer.setVisible(false);
-            addressContainer.setManaged(false);
+            NodeUtil.hide(addressContainer);
         }
 
         // Last Contacted
         if (contact.getLastContacted().isPresent()) {
             lastContacted.setText(contact.getLastContacted().get().toString());
-            lastContactedContainer.setVisible(true);
-            lastContactedContainer.setManaged(true);
+            NodeUtil.show(lastContactedContainer);
         } else {
-            lastContactedContainer.setVisible(false);
-            lastContactedContainer.setManaged(false);
+            NodeUtil.hide(lastContactedContainer);
         }
 
         // Last Updated
         lastUpdated.setText(contact.getLastUpdated().toString());
-        lastUpdatedContainer.setVisible(true);
-        lastUpdatedContainer.setManaged(true);
+        NodeUtil.show(lastUpdatedContainer);
 
         // Notes
         notes.getChildren().clear();
@@ -125,11 +116,9 @@ public class ContactDetailPanel extends UiPart<Region> {
                         notes.getStyleClass().toString(), allContacts);
                 reminderLabel.hideHeader();
                 notes.getChildren().add(reminderLabel); });
-            notesContainer.setVisible(true);
-            notesContainer.setManaged(true);
+            NodeUtil.show(notesContainer);
         } else {
-            notesContainer.setVisible(false);
-            notesContainer.setManaged(false);
+            NodeUtil.hide(notesContainer);
         }
 
         // Tags
@@ -138,15 +127,12 @@ public class ContactDetailPanel extends UiPart<Region> {
             contact.getTags().stream()
                     .sorted(Comparator.comparing(tag -> tag.name))
                     .forEach(tag -> tags.getChildren().add(new Label(tag.name)));
-            tagsContainer.setVisible(true);
-            tagsContainer.setManaged(true);
+            NodeUtil.show(tagsContainer);
         } else {
-            tagsContainer.setVisible(false);
-            tagsContainer.setManaged(false);
+            NodeUtil.hide(tagsContainer);
         }
 
-        detailPane.setVisible(true);
-        detailPane.setManaged(true);
+        NodeUtil.show(detailPane);
     }
 
     /**
@@ -162,22 +148,14 @@ public class ContactDetailPanel extends UiPart<Region> {
         tags.getChildren().clear();
         notes.getChildren().clear();
 
-        phoneContainer.setVisible(false);
-        phoneContainer.setManaged(false);
-        emailContainer.setVisible(false);
-        emailContainer.setManaged(false);
-        addressContainer.setVisible(false);
-        addressContainer.setManaged(false);
-        lastContactedContainer.setVisible(false);
-        lastContactedContainer.setManaged(false);
-        lastUpdatedContainer.setVisible(false);
-        lastUpdatedContainer.setManaged(false);
-        notesContainer.setVisible(false);
-        notesContainer.setManaged(false);
-        tagsContainer.setVisible(false);
-        tagsContainer.setManaged(false);
+        NodeUtil.hide(phoneContainer);
+        NodeUtil.hide(emailContainer);
+        NodeUtil.hide(addressContainer);
+        NodeUtil.hide(lastContactedContainer);
+        NodeUtil.hide(lastUpdatedContainer);
+        NodeUtil.hide(notesContainer);
+        NodeUtil.hide(tagsContainer);
 
-        detailPane.setVisible(false);
-        detailPane.setManaged(false);
+        NodeUtil.hide(detailPane);
     }
 }
