@@ -42,10 +42,8 @@ public class ViewCommand extends Command {
         }
 
         Contact contactToView = lastShownList.get(targetIndex.getZeroBased());
-        return new CommandResult(
+        return new ViewContactCommandResult(
                 String.format(MESSAGE_VIEW_CONTACT_SUCCESS, contactToView.getName().fullName),
-                false,
-                false,
                 contactToView);
     }
 

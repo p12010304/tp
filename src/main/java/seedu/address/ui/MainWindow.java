@@ -284,7 +284,7 @@ public class MainWindow extends UiPart<Stage> {
                 handleExit();
             }
 
-            if (commandResult.isHideContactDetail()) {
+            if (commandResult.isHideViewPanel()) {
                 contactDetailPanel.clearContact();
                 hideContactDetailPanel();
             } else if (commandResult.isShowContactDetail()) {
