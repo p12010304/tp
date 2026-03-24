@@ -27,6 +27,7 @@ import seedu.address.logic.commands.NoteAddCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.commands.ViewCommand;
+import seedu.address.logic.commands.ViewContactCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.contact.Contact;
 import seedu.address.model.contact.Note;
@@ -106,7 +107,7 @@ public class AddressBookParserTest {
     public void parseCommand_view() throws Exception {
         ViewCommand command = (ViewCommand) parser.parseCommand(
             ViewCommand.COMMAND_WORD + " " + INDEX_FIRST_CONTACT.getOneBased());
-        assertEquals(new ViewCommand(INDEX_FIRST_CONTACT), command);
+        assertEquals(new ViewContactCommand(INDEX_FIRST_CONTACT), command);
     }
 
     @Test

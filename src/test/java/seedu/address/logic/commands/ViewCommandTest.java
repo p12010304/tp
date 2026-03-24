@@ -30,21 +30,22 @@ public class ViewCommandTest {
     @Test
     public void execute_validIndexUnfilteredList_success() {
         Contact contactToView = model.getDisplayedContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
-        ViewCommand viewCommand = new ViewCommand(INDEX_FIRST_CONTACT);
+        ViewCommand viewCommand = new ViewContactCommand(INDEX_FIRST_CONTACT);
 
-        String expectedMessage = String.format(ViewCommand.MESSAGE_VIEW_CONTACT_SUCCESS,
+        String expectedMessage = String.format(ViewContactCommand.MESSAGE_VIEW_CONTACT_SUCCESS,
                 contactToView.getName().fullName);
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
 
-        CommandResult expectedCommandResult = new CommandResult(expectedMessage, false, false, contactToView, false);
+        CommandResult expectedCommandResult =
+                new CommandResult(expectedMessage, false, false, contactToView, false, false);
         assertCommandSuccess(viewCommand, model, expectedCommandResult, expectedModel);
     }
 
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
         Index outOfBoundIndex = Index.fromOneBased(model.getDisplayedContactList().size() + 1);
-        ViewCommand viewCommand = new ViewCommand(outOfBoundIndex);
+        ViewCommand viewCommand = new ViewContactCommand(outOfBoundIndex);
 
         assertCommandFailure(viewCommand, model, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
     }
@@ -54,15 +55,16 @@ public class ViewCommandTest {
         showContactAtIndex(model, INDEX_FIRST_CONTACT);
 
         Contact contactToView = model.getDisplayedContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
-        ViewCommand viewCommand = new ViewCommand(INDEX_FIRST_CONTACT);
+        ViewCommand viewCommand = new ViewContactCommand(INDEX_FIRST_CONTACT);
 
-        String expectedMessage = String.format(ViewCommand.MESSAGE_VIEW_CONTACT_SUCCESS,
+        String expectedMessage = String.format(ViewContactCommand.MESSAGE_VIEW_CONTACT_SUCCESS,
                 contactToView.getName().fullName);
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         showContactAtIndex(expectedModel, INDEX_FIRST_CONTACT);
 
-        CommandResult expectedCommandResult = new CommandResult(expectedMessage, false, false, contactToView, false);
+        CommandResult expectedCommandResult =
+                new CommandResult(expectedMessage, false, false, contactToView, false, false);
         assertCommandSuccess(viewCommand, model, expectedCommandResult, expectedModel);
     }
 
@@ -74,21 +76,21 @@ public class ViewCommandTest {
         // ensures that outOfBoundIndex is still in bounds of address book list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getContactList().size());
 
-        ViewCommand viewCommand = new ViewCommand(outOfBoundIndex);
+        ViewCommand viewCommand = new ViewContactCommand(outOfBoundIndex);
 
         assertCommandFailure(viewCommand, model, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
     }
 
     @Test
     public void equals() {
-        ViewCommand viewFirstCommand = new ViewCommand(INDEX_FIRST_CONTACT);
-        ViewCommand viewSecondCommand = new ViewCommand(INDEX_SECOND_CONTACT);
+        ViewCommand viewFirstCommand = new ViewContactCommand(INDEX_FIRST_CONTACT);
+        ViewCommand viewSecondCommand = new ViewContactCommand(INDEX_SECOND_CONTACT);
 
         // same object -> returns true
         assertTrue(viewFirstCommand.equals(viewFirstCommand));
 
         // same values -> returns true
-        ViewCommand viewFirstCommandCopy = new ViewCommand(INDEX_FIRST_CONTACT);
+        ViewCommand viewFirstCommandCopy = new ViewContactCommand(INDEX_FIRST_CONTACT);
         assertTrue(viewFirstCommand.equals(viewFirstCommandCopy));
 
         // different types -> returns false
@@ -104,8 +106,8 @@ public class ViewCommandTest {
     @Test
     public void toStringMethod() {
         Index targetIndex = Index.fromOneBased(1);
-        ViewCommand viewCommand = new ViewCommand(targetIndex);
-        String expected = ViewCommand.class.getCanonicalName() + "{targetIndex=" + targetIndex + "}";
+        ViewCommand viewCommand = new ViewContactCommand(targetIndex);
+        String expected = ViewContactCommand.class.getCanonicalName() + "{targetIndex=" + targetIndex + "}";
         assertEquals(expected, viewCommand.toString());
     }
 }
