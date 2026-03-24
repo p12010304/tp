@@ -4,6 +4,7 @@
     "phone": "94351253",
     "email": "alice@example.com",
     "address": "123, Jurong West Ave 6, #08-111",
+    "lastUpdated": "2026-02-22T09:00",
     "tags": [ {
       "type" : "JsonAdaptedTag",
       "name" : "friends"
@@ -12,6 +13,7 @@
     "name": "Alice Pauline",
     "phone": "94351253",
     "email": "alice@example.com",
+    "lastUpdated": "2026-02-23T09:00",
     "notes": [],
     "address": "4th street"
   } ]

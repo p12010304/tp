@@ -1,5 +1,6 @@
 package seedu.address.testutil;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -151,7 +152,7 @@ public class ContactBuilder {
     /**
      * Sets the {@code LastUpdated} of the {@code Contact} that we are building.
      */
-    public ContactBuilder withLastUpdated(String lastUpdated) {
+    public ContactBuilder withLastUpdated(LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated != null ? new LastUpdated(lastUpdated) : LastUpdated.now();
         return this;
     }

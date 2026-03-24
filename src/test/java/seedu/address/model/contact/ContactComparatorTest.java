@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
+import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
@@ -91,7 +92,7 @@ public class ContactComparatorTest {
                 .withEmail("alice@test.com")
                 .withAddress("A Street")
                 .withLastContacted("22/02/26")
-                .withLastUpdated("22/02/26")
+                .withLastUpdated(LocalDateTime.of(2026, 2, 22, 9, 0))
                 .build();
 
         Contact bob = new ContactBuilder()
@@ -100,7 +101,7 @@ public class ContactComparatorTest {
                 .withEmail("bob@test.com")
                 .withAddress("B Street")
                 .withLastContacted("23/02/26")
-                .withLastUpdated("23/02/26")
+                .withLastUpdated(LocalDateTime.of(2026, 2, 23, 9, 0))
                 .build();
 
         ContactFieldComparator comparator = new ContactFieldComparator(field, Order.ASCENDING);
@@ -121,7 +122,7 @@ public class ContactComparatorTest {
                 .withEmail("alice@test.com")
                 .withAddress("A Street")
                 .withLastContacted("22/02/26")
-                .withLastUpdated("22/02/26")
+                .withLastUpdated(LocalDateTime.of(2026, 2, 22, 9, 0))
                 .build();
 
         Contact bob = new ContactBuilder()
@@ -130,7 +131,7 @@ public class ContactComparatorTest {
                 .withEmail("bob@test.com")
                 .withAddress("B Street")
                 .withLastContacted("23/02/26")
-                .withLastUpdated("23/02/26")
+                .withLastUpdated(LocalDateTime.of(2026, 2, 23, 9, 0))
                 .build();
 
         ContactFieldComparator comparator = new ContactFieldComparator(field, Order.DESCENDING);
@@ -175,18 +176,18 @@ public class ContactComparatorTest {
     }
 
     @Test
-    public void compare_lastUpdatedStringFallback_ascendingUsesLexicalOrder() {
+    public void compare_lastUpdated_ascending() {
         Contact alpha = new ContactBuilder()
                 .withName("Alpha")
-                .withLastUpdated("alpha")
+                .withLastUpdated(LocalDateTime.now().minusDays(1))
                 .build();
         Contact zeta = new ContactBuilder()
                 .withName("Zeta")
-                .withLastUpdated("zeta")
+                .withLastUpdated(LocalDateTime.now().minusDays(2))
                 .build();
 
         ContactFieldComparator comparator = new ContactFieldComparator(Field.LAST_UPDATED, Order.ASCENDING);
 
-        assertTrue(comparator.compare(alpha, zeta) < 0);
+        assertTrue(comparator.compare(alpha, zeta) > 0);
     }
 }
