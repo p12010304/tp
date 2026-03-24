@@ -64,43 +64,34 @@ public class ContactCard extends UiPart<Region> {
         name.getParent().getParent().setStyle("-fx-background-color: #3c3e3f");
         contact.getPhone().ifPresentOrElse(phone -> {
             this.phone.setText(phone.value);
-            this.phone.setVisible(true);
-            this.phone.setManaged(true);
+            NodeUtil.show(this.phone);
         }, () -> {
             this.phone.setText("");
-            this.phone.setVisible(false);
-            this.phone.setManaged(false);
+            NodeUtil.hide(this.phone);
         });
         contact.getAddress().ifPresentOrElse(address -> {
             this.address.setText(address.value);
-            this.address.setVisible(true);
-            this.address.setManaged(true);
+            NodeUtil.show(this.address);
         }, () -> {
             this.address.setText("");
-            this.address.setVisible(false);
-            this.address.setManaged(false);
+            NodeUtil.hide(this.address);
         });
         contact.getEmail().ifPresentOrElse(email -> {
             this.email.setText(email.value);
-            this.email.setVisible(true);
-            this.email.setManaged(true);
+            NodeUtil.show(this.email);
         }, () -> {
             this.email.setText("");
-            this.email.setVisible(false);
-            this.email.setManaged(false);
+            NodeUtil.hide(this.email);
         });
         contact.getLastContacted().ifPresentOrElse(lastContacted -> {
             this.lastContacted.setText("Last Contacted: " + lastContacted);
-            this.lastContacted.setVisible(true);
-            this.lastContacted.setManaged(true);
+            NodeUtil.show(this.lastContacted);
         }, () -> {
             this.lastContacted.setText("");
-            this.lastContacted.setVisible(false);
-            this.lastContacted.setManaged(false);
+            NodeUtil.hide(this.lastContacted);
         });
         this.lastUpdated.setText("Last Updated: " + contact.getLastUpdated());
-        this.lastUpdated.setVisible(true);
-        this.lastUpdated.setManaged(true);
+        NodeUtil.show(this.lastUpdated);
         if (!(contact.getNotes().isEmpty())) {
             contact.getNotes().forEach(
                     note -> {
@@ -109,8 +100,7 @@ public class ContactCard extends UiPart<Region> {
                                 allContacts)); });
             notesContainer.setStyle("-fx-background-color: #000000");
         } else {
-            notesContainer.setVisible(false);
-            notesContainer.setManaged(false);
+            NodeUtil.hide(notesContainer);
         }
         if (!(contact.getTags().isEmpty() && contact.getReminders().isEmpty())) {
             contact.getTags().stream()
@@ -128,8 +118,7 @@ public class ContactCard extends UiPart<Region> {
                 tags.getChildren().add(reminderLabel);
             }
         } else {
-            tags.setVisible(false);
-            tags.setManaged(false);
+            NodeUtil.hide(tags);
         }
     }
 }
