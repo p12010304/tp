@@ -17,6 +17,6 @@ public class CloseViewCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) {
-        return new HideViewPanelCommandResult(MESSAGE_SUCCESS);
+        return new CloseViewPanelCommandResult(MESSAGE_SUCCESS);
     }
 }

@@ -153,13 +153,13 @@ class ViewContactCommandResult extends CommandResult {
     }
 }
 
-class HideViewPanelCommandResult extends CommandResult {
+class CloseViewPanelCommandResult extends CommandResult {
     /**
      * Constructs a {@code CommandResult} with the specified {@code feedbackToUser},
      * {@code hideViewPanel} set to {@code true},
      * and other fields set to their default value.
      */
-    public HideViewPanelCommandResult(String feedbackToUser) {
+    public CloseViewPanelCommandResult(String feedbackToUser) {
         super(feedbackToUser, false, false, null, true, false);
     }
 }
