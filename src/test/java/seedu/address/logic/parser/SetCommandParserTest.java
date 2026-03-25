@@ -17,7 +17,7 @@ public class SetCommandParserTest {
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetCommand.MESSAGE_USAGE);
     private static final String MESSAGE_INVALID_FILENAME =
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetAddressBookFilePathCommand.MESSAGE_USAGE);
+            String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetAddressBookFilePathCommand.MESSAGE_CONSTRAINTS);
 
     private SetCommandParser parser = new SetCommandParser();
 
@@ -43,7 +43,7 @@ public class SetCommandParserTest {
         assertParseFailure(parser, "", MESSAGE_INVALID_FORMAT);
 
         // clear command with no index specified
-        assertParseFailure(parser, PREFIX_FILE + "&newbook", MESSAGE_INVALID_FILENAME);
+        assertParseFailure(parser, " " + PREFIX_FILE + "&newbook", MESSAGE_INVALID_FILENAME);
 
         assertThrows(ParseException.class, () -> parser.parse(PREFIX_FILE + "&newbook"));
     }
