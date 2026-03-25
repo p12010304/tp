@@ -12,7 +12,7 @@ import seedu.address.commons.core.GuiSettings;
  * Represents User's preferences.
  */
 public class UserPrefs implements ReadOnlyUserPrefs {
-    public static final String VALIDATION_REGEX = "^[a-zA-Z0-9_]*$";
+    public static final String VALIDATION_REGEX = "^[a-zA-Z0-9_]+$";
 
     private GuiSettings guiSettings = new GuiSettings();
     private Path addressBookFilePath = Paths.get("data" , "addressbook.json");

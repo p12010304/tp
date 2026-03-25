@@ -24,7 +24,7 @@ public class SetCommandParser implements Parser<SetCommand> {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FILE);
 
         boolean isPreamblePresent = !argMultimap.getPreamble().isEmpty();
-        boolean isDataSourcePresent = argMultimap.getValue(PREFIX_FILE).isPresent();
+        boolean isFilePrefixPresent = argMultimap.getValue(PREFIX_FILE).isPresent();
 
 
         if (isPreamblePresent) {
@@ -32,7 +32,7 @@ public class SetCommandParser implements Parser<SetCommand> {
         }
 
         //Change when adding more SetCommand variants
-        if (!isDataSourcePresent) {
+        if (!isFilePrefixPresent) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetCommand.MESSAGE_USAGE));
         }
 

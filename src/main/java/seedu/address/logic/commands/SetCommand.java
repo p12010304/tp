@@ -12,5 +12,5 @@ public abstract class SetCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes settings.\n"
             + "Parameters: "
             + "[" + PREFIX_FILE + "FILE_NAME] "
-            + "Example: " + COMMAND_WORD + PREFIX_FILE + "contacts";
+            + "Example: " + COMMAND_WORD + " " + PREFIX_FILE + "contacts";
 }
