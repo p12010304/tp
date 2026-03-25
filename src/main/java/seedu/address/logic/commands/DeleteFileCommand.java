@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import seedu.address.commons.exceptions.DataLoadingException;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -31,6 +30,9 @@ public class DeleteFileCommand extends DeleteCommand {
 
     private final String fileName;
 
+    /**
+     * @param fileName Name of file to be deleted, without ".json" file format name.
+     */
     public DeleteFileCommand(String fileName) {
         requireNonNull(fileName);
         checkArgument(UserPrefs.isValidFileName(fileName), UserPrefs.FILENAME_CONSTRAINTS_MESSAGE);
@@ -54,10 +56,11 @@ public class DeleteFileCommand extends DeleteCommand {
                 throw new CommandException(MESSAGE_FAILURE_FILE_NOT_FOUND);
             }
             if (!addressBookOptional.get().getContactList().isEmpty()) {
-                Alert alert = new DeleteFileAlert(fileName + ".json", addressBookOptional.get().getContactList().size());
-                alert.showAndWait();
+                DeleteFileAlert alert =
+                        new DeleteFileAlert(fileName + ".json", addressBookOptional.get().getContactList().size());
+                alert.show();
 
-                if (alert.getResult() == ButtonType.NO || alert.getResult() == ButtonType.CANCEL) {
+                if (!(alert.getResult() == ButtonType.YES)) {
                     throw new CommandException(MESSAGE_FAILURE_ABORT);
                 }
             }

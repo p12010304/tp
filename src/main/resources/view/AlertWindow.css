@@ -1,0 +1,25 @@
+.label {
+    -fx-text-fill: white;
+}
+
+.name {
+    -fx-font-weight: bold;
+    -fx-underline: true;
+}
+
+.button {
+    -fx-text-fill: white;
+    -fx-background-color: dimgray;
+}
+
+.button:hover {
+    -fx-background-color: gray;
+}
+
+.button:armed {
+    -fx-background-color: darkgray;
+}
+
+#alertMessageContainer {
+    -fx-background-color: derive(#1d1d1d, 20%);
+}

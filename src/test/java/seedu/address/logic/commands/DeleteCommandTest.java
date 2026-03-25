@@ -33,9 +33,9 @@ public class DeleteCommandTest {
     @Test
     public void execute_validIndexUnfilteredList_success() {
         Contact contactToDelete = model.getDisplayedContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
-        DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_CONTACT);
+        DeleteCommand deleteCommand = new DeleteContactCommand(INDEX_FIRST_CONTACT);
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_CONTACT_SUCCESS,
+        String expectedMessage = String.format(DeleteContactCommand.MESSAGE_DELETE_CONTACT_SUCCESS,
                 Messages.format(contactToDelete));
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
@@ -47,7 +47,7 @@ public class DeleteCommandTest {
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
         Index outOfBoundIndex = Index.fromOneBased(model.getDisplayedContactList().size() + 1);
-        DeleteCommand deleteCommand = new DeleteCommand(outOfBoundIndex);
+        DeleteCommand deleteCommand = new DeleteContactCommand(outOfBoundIndex);
 
         assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
     }
@@ -57,9 +57,9 @@ public class DeleteCommandTest {
         showContactAtIndex(model, INDEX_FIRST_CONTACT);
 
         Contact contactToDelete = model.getDisplayedContactList().get(INDEX_FIRST_CONTACT.getZeroBased());
-        DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_CONTACT);
+        DeleteCommand deleteCommand = new DeleteContactCommand(INDEX_FIRST_CONTACT);
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_CONTACT_SUCCESS,
+        String expectedMessage = String.format(DeleteContactCommand.MESSAGE_DELETE_CONTACT_SUCCESS,
                 Messages.format(contactToDelete));
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
@@ -77,21 +77,21 @@ public class DeleteCommandTest {
         // ensures that outOfBoundIndex is still in bounds of address book list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getContactList().size());
 
-        DeleteCommand deleteCommand = new DeleteCommand(outOfBoundIndex);
+        DeleteCommand deleteCommand = new DeleteContactCommand(outOfBoundIndex);
 
         assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
     }
 
     @Test
     public void equals() {
-        DeleteCommand deleteFirstCommand = new DeleteCommand(INDEX_FIRST_CONTACT);
-        DeleteCommand deleteSecondCommand = new DeleteCommand(INDEX_SECOND_CONTACT);
+        DeleteCommand deleteFirstCommand = new DeleteContactCommand(INDEX_FIRST_CONTACT);
+        DeleteCommand deleteSecondCommand = new DeleteContactCommand(INDEX_SECOND_CONTACT);
 
         // same object -> returns true
         assertTrue(deleteFirstCommand.equals(deleteFirstCommand));
 
         // same values -> returns true
-        DeleteCommand deleteFirstCommandCopy = new DeleteCommand(INDEX_FIRST_CONTACT);
+        DeleteCommand deleteFirstCommandCopy = new DeleteContactCommand(INDEX_FIRST_CONTACT);
         assertTrue(deleteFirstCommand.equals(deleteFirstCommandCopy));
 
         // different types -> returns false
@@ -107,8 +107,8 @@ public class DeleteCommandTest {
     @Test
     public void toStringMethod() {
         Index targetIndex = Index.fromOneBased(1);
-        DeleteCommand deleteCommand = new DeleteCommand(targetIndex);
-        String expected = DeleteCommand.class.getCanonicalName() + "{index=" + targetIndex + "}";
+        DeleteCommand deleteCommand = new DeleteContactCommand(targetIndex);
+        String expected = DeleteContactCommand.class.getCanonicalName() + "{index=" + targetIndex + "}";
         assertEquals(expected, deleteCommand.toString());
     }
 
@@ -126,7 +126,7 @@ public class DeleteCommandTest {
         model.setContact(contact2, contact2WithNote);
 
         // Delete contact 1
-        DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_CONTACT);
+        DeleteCommand deleteCommand = new DeleteContactCommand(INDEX_FIRST_CONTACT);
         deleteCommand.execute(model);
 
         // Contact 2's note should now have the plain name instead of @{UUID}

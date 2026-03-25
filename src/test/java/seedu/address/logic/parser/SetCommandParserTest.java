@@ -11,13 +11,14 @@ import org.junit.jupiter.api.Test;
 import seedu.address.logic.commands.SetAddressBookFilePathCommand;
 import seedu.address.logic.commands.SetCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.UserPrefs;
 
 public class SetCommandParserTest {
     private static final String FILENAME = "new_book";
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetCommand.MESSAGE_USAGE);
     private static final String MESSAGE_INVALID_FILENAME =
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetAddressBookFilePathCommand.MESSAGE_CONSTRAINTS);
+            String.format(MESSAGE_INVALID_COMMAND_FORMAT, UserPrefs.FILENAME_CONSTRAINTS_MESSAGE);
 
     private SetCommandParser parser = new SetCommandParser();
 
