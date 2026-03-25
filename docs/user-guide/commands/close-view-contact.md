@@ -10,4 +10,4 @@ Format: `close view`
 Example:
 * `close view`
 
-![close view](/images/closeView.png)
+![close view](../../images/closeView.png)

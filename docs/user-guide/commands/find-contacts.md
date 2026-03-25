@@ -21,4 +21,4 @@ Examples:
 * `find @1` shows all contacts that share at least one tag with the 1st contact in the displayed list.
 * `find t/vendor` followed by `find @2` cross-references the 2nd vendor in the filtered list.
 
-![find contacts](/images/findContacts.png)
+![find contacts](../../images/findContacts.png)

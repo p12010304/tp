@@ -12,4 +12,4 @@ Examples:
 * `list` followed by `delete 2` deletes the 2nd contact in the address book.
 * `find Betsy` followed by `delete 1` deletes the 1st contact in the results of the `find` command.
 
-![delete contact](/images/deleteContact.png)
+![delete contact](../../images/deleteContact.png)

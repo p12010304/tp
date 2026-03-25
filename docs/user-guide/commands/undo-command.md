@@ -12,4 +12,4 @@ Examples:
 * `delete 1` followed by `undo` restores the deleted contact.
 * `edit 1 n/New Name` followed by `undo` reverts the name change.
 
-![undo command](/images/undoCommand.png)
+![undo command](../../images/undoCommand.png)

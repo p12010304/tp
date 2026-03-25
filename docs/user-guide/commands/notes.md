@@ -19,7 +19,7 @@ Examples:
 * `note 2 Follow up call on/15 Apr`
 * `note 1 Worked with @2` — creates a reference to the 2nd contact in the note.
 
-![add note](/images/addNote.png)
+![add note](../../images/addNote.png)
 
 **Remove the first N notes:**
 
@@ -33,7 +33,7 @@ Examples:
 * `note 1 c/1` removes the first note from the 1st contact.
 * `note 2 c/3` removes the first 3 notes from the 2nd contact.
 
-![remove note](/images/removeNote.png)
+![remove note](../../images/removeNote.png)
 
 **Clear all notes:**
 
