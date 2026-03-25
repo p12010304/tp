@@ -1,6 +1,6 @@
 # Editing a contact: `edit`
 
-Edits an existing contact in the address book.
+Edits an existing contact in the contact list.
 
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [lc/LAST_CONTACTED] [t/TAG]…​`
 

@@ -1,6 +1,6 @@
 ### Adding notes/reminders to a contact: `note`
 
-Manages notes and reminders for an existing contact in the address book.
+Manages notes and reminders for an existing contact in the contact list.
 
 **Add a note:**
 

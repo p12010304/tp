@@ -1,6 +1,6 @@
 # Deleting a contact: `delete`
 
-Deletes the specified contact from the address book.
+Deletes the specified contact from the contact list.
 
 Format: `delete INDEX`
 

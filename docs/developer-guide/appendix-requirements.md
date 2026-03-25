@@ -174,5 +174,5 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **CLI (Command Line Interface)**: A text-based interface where users interact with the application by typing commands.
 * **Private contact detail**: A contact detail that is not meant to be shared with others
 * **Command**: A structured line of text entered by the user to instruct the application to perform a specific action.
-* **Contact**: A single entry stored in the address book, containing one or more pieces of contact information such as name, phone number, email, or address.
+* **Contact**: A single entry stored in the contact list, containing one or more pieces of contact information such as name, phone number, email, or address.
 * **Displayed list**: A subset of contacts displayed after applying a search, filtering, or sorting operation.

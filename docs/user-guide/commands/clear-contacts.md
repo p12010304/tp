@@ -1,6 +1,6 @@
 # Clearing all contacts: `clear`
 
-Clears all contacts from the address book.
+Clears all contacts from the contact list.
 
 Format: `clear`
 

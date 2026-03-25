@@ -1,6 +1,6 @@
 # Adding a contact: `add`
 
-Adds a contact to the address book.
+Adds a contact to the contact list.
 
 Format: `add n/NAME [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [lc/LAST_CONTACTED] [t/TAG]…​`
 
