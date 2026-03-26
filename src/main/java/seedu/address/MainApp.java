@@ -1,6 +1,7 @@
 package seedu.address;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -46,6 +47,8 @@ public class MainApp extends Application {
     protected Model model;
     protected Config config;
 
+    private boolean newStart = false;
+
     @Override
     public void init() throws Exception {
         logger.info("=============================[ Initializing AddressBook ]===========================");
@@ -63,6 +66,15 @@ public class MainApp extends Application {
         model = initModelManager(storage, userPrefs);
 
         logic = new LogicManager(model, storage);
+        if (newStart) {
+            try {
+                storage.saveAddressBook(model.getAddressBook());
+            } catch (AccessDeniedException e) {
+                logger.warning(String.format(LogicManager.FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()));
+            } catch (IOException ioe) {
+                logger.warning(String.format(LogicManager.FILE_OPS_ERROR_FORMAT, ioe.getMessage()));
+            }
+        }
 
         ui = new UiManager(logic);
     }
@@ -80,13 +92,21 @@ public class MainApp extends Application {
         try {
             addressBookOptional = storage.readAddressBook();
             if (!addressBookOptional.isPresent()) {
-                logger.info("Creating a new data file " + storage.getAddressBookFilePath()
-                        + " populated with a sample AddressBook.");
+                if (newStart) {
+                    logger.info("Welcome new user. Creating a new data file " + storage.getAddressBookFilePath()
+                            + " populated with a sample contact list.");
+                    initialData = SampleDataUtil.getSampleAddressBook();
+                } else {
+                    logger.warning("Data file at " + storage.getAddressBookFilePath() + " not found."
+                            + " Will be starting with an empty contact list.");
+                    initialData = new AddressBook();
+                }
+            } else {
+                initialData = addressBookOptional.get();
             }
-            initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
         } catch (DataLoadingException e) {
             logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
-                    + " Will be starting with an empty AddressBook.");
+                    + " Will be starting with an empty contact list.");
             initialData = new AddressBook();
         }
 
@@ -119,11 +139,13 @@ public class MainApp extends Application {
             Optional<Config> configOptional = ConfigUtil.readConfig(configFilePathUsed);
             if (!configOptional.isPresent()) {
                 logger.info("Creating new config file " + configFilePathUsed);
+                newStart = true;
             }
             initializedConfig = configOptional.orElse(new Config());
         } catch (DataLoadingException e) {
             logger.warning("Config file at " + configFilePathUsed + " could not be loaded."
                     + " Using default config properties.");
+            newStart = true;
             initializedConfig = new Config();
         }
 

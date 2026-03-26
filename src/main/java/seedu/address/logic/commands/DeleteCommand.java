@@ -1,100 +1,18 @@
 package seedu.address.logic.commands;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import seedu.address.commons.core.index.Index;
-import seedu.address.commons.util.ToStringBuilder;
-import seedu.address.logic.Messages;
-import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.Model;
-import seedu.address.model.contact.Contact;
-import seedu.address.model.contact.Note;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_FILE;
 
 /**
- * Deletes a contact identified using it's displayed index from the address book.
+ * Parent class for all delete-related commands.
  */
-public class DeleteCommand extends Command {
+public abstract class DeleteCommand extends Command {
 
     public static final String COMMAND_WORD = "delete";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the contact identified by the index number used in the displayed contact list.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + " 1";
-
-    public static final String MESSAGE_DELETE_CONTACT_SUCCESS = "Deleted contact: %1$s";
-
-    private final Index index;
-
-    /**
-     * @param index of the contact in the displayed contact list to delete
-     */
-    public DeleteCommand(Index index) {
-        requireNonNull(index);
-        this.index = index;
-    }
-
-    @Override
-    public CommandResult execute(Model model) throws CommandException {
-        requireNonNull(model);
-        List<Contact> lastShownList = model.getDisplayedContactList();
-
-        if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.getIndexOutOfRangeMessage(lastShownList.size()));
-        }
-
-        Contact contactToDelete = lastShownList.get(index.getZeroBased());
-        UUID deletedId = contactToDelete.getId();
-        String deletedName = contactToDelete.getName().fullName;
-
-        // Dereference notes in all other contacts that reference the deleted contact
-        for (Contact c : new ArrayList<>(model.getAddressBook().getContactList())) {
-            if (c.getId().equals(deletedId)) {
-                continue;
-            }
-            List<Note> updatedNotes = c.getNotes().stream()
-                    .map(n -> n.dereferenceContact(deletedId, deletedName))
-                    .collect(Collectors.toList());
-            if (!updatedNotes.equals(c.getNotes())) {
-                Contact updatedContact = new Contact(c.getId(), c.getName(),
-                        c.getPhone(), c.getEmail(), c.getAddress(),
-                        c.getLastContacted(), c.getLastUpdated(),
-                        updatedNotes, c.getTags());
-                model.setContact(c, updatedContact);
-            }
-        }
-
-        model.deleteContact(contactToDelete);
-
-        String feedback = String.format(MESSAGE_DELETE_CONTACT_SUCCESS, Messages.format(contactToDelete));
-        model.saveSnapshot(feedback);
-        return new CommandResult(feedback);
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof DeleteCommand)) {
-            return false;
-        }
-
-        DeleteCommand otherDeleteCommand = (DeleteCommand) other;
-        return index.equals(otherDeleteCommand.index);
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .add("index", index)
-                .toString();
-    }
+            + "Example: " + COMMAND_WORD + " 1"
+            + "Or: " + COMMAND_WORD + " " + PREFIX_FILE + "FILE_NAME to delete a B2B4U data file in use.\n"
+            + "Example: " + COMMAND_WORD + " " + PREFIX_FILE + "file_to_delete";
 }

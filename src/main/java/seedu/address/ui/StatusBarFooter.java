@@ -25,4 +25,10 @@ public class StatusBarFooter extends UiPart<Region> {
         saveLocationStatus.setText(Paths.get(".").resolve(saveLocation).toString());
     }
 
+    /**
+     * Updates the text to reflect the new save location.
+     */
+    public void updateSaveLocation(Path saveLocation) {
+        saveLocationStatus.setText(Paths.get(".").resolve(saveLocation).toString());
+    }
 }

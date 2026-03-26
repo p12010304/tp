@@ -50,6 +50,10 @@ public class LogicManager implements Logic {
         Command command = addressBookParser.parseCommand(commandText);
         commandResult = command.execute(model);
 
+        if (model.getAddressBookFilePath() != storage.getAddressBookFilePath()) {
+            storage.setAddressBookFilePath(model.getAddressBookFilePath());
+        }
+
         try {
             storage.saveAddressBook(model.getAddressBook());
         } catch (AccessDeniedException e) {

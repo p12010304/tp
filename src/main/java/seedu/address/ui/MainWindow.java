@@ -1,5 +1,7 @@
 package seedu.address.ui;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -40,9 +42,11 @@ public class MainWindow extends UiPart<Stage> {
     // Independent Ui parts residing in this Ui container
     private ContactListPanel contactListPanel;
     private ContactDetailPanel contactDetailPanel;
+    private FileListPanel fileListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
     private ReminderWindow reminderWindow;
+    private StatusBarFooter statusBarFooter;
 
     /** Listener to keep the split pane divider at the right edge when the detail panel is hidden */
     private final ChangeListener<Number> splitPaneListener;
@@ -63,7 +67,10 @@ public class MainWindow extends UiPart<Stage> {
     private StackPane contactDetailPanelPlaceholder;
 
     @FXML
-    private VBox contactDetailContainer;
+    private StackPane fileListPanelPlaceholder;
+
+    @FXML
+    private VBox viewPanelContainer;
 
     @FXML
     private SplitPane splitPane;
@@ -93,7 +100,7 @@ public class MainWindow extends UiPart<Stage> {
 
         // Set up the split pane listener to keep the divider at the right edge when the detail panel is hidden
         splitPaneListener = (obs, oldVal, newVal) -> {
-            if (!contactDetailContainer.isVisible()) {
+            if (!viewPanelContainer.isVisible()) {
                 splitPane.setDividerPositions(1.0);
             }
         };
@@ -151,13 +158,20 @@ public class MainWindow extends UiPart<Stage> {
         contactDetailPanel = new ContactDetailPanel(logic.getAddressBook().getContactList());
         contactDetailPanelPlaceholder.getChildren().add(contactDetailPanel.getRoot());
 
+        try {
+            fileListPanel = new FileListPanel(Paths.get("data"));
+            fileListPanelPlaceholder.getChildren().add(fileListPanel.getRoot());
+        } catch (IOException e) {
+            logger.info("An error occurred while setting up file list: " + e);
+        }
+
         // Initially hide the detail panel
-        hideContactDetailPanel();
+        hideViewPanel();
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
-        StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getAddressBookFilePath());
+        statusBarFooter = new StatusBarFooter(logic.getAddressBookFilePath());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
         CommandBox commandBox = new CommandBox(this::executeCommand);
@@ -172,16 +186,28 @@ public class MainWindow extends UiPart<Stage> {
     /**
      * Shows the contact detail panel.
      */
-    private void showContactDetailPanel() {
-        NodeUtil.show(contactDetailContainer);
+    private void showContactDetail() {
+        NodeUtil.show(viewPanelContainer);
+        NodeUtil.show(contactDetailPanelPlaceholder);
+        NodeUtil.hide(fileListPanelPlaceholder);
+        splitPane.setDividerPositions(0.6);
+    }
+
+    /**
+     * Shows the file list panel.
+     */
+    private void showFileList() {
+        NodeUtil.show(viewPanelContainer);
+        NodeUtil.hide(contactDetailPanelPlaceholder);
+        NodeUtil.show(fileListPanelPlaceholder);
         splitPane.setDividerPositions(0.6);
     }
 
     /**
      * Hides the contact detail panel.
      */
-    private void hideContactDetailPanel() {
-        NodeUtil.hide(contactDetailContainer);
+    private void hideViewPanel() {
+        NodeUtil.hide(viewPanelContainer);
         splitPane.setDividerPositions(1.0);
         viewedContactId = null;
     }
@@ -201,7 +227,7 @@ public class MainWindow extends UiPart<Stage> {
             contactDetailPanel.setContact(updatedContact);
         } else {
             contactDetailPanel.clearContact();
-            hideContactDetailPanel();
+            hideViewPanel();
         }
     }
 
@@ -284,15 +310,19 @@ public class MainWindow extends UiPart<Stage> {
 
             if (commandResult.isHideViewPanel()) {
                 contactDetailPanel.clearContact();
-                hideContactDetailPanel();
+                hideViewPanel();
             } else if (commandResult.isShowContactDetail()) {
                 commandResult.getContactToView().ifPresent(contact -> {
                     contactDetailPanel.setContact(contact);
                     viewedContactId = contact.getId();
-                    showContactDetailPanel();
+                    showContactDetail();
                 });
             } else if (viewedContactId != null) {
                 refreshContactDetailPanel();
+            }
+
+            if (commandResult.isShowFileList()) {
+                showFileList();
             }
 
             if (commandResult.getFeedbackToUser().contains(ListCommand.MESSAGE_SUCCESS)) {
@@ -302,6 +332,8 @@ public class MainWindow extends UiPart<Stage> {
             if (commandResult.getFeedbackToUser().contains(String.format(AddCommand.MESSAGE_SUCCESS, ""))) {
                 contactListPanel.scrollToBottom();
             }
+
+            statusBarFooter.updateSaveLocation(logic.getAddressBookFilePath());
 
             return commandResult;
         } catch (CommandException | ParseException e) {

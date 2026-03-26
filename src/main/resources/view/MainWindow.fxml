@@ -54,11 +54,12 @@
             <StackPane fx:id="contactListPanelPlaceholder" VBox.vgrow="ALWAYS"/>
           </VBox>
 
-          <VBox fx:id="contactDetailContainer" styleClass="pane-with-border" minWidth="250" prefWidth="300">
+          <VBox fx:id="viewPanelContainer" styleClass="pane-with-border" minWidth="250" prefWidth="300">
             <padding>
               <Insets top="10" right="10" bottom="10" left="10" />
             </padding>
             <StackPane fx:id="contactDetailPanelPlaceholder" VBox.vgrow="ALWAYS"/>
+            <StackPane fx:id="fileListPanelPlaceholder" VBox.vgrow="ALWAYS"/>
           </VBox>
         </SplitPane>
 

@@ -49,7 +49,7 @@ public class MainWindowTest extends GuiUnitTest {
     public void executeCommand_hideContactDetail_hidesPanelAndClearsId() throws Exception {
         runAndWait(() -> {
             mainWindow.setViewedContactId(UUID.randomUUID());
-            logic.setNextResult(new CommandResult("closed", false, false, null, true));
+            logic.setNextResult(new CommandResult("closed", false, false, null, true, false));
             assertDoesNotThrow(() -> mainWindow.executeCommand("close view"));
             assertNull(mainWindow.getViewedContactId());
         });
@@ -59,9 +59,19 @@ public class MainWindowTest extends GuiUnitTest {
     public void executeCommand_showContactDetail_showsPanelAndSetsId() throws Exception {
         runAndWait(() -> {
             Contact contact = new ContactBuilder().withName("Test").build();
-            logic.setNextResult(new CommandResult("viewed", false, false, contact, false));
+            logic.setNextResult(new CommandResult("viewed", false, false, contact, false, false));
             assertDoesNotThrow(() -> mainWindow.executeCommand("view 1"));
             assertNotNull(mainWindow.getViewedContactId());
+        });
+    }
+
+    @Test
+    public void executeCommand_showFileList() throws Exception {
+        runAndWait(() -> {
+            Contact contact = new ContactBuilder().withName("Test").build();
+            logic.setNextResult(new CommandResult("view files", false, false, null, false, true));
+            assertDoesNotThrow(() -> mainWindow.executeCommand("view file/"));
+            assertNull(mainWindow.getViewedContactId());
         });
     }
 

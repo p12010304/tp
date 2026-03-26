@@ -3,10 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
@@ -19,15 +17,8 @@
          <VBox alignment="CENTER_LEFT" style="-fx-background-color: #3c3e3f">
             <children>
             <HBox alignment="CENTER_LEFT" spacing="0.5">
-              <Label fx:id="id" styleClass="cell_big_label">
-                <minWidth>
-                  <!-- Ensures that the label text is never truncated -->
-                  <Region fx:constant="USE_PREF_SIZE" />
-                </minWidth>
-              </Label>
-              <Label fx:id="name" styleClass="cell_big_label" text="\$first" />
+              <Label fx:id="name" styleClass="cell_big_label" text="\$name" />
             </HBox>
-            <FlowPane fx:id="tags" />
             </children>
             <padding>
                <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
@@ -35,17 +26,14 @@
          </VBox>
          <VBox alignment="CENTER_LEFT">
             <children>
-            <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
-            <Label fx:id="address" styleClass="cell_small_label" text="\$address" />
-            <Label fx:id="email" styleClass="cell_small_label" text="\$email" />
-            <Label fx:id="lastContacted" styleClass="cell_small_label" text="\$lastContacted" />
-            <Label fx:id="lastUpdated" styleClass="cell_small_label" text="\$lastUpdated" />
+            <Label fx:id="lastModified" styleClass="cell_small_label" text="\$lastModified" />
+            <HBox>
+                <children>
+                    <Label fx:id="contactCountHeader" styleClass="cell_small_label, bold" text="Number of Contacts: " wrapText="true" />
+                    <Label fx:id="contactCount" styleClass="cell_small_label" text="\$contactCount" />
+                </children>
+            </HBox>
             </children>
-            <padding>
-               <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
-            </padding>
-         </VBox>
-         <VBox fx:id="notesContainer" styleClass="cell_small_label" alignment="CENTER_LEFT" maxHeight="62.4" style="-fx-background-color: #000000">
             <padding>
                <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
             </padding>

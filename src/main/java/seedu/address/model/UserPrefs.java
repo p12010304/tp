@@ -12,6 +12,9 @@ import seedu.address.commons.core.GuiSettings;
  * Represents User's preferences.
  */
 public class UserPrefs implements ReadOnlyUserPrefs {
+    public static final String VALIDATION_REGEX = "^[a-zA-Z0-9_]+$";
+    public static final String FILENAME_CONSTRAINTS_MESSAGE =
+            "File names should only contain alphanumeric characters and the underscore character '_'.";
 
     private GuiSettings guiSettings = new GuiSettings();
     private Path addressBookFilePath = Paths.get("data" , "addressbook.json");
@@ -54,6 +57,22 @@ public class UserPrefs implements ReadOnlyUserPrefs {
     public void setAddressBookFilePath(Path addressBookFilePath) {
         requireNonNull(addressBookFilePath);
         this.addressBookFilePath = addressBookFilePath;
+    }
+
+    /**
+     * Returns true if a given string is a valid file name.
+     */
+    public static boolean isValidFileName(String test) {
+        return test.matches(VALIDATION_REGEX);
+    }
+
+    /**
+     * Returns the file path to the address book with the given file name.
+     */
+    public static Path formatAddressBookFilePath(String fileName) {
+        requireNonNull(fileName);
+        assert isValidFileName(fileName);
+        return Paths.get("data", fileName + ".json");
     }
 
     @Override

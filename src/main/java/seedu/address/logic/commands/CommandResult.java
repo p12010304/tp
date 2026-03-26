@@ -27,16 +27,20 @@ public class CommandResult {
     /** Whether to hide the view panel. */
     private final boolean hideViewPanel;
 
+    /** Whether to hide the view panel. */
+    private final boolean showFileList;
+
     /**
      * Constructs a {@code CommandResult} with all fields specified.
      */
     public CommandResult(String feedbackToUser, boolean showHelp, boolean exit,
-            Contact contactToView, boolean hideViewPanel) {
+            Contact contactToView, boolean hideViewPanel, boolean showFileList) {
         this.feedbackToUser = requireNonNull(feedbackToUser);
         this.showHelp = showHelp;
         this.exit = exit;
         this.contactToView = contactToView;
         this.hideViewPanel = hideViewPanel;
+        this.showFileList = showFileList;
     }
 
     /**
@@ -44,7 +48,7 @@ public class CommandResult {
      * and other fields set to their default value.
      */
     public CommandResult(String feedbackToUser) {
-        this(feedbackToUser, false, false, null, false);
+        this(feedbackToUser, false, false, null, false, false);
     }
 
     public String getFeedbackToUser() {
@@ -78,6 +82,13 @@ public class CommandResult {
      */
     public boolean isHideViewPanel() {
         return hideViewPanel;
+    }
+
+    /**
+     * Returns true if the file list should be shown.
+     */
+    public boolean isShowFileList() {
+        return showFileList;
     }
 
     @Override
@@ -123,7 +134,7 @@ class HelpCommandResult extends CommandResult {
      * and other fields set to their default value.
      */
     public HelpCommandResult(String feedbackToUser) {
-        super(feedbackToUser, true, false, null, false);
+        super(feedbackToUser, true, false, null, false, false);
     }
 }
 
@@ -134,7 +145,7 @@ class ExitCommandResult extends CommandResult {
      * and other fields set to their default value.
      */
     public ExitCommandResult(String feedbackToUser) {
-        super(feedbackToUser, false, true, null, false);
+        super(feedbackToUser, false, true, null, false, false);
     }
 }
 
@@ -145,7 +156,7 @@ class ViewContactCommandResult extends CommandResult {
      * and other fields set to their default value.
      */
     public ViewContactCommandResult(String feedbackToUser, Contact contactToView) {
-        super(feedbackToUser, false, false, contactToView, false);
+        super(feedbackToUser, false, false, contactToView, false, false);
     }
 }
 
@@ -156,6 +167,17 @@ class CloseViewPanelCommandResult extends CommandResult {
      * and other fields set to their default value.
      */
     public CloseViewPanelCommandResult(String feedbackToUser) {
-        super(feedbackToUser, false, false, null, true);
+        super(feedbackToUser, false, false, null, true, false);
+    }
+}
+
+class ViewFilesCommandResult extends CommandResult {
+    /**
+     * Constructs a {@code CommandResult} with the specified {@code feedbackToUser},
+     * {@code showFileList} set to {@code true},
+     * and other fields set to their default value.
+     */
+    public ViewFilesCommandResult(String feedbackToUser) {
+        super(feedbackToUser, false, false, null, false, true);
     }
 }

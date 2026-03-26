@@ -59,7 +59,6 @@ public class ContactCard extends UiPart<Region> {
         this.contact = contact;
         id.setText(displayedIndex + ". ");
         name.setText(contact.getName().fullName);
-        name.getParent().getParent().setStyle("-fx-background-color: #3c3e3f");
         contact.getPhone().ifPresentOrElse(phone -> {
             this.phone.setText(phone.value);
             NodeUtil.show(this.phone);
@@ -96,7 +95,6 @@ public class ContactCard extends UiPart<Region> {
                         notesContainer.getChildren().add(
                                 new NoteLabel(note, notesContainer.getStyleClass().toString(),
                                 allContacts)); });
-            notesContainer.setStyle("-fx-background-color: #000000");
         } else {
             NodeUtil.hide(notesContainer);
         }

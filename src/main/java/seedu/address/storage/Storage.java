@@ -20,6 +20,11 @@ public interface Storage extends AddressBookStorage, UserPrefsStorage {
     @Override
     void saveUserPrefs(ReadOnlyUserPrefs userPrefs) throws IOException;
 
+    /**
+     * Set the file path of the address book data file.
+     */
+    void setAddressBookFilePath(Path addressBookFilePath);
+
     @Override
     Path getAddressBookFilePath();
 
