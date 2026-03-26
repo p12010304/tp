@@ -40,7 +40,6 @@ public class ModelManager implements Model {
     private final SortedList<Contact> sortedContacts;
 
     private int snapshotPosition;
-    private boolean isUsingDefaultSort;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -56,7 +55,6 @@ public class ModelManager implements Model {
         this.sortedContacts = new SortedList<>(this.filteredContacts);
         this.sortedContacts.setComparator(DEFAULT_DISPLAY_COMPARATOR);
         this.displayedContacts = this.sortedContacts;
-        this.isUsingDefaultSort = true;
 
         snapshots = new ArrayList<>();
         snapshots.add(new Pair<String, Snapshot>("", getSnapshot()));
@@ -158,7 +156,6 @@ public class ModelManager implements Model {
     public void resetDisplayedContactList() {
         filteredContacts.setPredicate(null);
         sortedContacts.setComparator(DEFAULT_DISPLAY_COMPARATOR);
-        isUsingDefaultSort = true;
     }
 
     @Override
@@ -170,7 +167,7 @@ public class ModelManager implements Model {
     @Override
     public void sortDisplayedContactList(Comparator<Contact> comparator) {
         requireNonNull(comparator);
-        sortedContacts.setComparator(comparator);
+        sortedContacts.setComparator(comparator.thenComparing(DEFAULT_DISPLAY_COMPARATOR));
     }
 
     //=========== Snapshot ================================================================================
@@ -203,7 +200,7 @@ public class ModelManager implements Model {
             filterDisplayedContactList(snapshot.filterPredicate());
         }
         if (snapshot.sortComparator() != null) {
-            sortDisplayedContactList(snapshot.sortComparator());
+            sortedContacts.setComparator(snapshot.sortComparator());
         }
     }
 
