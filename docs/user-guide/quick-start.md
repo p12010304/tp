@@ -9,7 +9,9 @@
 1. Copy the file to the folder you want to use as the _home folder_ for your B2B4U application.
 
 1. Double-click the B2B4U.jar file.<br>
+   <box type="info" seamless>
    _Alternatively,_ open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar B2B4U.jar` command to run the application.<br>
+   </box>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](../images/Ui.png)
 
@@ -30,4 +32,4 @@
 
    * `exit` : Exits the app.
 
-1. Refer to [Features](/user-guide/features.html) for details of each command.
+1. Refer to [Features](/tp/user-guide/features.html) for details of each command.
