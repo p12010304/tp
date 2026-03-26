@@ -22,7 +22,7 @@ public class DeleteFileCommand extends DeleteCommand {
     public static final String MESSAGE_SUCCESS = "%1$s has been deleted.";
     public static final String MESSAGE_FAILURE_IS_CURRENT_FILE = "Cannot delete file currently being accessed.";
     public static final String MESSAGE_FAILURE_FILE_NOT_FOUND = "File not found.";
-    public static final String MESSAGE_FAILURE_INVALID_FILE = "File is not a B2B4U file.";
+    public static final String MESSAGE_FAILURE_INVALID_FILE = "File is not a valid B2B4U data file.";
     public static final String MESSAGE_FAILURE_ABORT = "File deletion aborted.";
     public static final String MESSAGE_FAILURE = "Failed to delete file.";
 

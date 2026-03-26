@@ -26,7 +26,6 @@ public class SetCommandParser implements Parser<SetCommand> {
         boolean isPreamblePresent = !argMultimap.getPreamble().isEmpty();
         boolean isFilePrefixPresent = argMultimap.getValue(PREFIX_FILE).isPresent();
 
-
         if (isPreamblePresent) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetCommand.MESSAGE_USAGE));
         }
