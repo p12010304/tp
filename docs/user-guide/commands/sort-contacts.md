@@ -15,3 +15,7 @@ Examples:
 * `sort n/` sorts all contacts alphabetically by name.
 * `sort lu/` sorts contacts by when they were last updated.
 * `sort n/ t/vip` sorts contacts alphabetically by name, with contacts tagged `vip` shown first.
+
+| Sample command                                           | Output                                                   |
+| -------------------------------------------------------- | -------------------------------------------------------- |
+| ![sort contacts]({{ baseUrl }}/images/sortContacts1.png) | ![sort contacts]({{ baseUrl }}/images/sortContacts2.png) |

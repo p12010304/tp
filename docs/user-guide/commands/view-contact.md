@@ -12,4 +12,4 @@ Format: `view INDEX`
 Example:
 * `view 1` displays the details of the 1st contact.
 
-![view contact](../../images/viewContact.png)
+![view contact]({{ baseUrl }}/images/viewContact.png)

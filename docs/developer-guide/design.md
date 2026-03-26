@@ -8,7 +8,7 @@
 
 ## Architecture
 
-<puml src="../diagrams/ArchitectureDiagram.puml" width="280" />
+<puml src="{{ baseUrl }}/diagrams/ArchitectureDiagram.puml" width="280" />
 
 The ***Architecture Diagram*** given above explains the high-level design of the App.
 
@@ -33,7 +33,7 @@ The bulk of the app's work is done by the following four components:
 
 The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
 
-<puml src="../diagrams/ArchitectureSequenceDiagram.puml" width="574" />
+<puml src="{{ baseUrl }}/diagrams/ArchitectureSequenceDiagram.puml" width="574" />
 
 Each of the four main components (also shown in the diagram above),
 
@@ -42,7 +42,7 @@ Each of the four main components (also shown in the diagram above),
 
 For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside component's being coupled to the implementation of a component), as illustrated in the (partial) class diagram below.
 
-<puml src="../diagrams/ComponentManagers.puml" width="300" />
+<puml src="{{ baseUrl }}/diagrams/ComponentManagers.puml" width="300" />
 
 The sections below give more details of each component.
 
@@ -50,7 +50,7 @@ The sections below give more details of each component.
 
 The **API** of this component is specified in [`Ui.java`](https://github.com/AY2526S2-CS2103T-T08-1/tp/blob/master/src/main/java/seedu/address/ui/Ui.java)
 
-<puml src="../diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
+<puml src="{{ baseUrl }}/diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
 
 The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `ContactListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
@@ -69,11 +69,11 @@ The `UI` component,
 
 Here's a (partial) class diagram of the `Logic` component:
 
-<puml src="../diagrams/LogicClassDiagram.puml" width="550"/>
+<puml src="{{ baseUrl }}/diagrams/LogicClassDiagram.puml" width="550"/>
 
 The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
 
-<puml src="../diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" />
+<puml src="{{ baseUrl }}/diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" />
 
 <box type="info" seamless>
 
@@ -90,7 +90,7 @@ How the `Logic` component works:
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
-<puml src="../diagrams/ParserClasses.puml" width="600"/>
+<puml src="{{ baseUrl }}/diagrams/ParserClasses.puml" width="600"/>
 
 How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
@@ -99,7 +99,7 @@ How the parsing works:
 ## Model component
 **API** : [`Model.java`](https://github.com/AY2526S2-CS2103T-T08-1/tp/blob/master/src/main/java/seedu/address/model/Model.java)
 
-<puml src="../diagrams/ModelClassDiagram.puml" width="450" />
+<puml src="{{ baseUrl }}/diagrams/ModelClassDiagram.puml" width="450" />
 
 
 The `Model` component,
@@ -113,7 +113,7 @@ The `Model` component,
 
 **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Contact` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Contact` needing their own `Tag` objects.<br>
 
-<puml src="../diagrams/BetterModelClassDiagram.puml" width="450" />
+<puml src="{{ baseUrl }}/diagrams/BetterModelClassDiagram.puml" width="450" />
 
 </box>
 
@@ -122,7 +122,7 @@ The `Model` component,
 
 **API** : [`Storage.java`](https://github.com/AY2526S2-CS2103T-T08-1/tp/blob/master/src/main/java/seedu/address/storage/Storage.java)
 
-<puml src="../diagrams/StorageClassDiagram.puml" width="550" />
+<puml src="{{ baseUrl }}/diagrams/StorageClassDiagram.puml" width="550" />
 
 The `Storage` component,
 * can save both contact list data and user preference data in JSON format, and read them back into corresponding objects.

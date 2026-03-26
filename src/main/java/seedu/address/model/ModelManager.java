@@ -158,7 +158,6 @@ public class ModelManager implements Model {
     public void resetDisplayedContactList() {
         filteredContacts.setPredicate(null);
         sortedContacts.setComparator(DEFAULT_DISPLAY_COMPARATOR);
-        isUsingDefaultSort = true;
     }
 
     @Override
@@ -170,8 +169,7 @@ public class ModelManager implements Model {
     @Override
     public void sortDisplayedContactList(Comparator<Contact> comparator) {
         requireNonNull(comparator);
-        sortedContacts.setComparator(comparator);
-        isUsingDefaultSort = false;
+        sortedContacts.setComparator(comparator.thenComparing(DEFAULT_DISPLAY_COMPARATOR));
     }
 
     //=========== Snapshot ================================================================================
@@ -204,7 +202,7 @@ public class ModelManager implements Model {
             filterDisplayedContactList(snapshot.filterPredicate());
         }
         if (snapshot.sortComparator() != null) {
-            sortDisplayedContactList(snapshot.sortComparator());
+            sortedContacts.setComparator(snapshot.sortComparator());
         }
     }
 

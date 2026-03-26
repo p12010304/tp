@@ -20,4 +20,4 @@ Examples:
 * `add n/Alex Tan p/91234567`
 * `add n/Jane Smith e/jane@example.com lc/22/02/2026`
 
-![add contact](../../images/addContact.png)
+![add contact]({{ baseUrl }}/images/addContact.png)

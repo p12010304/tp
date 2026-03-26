@@ -4,4 +4,4 @@ Clears all contacts from the contact list.
 
 Format: `clear`
 
-![clear](../../images/clear.png)
+![clear]({{ baseUrl }}/images/clear.png)
