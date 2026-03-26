@@ -115,7 +115,7 @@ class JsonAdaptedContact {
     }
 
     /**
-     * Converts this Jackson-friendly adapted contact object into the model's {@link Contact} object.
+     * Converts this Jackson-friendly adapted contact object into the model's {@code Contact} object.
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted contact.
      */

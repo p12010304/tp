@@ -17,6 +17,8 @@ import javafx.util.Pair;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.contact.Contact;
+import seedu.address.model.contact.ContactComparator;
+import seedu.address.model.contact.ContactFieldComparator;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -24,6 +26,8 @@ import seedu.address.model.contact.Contact;
 public class ModelManager implements Model {
     public static final String UNDO_LIMIT_MESSAGE = "Model already at earliest snapshot.";
     public static final String REDO_LIMIT_MESSAGE = "Model already at newest snapshot.";
+    private static final Comparator<Contact> DEFAULT_DISPLAY_COMPARATOR =
+            new ContactFieldComparator(ContactFieldComparator.Field.LAST_CONTACTED, ContactComparator.Order.DESCENDING);
 
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
@@ -49,6 +53,7 @@ public class ModelManager implements Model {
         this.userPrefs = new UserPrefs(userPrefs);
         this.filteredContacts = new FilteredList<>(this.addressBook.getContactList());
         this.sortedContacts = new SortedList<>(this.filteredContacts);
+        this.sortedContacts.setComparator(DEFAULT_DISPLAY_COMPARATOR);
         this.displayedContacts = this.sortedContacts;
 
         snapshots = new ArrayList<>();
@@ -150,7 +155,7 @@ public class ModelManager implements Model {
     @Override
     public void resetDisplayedContactList() {
         filteredContacts.setPredicate(null);
-        sortedContacts.setComparator(null);
+        sortedContacts.setComparator(DEFAULT_DISPLAY_COMPARATOR);
     }
 
     @Override
@@ -162,7 +167,7 @@ public class ModelManager implements Model {
     @Override
     public void sortDisplayedContactList(Comparator<Contact> comparator) {
         requireNonNull(comparator);
-        sortedContacts.setComparator(comparator);
+        sortedContacts.setComparator(comparator.thenComparing(DEFAULT_DISPLAY_COMPARATOR));
     }
 
     //=========== Snapshot ================================================================================
@@ -195,7 +200,7 @@ public class ModelManager implements Model {
             filterDisplayedContactList(snapshot.filterPredicate());
         }
         if (snapshot.sortComparator() != null) {
-            sortDisplayedContactList(snapshot.sortComparator());
+            sortedContacts.setComparator(snapshot.sortComparator());
         }
     }
 

@@ -54,6 +54,16 @@ public class JsonAdaptedContactTest {
     }
 
     @Test
+    public void toModelType_legacyStringArrayTags_returnsContact() throws Exception {
+        JsonAdaptedContact contact =
+                new JsonAdaptedContact(
+                        VALID_ID, VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
+                        VALID_LAST_CONTACTED, VALID_LAST_UPDATED,
+                        VALID_NOTES, List.of(new JsonAdaptedTag("owesMoney"), new JsonAdaptedTag("friends")));
+        assertEquals(BENSON, contact.toModelType());
+    }
+
+    @Test
     public void toModelType_legacyEmptyStringNotes_returnsContactWithEmptyNotes() throws Exception {
         JsonAdaptedContact contact =
                 new JsonAdaptedContact(

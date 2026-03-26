@@ -78,7 +78,7 @@ public class FindCommandTest {
         FindFieldsCommand command = new FindFieldsCommand(predicate);
         expectedModel.filterDisplayedContactList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(ALICE, BENSON, DANIEL, ELLE), model.getDisplayedContactList());
+        assertEquals(Arrays.asList(DANIEL, ELLE, ALICE, BENSON), model.getDisplayedContactList());
     }
 
     @Test
