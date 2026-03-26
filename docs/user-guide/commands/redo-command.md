@@ -12,4 +12,4 @@ Examples:
 * `delete 1` then `undo` then `redo` re-deletes the 1st contact.
 * `edit 1 n/New Name` then `undo` then `redo` re-applies the name change.
 
-![redo command](../../images/redoCommand.png)
+![redo command]({{ baseUrl }}/images/redoCommand.png)

@@ -16,4 +16,4 @@ Examples:
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd contact to be `Betsy Crower` and clears all existing tags.
 *  `edit 3 lc/today` Updates the last contacted date of the 3rd contact to today.
 
-![edit contact](../../images/editContact.png)
+![edit contact]({{ baseUrl }}/images/editContact.png)

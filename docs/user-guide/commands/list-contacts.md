@@ -4,5 +4,5 @@ Shows a list of all contacts in the contact list and resets contact order by old
 
 Format: `list`
 
-![list contacts](../../images/listContacts.png)
+![list contacts]({{ baseUrl }}/images/listContacts.png)
 
