@@ -55,23 +55,6 @@ public class LogicManager implements Logic {
 
         if (model.getAddressBookFilePath() != storage.getAddressBookFilePath()) {
             storage.setAddressBookFilePath(model.getAddressBookFilePath());
-            logger.info("Using data file: " + storage.getAddressBookFilePath());
-
-            Optional<ReadOnlyAddressBook> addressBookOptional;
-            ReadOnlyAddressBook data;
-            try {
-                addressBookOptional = storage.readAddressBook();
-                if (!addressBookOptional.isPresent()) {
-                    logger.info("Creating a new data file " + storage.getAddressBookFilePath()
-                            + " with empty AddressBook.");
-                }
-                data = addressBookOptional.orElseGet(AddressBook::new);
-            } catch (DataLoadingException e) {
-                logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
-                        + " Will be starting with an empty AddressBook.");
-                data = new AddressBook();
-            }
-            model.setAddressBook(data);
         }
 
         try {
