@@ -5,6 +5,7 @@
     "phone" : "94351253",
     "email" : "alice@example.com",
     "address" : "123, Jurong West Ave 6, #08-111",
+    "lastUpdated": "2026-02-22T09:00",
     "notes": [ ],
     "tags" : [ {
       "type" : "JsonAdaptedRankedTag",
@@ -16,6 +17,7 @@
     "phone" : "98765432",
     "email" : "johnd@example.com",
     "address" : "311, Clementi Ave 2, #02-25",
+    "lastUpdated": "2026-02-21T09:00",
     "notes": [ ],
     "tags" : [ {
       "type" : "JsonAdaptedTag",
@@ -30,6 +32,7 @@
     "email" : "heinz@example.com",
     "address" : "wall street",
     "lastContacted": "Feb 23, 2026",
+    "lastUpdated": "2026-02-23T09:00",
     "notes": [ ],
     "tags" : [ ]
   }, {
@@ -38,6 +41,7 @@
     "email" : "cornelia@example.com",
     "address" : "10th street",
     "lastContacted": "Feb 21, 2026",
+    "lastUpdated": "2026-02-21T09:00",
     "notes": [ ],
     "tags" : [ {
       "type" : "JsonAdaptedTag",
@@ -49,6 +53,7 @@
     "email" : "werner@example.com",
     "address" : "michegan ave",
     "lastContacted": "a year ago",
+    "lastUpdated": "2025-02-22T09:00",
     "notes": [ ],
     "tags" : [ ]
   }, {
@@ -57,6 +62,7 @@
     "email" : "lydia@example.com",
     "address" : "little tokyo",
     "lastContacted": "13:00, Feb 22, 2026",
+    "lastUpdated": "2026-02-22T13:00",
     "notes": [ ],
     "tags" : [ ]
   }, {
@@ -65,6 +71,7 @@
     "email" : "anna@example.com",
     "address" : "4th street",
     "lastContacted": "15:00, Feb 22, 2026",
+    "lastUpdated": "2026-02-22T15:00",
     "notes": [ ],
     "tags" : [ ]
   } ]

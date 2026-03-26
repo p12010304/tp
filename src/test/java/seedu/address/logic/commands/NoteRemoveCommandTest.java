@@ -6,7 +6,9 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalContacts.getTypicalAddressBook;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_CONTACT;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_NOTE;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_CONTACT;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_NOTE;
 
 import java.util.List;
 
@@ -22,16 +24,15 @@ import seedu.address.model.contact.Contact;
 import seedu.address.model.contact.Note;
 
 public class NoteRemoveCommandTest {
-    private static final Note NOTE = new Note("Lorem ipsum");
-    private static final List<Note> NOTES = List.of(NOTE);
-    private static final int REMOVE_ONE_LINE = 1;
-    private static final int REMOVE_TWO_LINES = 2;
+    private static final Note NOTE_A = new Note("Lorem ipsum");
+    private static final Note NOTE_B = new Note("Dolor sit amet");
+    private static final List<Note> NOTES = List.of(NOTE_A, NOTE_B);
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
     public void execute_success() {
-        NoteClearCommand notesCommand = new NoteClearCommand(INDEX_FIRST_CONTACT, REMOVE_ONE_LINE);
+        NoteRemoveCommand notesCommand = new NoteRemoveCommand(INDEX_FIRST_CONTACT, INDEX_SECOND_NOTE);
 
         Contact contactToEdit = model.getDisplayedContactList().get(0);
         Contact editedContact = new Contact(contactToEdit.getName(), contactToEdit.getPhone(), contactToEdit.getEmail(),
@@ -49,15 +50,24 @@ public class NoteRemoveCommandTest {
     @Test
     public void execute_invalidContactIndexUnfilteredList_failure() {
         Index outOfBoundIndex = Index.fromOneBased(model.getDisplayedContactList().size() + 1);
-        NoteClearCommand notesCommand = new NoteClearCommand(outOfBoundIndex, REMOVE_ONE_LINE);
+        NoteRemoveCommand notesCommand = new NoteRemoveCommand(outOfBoundIndex, INDEX_FIRST_NOTE);
 
         assertCommandFailure(notesCommand, model,
                 Messages.getIndexOutOfRangeMessage(model.getDisplayedContactList().size()));
     }
 
     @Test
+    public void execute_invalidNoteIndexUnfilteredList_failure() {
+        Index outOfBoundIndex = Index.fromOneBased(model.getDisplayedContactList()
+                .get(INDEX_FIRST_NOTE.getOneBased()).getNotes().size() + 1);
+        NoteRemoveCommand notesCommand = new NoteRemoveCommand(INDEX_FIRST_NOTE, outOfBoundIndex);
+
+        assertCommandFailure(notesCommand, model, NoteRemoveCommand.MESSAGE_INVALID_NOTE_INDEX);
+    }
+
+    @Test
     public void equals() {
-        final NoteClearCommand standardCommand = new NoteClearCommand(INDEX_FIRST_CONTACT, REMOVE_ONE_LINE);
+        final NoteRemoveCommand standardCommand = new NoteRemoveCommand(INDEX_FIRST_CONTACT, INDEX_FIRST_NOTE);
 
         // same object -> returns true
         assertTrue(standardCommand.equals(standardCommand));
@@ -69,9 +79,9 @@ public class NoteRemoveCommandTest {
         assertFalse(standardCommand.equals(new ClearCommand()));
 
         // different index -> returns false
-        assertFalse(standardCommand.equals(new NoteClearCommand(INDEX_SECOND_CONTACT, REMOVE_ONE_LINE)));
+        assertFalse(standardCommand.equals(new NoteRemoveCommand(INDEX_SECOND_CONTACT, INDEX_FIRST_NOTE)));
 
-        // different descriptor -> returns false
-        assertFalse(standardCommand.equals(new NoteClearCommand(INDEX_FIRST_CONTACT, REMOVE_TWO_LINES)));
+        // different note -> returns false
+        assertFalse(standardCommand.equals(new NoteRemoveCommand(INDEX_FIRST_CONTACT, INDEX_SECOND_NOTE)));
     }
 }

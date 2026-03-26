@@ -5,6 +5,7 @@ import static seedu.address.storage.JsonAdaptedContact.MISSING_FIELD_MESSAGE_FOR
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalContacts.BENSON;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +37,7 @@ public class JsonAdaptedContactTest {
     private static final Optional<String> VALID_EMAIL = BENSON.getEmail().map(Email::toString);
     private static final Optional<String> VALID_ADDRESS = BENSON.getAddress().map(Address::toString);
     private static final Optional<String> VALID_LAST_CONTACTED = BENSON.getLastContacted().map(Object::toString);
-    private static final Optional<String> VALID_LAST_UPDATED = Optional.of(BENSON.getLastUpdated().toString());
+    private static final LocalDateTime VALID_LAST_UPDATED = BENSON.getLastUpdated().value;
     private static final List<String> VALID_NOTES = BENSON.getNotes().stream()
             .map(note -> note.value)
             .collect(Collectors.toList());
@@ -289,11 +290,11 @@ public class JsonAdaptedContactTest {
 
     @Test
     public void toModelType_invalidLastUpdated_throwsIllegalValueException() {
-        JsonAdaptedContact contact =
-                new JsonAdaptedContact(
-                        VALID_ID, VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
-                        VALID_LAST_CONTACTED, Optional.of(" "), VALID_NOTES, VALID_TAGS);
-        assertThrows(IllegalValueException.class, LastUpdated.MESSAGE_CONSTRAINTS, contact::toModelType);
+        JsonAdaptedContact contact = new JsonAdaptedContact(
+                VALID_ID, VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
+                VALID_LAST_CONTACTED, null, VALID_NOTES, VALID_TAGS);
+        assertThrows(IllegalValueException.class,
+                String.format(MISSING_FIELD_MESSAGE_FORMAT, LastUpdated.class.getSimpleName()), contact::toModelType);
     }
 
     @Test
@@ -301,16 +302,7 @@ public class JsonAdaptedContactTest {
         JsonAdaptedContact contact =
                 new JsonAdaptedContact(
                         VALID_ID, VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
-                        VALID_LAST_CONTACTED, VALID_NOTES, VALID_TAGS);
-        assertEquals(BENSON, contact.toModelType());
-    }
-
-    @Test
-    public void toModelType_nullLastUpdated_populatesLastUpdated() throws Exception {
-        JsonAdaptedContact contact =
-                new JsonAdaptedContact(
-                        VALID_ID, VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
-                        VALID_LAST_CONTACTED, null, VALID_NOTES, VALID_TAGS);
+                        VALID_LAST_CONTACTED, VALID_LAST_UPDATED, VALID_NOTES, VALID_TAGS);
         assertEquals(BENSON, contact.toModelType());
     }
 

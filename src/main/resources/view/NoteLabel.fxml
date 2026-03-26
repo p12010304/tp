@@ -7,8 +7,8 @@
 <fx:root type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="reminderHeader" styleClass="bold" text="Reminder: " wrapText="true" />
-      <Label fx:id="reminderNote" text="\$reminder_note" wrapText="true" />
-      <Label fx:id="onText" styleClass="italic" text=" on " wrapText="true" />
-      <Label fx:id="reminderTime" text="\$reminder_time" wrapText="true" />
+      <Label fx:id="text" text="\$text" wrapText="true" />
+      <Label fx:id="reminderSeparator" styleClass="italic" text=" on " wrapText="true" />
+      <Label fx:id="time" text="\$time" wrapText="true" />
    </children>
 </fx:root>

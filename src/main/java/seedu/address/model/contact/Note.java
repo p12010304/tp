@@ -57,14 +57,14 @@ public class Note {
     }
 
     /**
-     * Outputs a Json formatted string to represent this note.
+     * Outputs a {@code JSON} formatted string to represent this note.
      */
     public String toJsonString() {
         return value + ((timePoint == null) ? "" : " on/" + timePoint.toString());
     }
 
     /**
-     * Creates a Note from a Json formatted string.
+     * Creates a Note from a {@code JSON} formatted string.
      */
     public static Note fromJsonString(String string) {
         requireNonNull(string);

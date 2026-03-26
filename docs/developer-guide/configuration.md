@@ -1,6 +1,7 @@
 ---
   layout: default.md
   title: "Configuration guide"
+  pageNav: 3
 ---
 
 # Configuration guide

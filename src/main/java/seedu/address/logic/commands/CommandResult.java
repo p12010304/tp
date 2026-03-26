@@ -24,33 +24,19 @@ public class CommandResult {
     /** Contact to view in detail panel. */
     private final Contact contactToView;
 
-    /** Whether to hide the contact detail panel. */
-    private final boolean hideContactDetail;
-
-    /**
-     * Constructs a {@code CommandResult} with the specified fields.
-     */
-    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit) {
-        this(feedbackToUser, showHelp, exit, null, false);
-    }
-
-    /**
-     * Constructs a {@code CommandResult} with the specified fields including contact to view.
-     */
-    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit, Contact contactToView) {
-        this(feedbackToUser, showHelp, exit, contactToView, false);
-    }
+    /** Whether to hide the view panel. */
+    private final boolean hideViewPanel;
 
     /**
      * Constructs a {@code CommandResult} with all fields specified.
      */
     public CommandResult(String feedbackToUser, boolean showHelp, boolean exit,
-            Contact contactToView, boolean hideContactDetail) {
+            Contact contactToView, boolean hideViewPanel) {
         this.feedbackToUser = requireNonNull(feedbackToUser);
         this.showHelp = showHelp;
         this.exit = exit;
         this.contactToView = contactToView;
-        this.hideContactDetail = hideContactDetail;
+        this.hideViewPanel = hideViewPanel;
     }
 
     /**
@@ -90,8 +76,8 @@ public class CommandResult {
     /**
      * Returns true if the contact detail panel should be hidden.
      */
-    public boolean isHideContactDetail() {
-        return hideContactDetail;
+    public boolean isHideViewPanel() {
+        return hideViewPanel;
     }
 
     @Override
@@ -110,12 +96,12 @@ public class CommandResult {
                 && showHelp == otherCommandResult.showHelp
                 && exit == otherCommandResult.exit
                 && Objects.equals(contactToView, otherCommandResult.contactToView)
-                && hideContactDetail == otherCommandResult.hideContactDetail;
+                && hideViewPanel == otherCommandResult.hideViewPanel;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(feedbackToUser, showHelp, exit, contactToView, hideContactDetail);
+        return Objects.hash(feedbackToUser, showHelp, exit, contactToView, hideViewPanel);
     }
 
     @Override
@@ -125,8 +111,51 @@ public class CommandResult {
                 .add("showHelp", showHelp)
                 .add("exit", exit)
                 .add("contactToView", contactToView)
-                .add("hideContactDetail", hideContactDetail)
+                .add("hideViewPanel", hideViewPanel)
                 .toString();
     }
+}
 
+class HelpCommandResult extends CommandResult {
+    /**
+     * Constructs a {@code CommandResult} with the specified {@code feedbackToUser},
+     * {@code showHelp} set to {@code true},
+     * and other fields set to their default value.
+     */
+    public HelpCommandResult(String feedbackToUser) {
+        super(feedbackToUser, true, false, null, false);
+    }
+}
+
+class ExitCommandResult extends CommandResult {
+    /**
+     * Constructs a {@code CommandResult} with the specified {@code feedbackToUser},
+     * {@code exit} set to {@code true},
+     * and other fields set to their default value.
+     */
+    public ExitCommandResult(String feedbackToUser) {
+        super(feedbackToUser, false, true, null, false);
+    }
+}
+
+class ViewContactCommandResult extends CommandResult {
+    /**
+     * Constructs a {@code CommandResult} with the specified {@code feedbackToUser},
+     * {@code contactToView} set to the given contact,
+     * and other fields set to their default value.
+     */
+    public ViewContactCommandResult(String feedbackToUser, Contact contactToView) {
+        super(feedbackToUser, false, false, contactToView, false);
+    }
+}
+
+class CloseViewPanelCommandResult extends CommandResult {
+    /**
+     * Constructs a {@code CommandResult} with the specified {@code feedbackToUser},
+     * {@code hideViewPanel} set to {@code true},
+     * and other fields set to their default value.
+     */
+    public CloseViewPanelCommandResult(String feedbackToUser) {
+        super(feedbackToUser, false, false, null, true);
+    }
 }

@@ -22,16 +22,16 @@ import seedu.address.model.contact.Note;
  */
 public class NoteLabel extends HBox {
 
-    private static final String FXML = "/view/ReminderLabel.fxml";
+    private static final String FXML = "/view/NoteLabel.fxml";
 
     @FXML
     private Label reminderHeader;
     @FXML
-    private Label reminderNote;
+    private Label text;
     @FXML
-    private Label onText;
+    private Label reminderSeparator;
     @FXML
-    private Label reminderTime;
+    private Label time;
 
     /**
      * Creates a {@code NoteLabel} with contact reference resolution.
@@ -50,26 +50,23 @@ public class NoteLabel extends HBox {
         }
 
         // Apply cell_small_label font to match phone/email/address style
-        reminderNote.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 13px;");
+        text.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 13px;");
 
         if (note.hasContactReferences() && contacts != null) {
             // Replace the plain label with a TextFlow containing styled contact names
-            int idx = getChildren().indexOf(reminderNote);
+            int idx = getChildren().indexOf(text);
             TextFlow textFlow = buildRichNoteText(note.value, contacts);
             getChildren().set(idx, textFlow);
         } else {
-            reminderNote.setText(note.value);
+            text.setText(note.value);
         }
 
         if (note.timePoint != null) {
-            reminderTime.setText(note.timePoint.toString());
+            time.setText(note.timePoint.toString());
         } else {
-            reminderHeader.setVisible(false);
-            reminderHeader.setManaged(false);
-            onText.setVisible(false);
-            onText.setManaged(false);
-            reminderTime.setVisible(false);
-            reminderTime.setManaged(false);
+            NodeUtil.hide(reminderHeader);
+            NodeUtil.hide(reminderSeparator);
+            NodeUtil.hide(time);
         }
     }
 
@@ -86,8 +83,8 @@ public class NoteLabel extends HBox {
     public NoteLabel(Note note, String style, ObservableList<Contact> contacts) {
         this(note, contacts);
         reminderHeader.getStyleClass().add(style);
-        onText.getStyleClass().add(style);
-        reminderTime.getStyleClass().add(style);
+        reminderSeparator.getStyleClass().add(style);
+        time.getStyleClass().add(style);
     }
 
     /**
@@ -142,10 +139,9 @@ public class NoteLabel extends HBox {
     }
 
     /**
-     * Hides the "Reminder: " header of the {@code ReminderLabel}.
+     * Hides the "Reminder: " header of the {@code NoteLabel}.
      */
     public void hideHeader() {
-        reminderHeader.setVisible(false);
-        reminderHeader.setManaged(false);
+        NodeUtil.hide(reminderHeader);
     }
 }

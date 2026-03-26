@@ -25,7 +25,7 @@ public class CloseViewCommandTest {
     public void execute_resultHidesContactDetail() {
         CloseViewCommand command = new CloseViewCommand();
         CommandResult result = command.execute(model);
-        assertTrue(result.isHideContactDetail());
+        assertTrue(result.isHideViewPanel());
         assertFalse(result.isShowContactDetail());
         assertFalse(result.isShowHelp());
         assertFalse(result.isExit());

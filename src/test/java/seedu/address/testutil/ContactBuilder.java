@@ -1,5 +1,6 @@
 package seedu.address.testutil;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -109,10 +110,26 @@ public class ContactBuilder {
     }
 
     /**
+     * Clears the {@code Phone} of the {@code Contact} that we are building.
+     */
+    public ContactBuilder withoutPhone() {
+        this.phone = Optional.empty();
+        return this;
+    }
+
+    /**
      * Sets the {@code Email} of the {@code Contact} that we are building.
      */
     public ContactBuilder withEmail(String email) {
         this.email = email != null ? Optional.of(new Email(email)) : Optional.empty();
+        return this;
+    }
+
+    /**
+     * Clears the {@code Email} of the {@code Contact} that we are building.
+     */
+    public ContactBuilder withoutEmail() {
+        this.email = Optional.empty();
         return this;
     }
 
@@ -135,7 +152,7 @@ public class ContactBuilder {
     /**
      * Sets the {@code LastUpdated} of the {@code Contact} that we are building.
      */
-    public ContactBuilder withLastUpdated(String lastUpdated) {
+    public ContactBuilder withLastUpdated(LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated != null ? new LastUpdated(lastUpdated) : LastUpdated.now();
         return this;
     }

@@ -70,4 +70,8 @@ shadowJar {
     archiveFileName = 'B2B4U.jar'
 }
 
+run {
+    enableAssertions = true
+}
+
 defaultTasks 'clean', 'test'

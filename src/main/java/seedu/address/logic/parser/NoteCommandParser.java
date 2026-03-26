@@ -5,6 +5,7 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CLEAR;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CLEAR_ALL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ON;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMOVE;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -13,6 +14,7 @@ import seedu.address.logic.commands.NoteAddCommand;
 import seedu.address.logic.commands.NoteClearAllCommand;
 import seedu.address.logic.commands.NoteClearCommand;
 import seedu.address.logic.commands.NoteCommand;
+import seedu.address.logic.commands.NoteRemoveCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.contact.Note;
 
@@ -29,10 +31,11 @@ public class NoteCommandParser implements Parser<NoteCommand> {
     public NoteCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
-            ArgumentTokenizer.tokenize(args, PREFIX_ON, PREFIX_CLEAR, PREFIX_CLEAR_ALL);
+                ArgumentTokenizer.tokenize(args, PREFIX_ON, PREFIX_CLEAR, PREFIX_CLEAR_ALL, PREFIX_REMOVE);
 
         boolean isClearPrefixPresent = argMultimap.getValue(PREFIX_CLEAR).isPresent();
         boolean isClearAllPrefixPresent = argMultimap.getValue(PREFIX_CLEAR_ALL).isPresent();
+        boolean isRemovePrefixPresent = argMultimap.getValue(PREFIX_REMOVE).isPresent();
         boolean isPreamblePresent = !argMultimap.getPreamble().isEmpty();
 
         if (!isPreamblePresent) {
@@ -40,7 +43,7 @@ public class NoteCommandParser implements Parser<NoteCommand> {
                     Messages.MESSAGE_MISSING_INDEX, NoteAddCommand.MESSAGE_USAGE));
         }
 
-        if (isClearPrefixPresent && isClearAllPrefixPresent) {
+        if (argMultimap.getArguments().size() > 1) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, NoteAddCommand.MESSAGE_USAGE));
         }
 
@@ -52,16 +55,20 @@ public class NoteCommandParser implements Parser<NoteCommand> {
             return parseNoteClearAllCommand(argMultimap);
         }
 
+        if (isRemovePrefixPresent) {
+            return parseNoteRemoveCommand(argMultimap);
+        }
+
         return parseNoteAddCommand(argMultimap);
     }
 
     /**
-     * Parses the given {@code ArgumentMultimap} in the context of the {@code NoteRemoveCommand}
-     * and returns a {@code NoteRemoveCommand} object for execution.
+     * Parses the given {@code ArgumentMultimap} in the context of the {@code NoteClearCommand}
+     * and returns a {@code NoteClearCommand} object for execution.
      *
      * @param argMultimap The ArgumentMultimap containing an {@code Index} preamble
      *                    and a prefixed number of lines to remove.
-     * @return A {@code NoteRemoveCommand} object with the specified index and number of lines to remove.
+     * @return A {@code NoteClearCommand} object with the specified index and number of lines to remove.
      */
     private NoteClearCommand parseNoteClearCommand(ArgumentMultimap argMultimap) throws ParseException {
         Index index = parseIndex(argMultimap.getPreamble());
@@ -79,6 +86,20 @@ public class NoteCommandParser implements Parser<NoteCommand> {
     private NoteClearAllCommand parseNoteClearAllCommand(ArgumentMultimap argMultimap) throws ParseException {
         Index index = parseIndex(argMultimap.getPreamble());
         return new NoteClearAllCommand(index);
+    }
+
+    /**
+     * Parses the given {@code ArgumentMultimap} in the context of the {@code NoteRemoveCommand}
+     * and returns a {@code NoteRemoveCommand} object for execution.
+     *
+     * @param argMultimap The ArgumentMultimap containing an {@code Index} preamble
+     *                    and a prefixed note {@code Index} to remove.
+     * @return A {@code NoteRemoveCommand} object with the specified index and note index to remove.
+     */
+    private NoteRemoveCommand parseNoteRemoveCommand(ArgumentMultimap argMultimap) throws ParseException {
+        Index contactIndex = parseIndex(argMultimap.getPreamble());
+        Index noteIndex = parseIndex(argMultimap.getValue(PREFIX_REMOVE).get());
+        return new NoteRemoveCommand(contactIndex, noteIndex);
     }
 
     /**
