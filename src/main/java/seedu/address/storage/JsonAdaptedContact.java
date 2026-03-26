@@ -54,7 +54,7 @@ class JsonAdaptedContact {
         @JsonProperty("lastContacted") Optional<String> lastContacted,
         @JsonProperty("lastUpdated") Optional<String> lastUpdated,
         @JsonProperty("notes") Object notes,
-        @JsonProperty("tags") Object tags
+        @JsonProperty("tags") List<JsonAdaptedTag> tags
     ) {
         this.id = id;
         this.name = name;
@@ -64,7 +64,9 @@ class JsonAdaptedContact {
         this.lastUpdated = lastUpdated == null ? Optional.empty() : lastUpdated;
         this.notes.addAll(parseNotes(notes));
         this.address = address;
-        this.tags.addAll(parseTags(tags));
+        if (tags != null) {
+            this.tags.addAll(tags);
+        }
     }
 
     /**
@@ -72,7 +74,7 @@ class JsonAdaptedContact {
      * This overload keeps backward compatibility with existing tests/data producers.
      */
     public JsonAdaptedContact(String id, String name, Optional<String> phone, Optional<String> email,
-            Optional<String> address, Optional<String> lastContacted, Object notes, Object tags) {
+            Optional<String> address, Optional<String> lastContacted, Object notes, List<JsonAdaptedTag> tags) {
         this(id, name, phone, email, address, lastContacted, Optional.empty(), notes, tags);
     }
 
