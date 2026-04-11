@@ -21,3 +21,9 @@ _site/
 .vscode/
 .idea/*
 *.iml
+
+# OS generated files
+bin/
+build/
+.gradle/
+out/

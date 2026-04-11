@@ -2,20 +2,16 @@
 !include style.puml
 skinparam ArrowFontStyle plain
 
-box Model MODEL_COLOR_T1
-participant ":Model" as Model MODEL_COLOR
-participant ":VersionedAddressBook" as VersionedAddressBook MODEL_COLOR
-end box
 
-[-> Model : undoAddressBook()
+participant ":Model" as Model MODEL_COLOR
+
+[-> Model : moveSnapshot()
 activate Model
 
-Model -> VersionedAddressBook : undo()
-activate VersionedAddressBook
-
-VersionedAddressBook -> VersionedAddressBook :resetData(ReadOnlyAddressBook)
-VersionedAddressBook --> Model :
-deactivate VersionedAddressBook
+Model -> Model : copySnapshot()
+activate Model
+Model -> Model
+deactivate Model
 
 [<-- Model
 deactivate Model

@@ -12,13 +12,16 @@ Class AddressBook
 Class ModelManager
 Class UserPrefs
 
-Class UniquePersonList
-Class Person
+Class UniqueContactList
+Class Contact
 Class Address
 Class Email
 Class Name
 Class Phone
 Class Tag
+Class Note
+Class LastContacted
+Class LastUpdated
 
 Class I #FFFFFF
 }
@@ -35,20 +38,32 @@ ModelManager -left-> "1" AddressBook
 ModelManager -right-> "1" UserPrefs
 UserPrefs .up.|> ReadOnlyUserPrefs
 
-AddressBook *--> "1" UniquePersonList
-UniquePersonList --> "~* all" Person
-Person *--> Name
-Person *--> Phone
-Person *--> Email
-Person *--> Address
-Person *--> "*" Tag
+AddressBook *--> "1" UniqueContactList
+UniqueContactList --> "~* all" Contact
+Contact *--> Name
+Contact *--> Phone
+Contact *--> Email
+Contact *--> Address
+Contact *--> "*" Tag
+Contact *--> "*" Note
+Contact *--> "1" LastUpdated
+Contact *--> "0..1" LastContacted
 
-Person -[hidden]up--> I
-UniquePersonList -[hidden]right-> I
+note right of Contact
+  Each Contact has a stable UUID id
+  (persisted in JSON; used in
+  stored note text for cross-references).
+end note
+
+Contact -[hidden]up--> I
+UniqueContactList -[hidden]right-> I
 
 Name -[hidden]right-> Phone
 Phone -[hidden]right-> Address
 Address -[hidden]right-> Email
+Email -[hidden]down-> Note
+Note -[hidden]right-> LastUpdated
+LastUpdated -[hidden]right-> LastContacted
 
-ModelManager --> "~* filtered" Person
+ModelManager --> "~* displayed" Contact
 @enduml
